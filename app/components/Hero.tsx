@@ -63,7 +63,7 @@ export default function Hero() {
           "ออกเดินทางไปกับ"
         </p>
         <h1
-          className="text-white text-5xl md:text-7xl lg:text-8xl font-bold mb-6"
+          className="text-white text-2xl md:text-4xl lg:text-6xl font-bold mb-6"
           style={{ fontFamily: 'Rosella, sans-serif' }}
         >
           GOGRAPHY

@@ -50,7 +50,7 @@ export default function Navbar() {
               className={isScrolled ? 'brightness-0' : ''}
             />
             <span
-              className={`text-2xl font-bold transition-colors duration-300 ${
+              className={`text-xl font-bold transition-colors duration-300 ${
                 isScrolled ? 'text-gray-900' : 'text-white'
               }`}
               style={{ fontFamily: 'Rosella, sans-serif' }}
