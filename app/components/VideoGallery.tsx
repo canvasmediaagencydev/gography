@@ -54,7 +54,7 @@ export default function VideoGallery() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             <span className="text-orange-600" style={{ fontFamily: 'Rosella, sans-serif' }}>GOGRAPHY</span>
-            <span className="text-orange-600">ในมุมมองที่เคลื่อนไหว</span>
+            <span className="text-orange-600"> ในมุมมองที่เคลื่อนไหว</span>
           </h2>
           <h3 className="text-2xl md:text-3xl font-bold text-orange-600 mb-6">
             ประสบการณ์ที่ถ่ายทอดผ่านวิดีโอ
