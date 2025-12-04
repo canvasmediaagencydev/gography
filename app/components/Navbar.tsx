@@ -5,8 +5,19 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 export default function Navbar() {
-  const [language, setLanguage] = useState('TH');
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // Initialize language from cookie
+  const getInitialLanguage = () => {
+    if (typeof window === 'undefined') return 'TH';
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; googtrans=`);
+    const cookie = parts.length === 2 ? parts.pop()?.split(';').shift() : null;
+    return cookie && cookie.includes('/en') ? 'EN' : 'TH';
+  };
+
+  const [language, setLanguage] = useState(getInitialLanguage);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,17 +86,72 @@ export default function Navbar() {
               </Link>
             ))}
 
-            {/* Language Selector */}
-            <button
-              onClick={() => setLanguage(language === 'TH' ? 'EN' : 'TH')}
-              className={`transition-colors text-sm border px-3 py-1 rounded ${
-                isScrolled
-                  ? 'text-gray-900 border-gray-300 hover:bg-gray-100'
-                  : 'text-white border-white/30 hover:text-gray-300'
-              }`}
-            >
-              {language} ▼
-            </button>
+            {/* Language Selector - Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className={`transition-colors text-sm border px-3 py-1 rounded flex items-center gap-1 ${
+                  isScrolled
+                    ? 'text-gray-900 border-gray-300 hover:bg-gray-100'
+                    : 'text-white border-white/30 hover:bg-white/10'
+                }`}
+              >
+                {language} ▼
+              </button>
+
+              {/* Dropdown Menu */}
+              {isDropdownOpen && (
+                <div
+                  className={`absolute right-0 mt-2 w-32 rounded-md shadow-lg z-50 ${
+                    isScrolled ? 'bg-white' : 'bg-gray-800'
+                  }`}
+                  onMouseLeave={() => setIsDropdownOpen(false)}
+                >
+                  <div className="py-1">
+                    <button
+                      onClick={() => {
+                        const deleteCookie = (name: string) => {
+                          document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                        };
+
+                        // Reset to Thai
+                        deleteCookie('googtrans');
+                        setLanguage('TH');
+                        window.location.reload();
+                      }}
+                      className={`w-full text-left px-4 py-2 text-sm transition-colors ${
+                        isScrolled
+                          ? 'text-gray-900 hover:bg-gray-100'
+                          : 'text-white hover:bg-gray-700'
+                      } ${language === 'TH' ? 'font-bold' : ''}`}
+                    >
+                      🇹🇭 ไทย
+                    </button>
+                    <button
+                      onClick={() => {
+                        const setCookie = (name: string, value: string, days: number) => {
+                          const expires = new Date(Date.now() + days * 864e5).toUTCString();
+                          document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=/';
+                        };
+
+                        // Set to English
+                        setCookie('googtrans', '/th/en', 1);
+                        setLanguage('EN');
+                        window.location.reload();
+                      }}
+                      className={`w-full text-left px-4 py-2 text-sm transition-colors ${
+                        isScrolled
+                          ? 'text-gray-900 hover:bg-gray-100'
+                          : 'text-white hover:bg-gray-700'
+                      } ${language === 'EN' ? 'font-bold' : ''}`}
+                    >
+                      🇬🇧 English
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
           </div>
 
           {/* Mobile Menu Button */}
