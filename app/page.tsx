@@ -2,7 +2,6 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
 import Features from './components/Features';
-import Partners from './components/Partners';
 import UpcomingTrips from './components/UpcomingTrips';
 import TripsReviews from './components/TripsReviews';
 import Gallery from './components/Gallery';
@@ -19,7 +18,6 @@ export default function Home() {
         <Hero />
         <About />
         <Features />
-        <Partners />
         <UpcomingTrips />
         <TripsReviews />
         <Gallery />
