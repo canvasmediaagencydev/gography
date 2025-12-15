@@ -1,30 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import Link from 'next/link';
 
 export default function Gallery() {
-  const [selectedImage, setSelectedImage] = useState(0);
-
-  const images = [
-    'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=80',
-    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80',
-    'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1200&q=80',
-    'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80',
-    'https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?w=1200&q=80',
-    'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=80',
-    'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1200&q=80',
-    'https://images.unsplash.com/photo-1544552866-d3ed42536cfd?w=1200&q=80',
-    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80',
-    'https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=1200&q=80'
+  // Preview images for home page
+  const previewImages = [
+    { url: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=80', country: 'ญี่ปุ่น', description: 'ภูเขาฟูจิยามเช้า' },
+    { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80', country: 'นอร์เวย์', description: 'ฟยอร์ดอันน่าทึ่ง' },
+    { url: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=1200&q=80', country: 'ไอซ์แลนด์', description: 'ออโรร่ามหัศจรรย์' },
+    { url: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&q=80', country: 'สวิตเซอร์แลนด์', description: 'เทือกเขาแอลป์' },
+    { url: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1200&q=80', country: 'นิวซีแลนด์', description: 'ภูเขาและทะเลสาบ' },
+    { url: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1200&q=80', country: 'นอร์เวย์', description: 'หมู่บ้านริมทะเล' },
   ];
-
-  const nextImage = () => {
-    setSelectedImage((prev) => (prev + 1) % images.length);
-  };
-
-  const prevImage = () => {
-    setSelectedImage((prev) => (prev - 1 + images.length) % images.length);
-  };
 
   return (
     <section className="bg-white py-20 px-6">
@@ -44,55 +31,30 @@ export default function Gallery() {
           </p>
         </div>
 
-        {/* Main Image Display */}
-        <div className="relative mb-8">
-          <div className="relative h-[500px] rounded-2xl overflow-hidden">
-            <img
-              src={images[selectedImage]}
-              alt={`Gallery ${selectedImage + 1}`}
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          {/* Navigation Arrows */}
-          <button
-            onClick={prevImage}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-300"
-            aria-label="Previous image"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <button
-            onClick={nextImage}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-300"
-            aria-label="Next image"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Thumbnail Grid */}
-        <div className="flex gap-2 overflow-x-auto pb-4 mb-12 scrollbar-hide">
-          {images.map((image, index) => (
-            <button
+        {/* Preview Gallery Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
+          {previewImages.map((image, index) => (
+            <Link
               key={index}
-              onClick={() => setSelectedImage(index)}
-              className={`flex-shrink-0 w-24 h-20 rounded-lg overflow-hidden transition-all duration-300 ${
-                selectedImage === index
-                  ? 'ring-4 ring-orange-600 scale-105'
-                  : 'ring-2 ring-gray-200 hover:ring-gray-400'
-              }`}
+              href="/gallery"
+              className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer"
             >
-              <img
-                src={image}
-                alt={`Thumbnail ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
-            </button>
+              <div className="aspect-square overflow-hidden">
+                <img
+                  src={image.url}
+                  alt={image.description}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute bottom-0 left-0 right-0 p-3">
+                  <span className="inline-block bg-orange-600 text-white text-xs font-semibold px-2 py-1 rounded-full mb-1">
+                    {image.country}
+                  </span>
+                  <p className="text-white text-sm font-semibold">{image.description}</p>
+                </div>
+              </div>
+            </Link>
           ))}
         </div>
 
@@ -101,21 +63,13 @@ export default function Gallery() {
           <button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300">
             สอบถามหรือจองทริป
           </button>
-          <button className="bg-gray-800 hover:bg-gray-900 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300">
-            ดูภาพทั้งหมด
-          </button>
+          <Link href="/gallery">
+            <button className="bg-gray-800 hover:bg-gray-900 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300">
+              ดูภาพทั้งหมด
+            </button>
+          </Link>
         </div>
       </div>
-
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </section>
   );
 }
