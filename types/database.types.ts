@@ -261,6 +261,19 @@ export interface PublicTripDisplay {
   price: string
   slots: string
   trip_type: 'group' | 'private'
+  schedules: PublicScheduleDisplay[]
+}
+
+export interface PublicScheduleDisplay {
+  id: string
+  departure_date: string
+  return_date: string
+  dates: string
+  duration: string
+  available_seats: number
+  total_seats: number
+  slots: string
+  is_active: boolean
 }
 
 // Gallery types with relations

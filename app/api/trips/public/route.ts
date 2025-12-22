@@ -106,16 +106,35 @@ export async function GET(request: NextRequest) {
     tripMap.forEach((trip) => {
       if (trip.schedules.length === 0) return
 
-      // Get the next upcoming schedule
-      const nextSchedule = trip.schedules.sort(
+      // Sort schedules by departure date
+      const sortedSchedules = trip.schedules.sort(
         (a, b) =>
           new Date(a.departure_date).getTime() - new Date(b.departure_date).getTime()
-      )[0]
+      )
+
+      // Get the next upcoming schedule for main display
+      const nextSchedule = sortedSchedules[0]
 
       const duration = calculateDuration(nextSchedule.departure_date, nextSchedule.return_date)
       const dates = formatThaiDateRange(nextSchedule.departure_date, nextSchedule.return_date)
       const durationText = formatDurationThai(duration.days, duration.nights)
       const slots = formatSlotsDisplay(nextSchedule.available_seats, nextSchedule.total_seats)
+
+      // Format all schedules for selection
+      const schedulesDisplay = sortedSchedules.map((schedule) => {
+        const schedDuration = calculateDuration(schedule.departure_date, schedule.return_date)
+        return {
+          id: schedule.id,
+          departure_date: schedule.departure_date,
+          return_date: schedule.return_date,
+          dates: formatThaiDateRange(schedule.departure_date, schedule.return_date),
+          duration: formatDurationThai(schedDuration.days, schedDuration.nights),
+          available_seats: schedule.available_seats || 0,
+          total_seats: schedule.total_seats || 0,
+          slots: formatSlotsDisplay(schedule.available_seats, schedule.total_seats),
+          is_active: schedule.is_active,
+        }
+      })
 
       // Add prefix for private trips
       const title = trip.trip_type === 'private' ? `[ Private ] ${trip.title}` : trip.title
@@ -131,6 +150,7 @@ export async function GET(request: NextRequest) {
         price: formatPrice(trip.price_per_person),
         slots,
         trip_type: trip.trip_type,
+        schedules: schedulesDisplay,
       })
     })
 

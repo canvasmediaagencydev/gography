@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Link from 'next/link';
-import type { PublicTripDisplay } from '@/types/database.types';
+import type { PublicTripDisplay, PublicScheduleDisplay } from '@/types/database.types';
 
 export default function TripsPage() {
   const [selectedTripType, setSelectedTripType] = useState('ประเภททริปทั้งหมด');
   const [selectedDestination, setSelectedDestination] = useState('ทั่วหมด');
   const [allTrips, setAllTrips] = useState<PublicTripDisplay[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedSchedules, setSelectedSchedules] = useState<Record<string, string>>({});
 
   useEffect(() => {
     loadTrips();
@@ -29,12 +30,27 @@ export default function TripsPage() {
 
       const res = await fetch(`/api/trips/public?${params.toString()}`);
       const data = await res.json();
-      setAllTrips(data.trips || []);
+      const loadedTrips = data.trips || [];
+      setAllTrips(loadedTrips);
+
+      // Set default selected schedule (first one) for each trip
+      const initialSelected: Record<string, string> = {};
+      loadedTrips.forEach((trip: PublicTripDisplay) => {
+        if (trip.schedules && trip.schedules.length > 0) {
+          initialSelected[trip.id] = trip.schedules[0].id;
+        }
+      });
+      setSelectedSchedules(initialSelected);
     } catch (error) {
       console.error('Error loading trips:', error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const getSelectedSchedule = (trip: PublicTripDisplay): PublicScheduleDisplay | undefined => {
+    const selectedId = selectedSchedules[trip.id];
+    return trip.schedules.find((s) => s.id === selectedId) || trip.schedules[0];
   };
 
   return (
@@ -136,45 +152,77 @@ export default function TripsPage() {
                     {trip.title}
                   </h3>
 
-                  {/* Dates */}
-                  <div className="flex items-center gap-2 text-gray-600 mb-2">
-                    <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <span className="text-base">{trip.dates}</span>
-                  </div>
-
-                  {/* Duration */}
-                  <div className="flex items-center gap-2 text-gray-600 mb-2">
-                    <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="text-base">{trip.duration}</span>
-                  </div>
-
-                  {/* Country */}
-                  <div className="flex items-center gap-2 text-gray-600 mb-4">
-                    <span className="text-lg">{trip.flag}</span>
-                    <span className="text-base">{trip.country}</span>
-                  </div>
-
-                  {/* Price and Slots */}
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="text-2xl font-bold text-orange-600">
-                      {trip.price}
+                  {/* Schedule Selector - Show if multiple schedules */}
+                  {trip.schedules.length > 1 && (
+                    <div className="mb-3">
+                      <label className="block text-xs text-gray-500 mb-1">เลือกรอบเดินทาง</label>
+                      <select
+                        value={selectedSchedules[trip.id] || trip.schedules[0].id}
+                        onChange={(e) =>
+                          setSelectedSchedules((prev) => ({
+                            ...prev,
+                            [trip.id]: e.target.value,
+                          }))
+                        }
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white"
+                      >
+                        {trip.schedules.map((schedule) => (
+                          <option key={schedule.id} value={schedule.id}>
+                            {schedule.dates} • {schedule.slots}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                    <div className="text-base text-gray-600">
-                      {trip.slots}
-                    </div>
-                  </div>
+                  )}
 
-                  {/* Book Button */}
-                  <Link
-                    href={`/trips/${trip.id}`}
-                    className="block w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-full text-center transition-colors duration-300"
-                  >
-                    ดูทริป →
-                  </Link>
+                  {(() => {
+                    const currentSchedule = getSelectedSchedule(trip);
+                    if (!currentSchedule) return null;
+
+                    return (
+                      <>
+                        {/* Dates */}
+                        <div className="flex items-center gap-2 text-gray-600 mb-2">
+                          <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <span className="text-base">{currentSchedule.dates}</span>
+                        </div>
+
+                        {/* Duration */}
+                        <div className="flex items-center gap-2 text-gray-600 mb-2">
+                          <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span className="text-base">{currentSchedule.duration}</span>
+                        </div>
+
+                        {/* Country */}
+                        <div className="flex items-center gap-2 text-gray-600 mb-4">
+                          <span className="text-lg">{trip.flag}</span>
+                          <span className="text-base">{trip.country}</span>
+                        </div>
+
+                        {/* Price and Slots */}
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="text-2xl font-bold text-orange-600">
+                            {trip.price}
+                          </div>
+                          <div className="text-base text-gray-600">
+                            {currentSchedule.slots}
+                          </div>
+                        </div>
+
+                        {/* Book Button */}
+                        <Link
+                          href={`/trips/${trip.id}?schedule=${currentSchedule.id}`}
+                          className="block w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-full text-center transition-colors duration-300"
+                        >
+                          ดูทริป →
+                        </Link>
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
               ))}
