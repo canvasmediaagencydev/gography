@@ -1,70 +1,54 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import type { PublicTripDisplay } from '@/types/database.types';
 
 export default function UpcomingTrips() {
-  const trips = [
-    {
-      image: 'https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?w=800&q=80',
-      title: 'BAIKAL WINTER 2026',
-      badge: 'BAIKAL WINTER 2026',
-      dates: '7-13 ก.พ.   21-27 ก.พ.   11-17 มี.ค.',
-      duration: '7 วัน 6 คืน',
-      country: 'รัสเซีย',
-      flag: '🇷🇺',
-      price: '฿72,900',
-      slots: 'รับ 14 ท่าน'
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1579033461380-adb47c3eb938?w=800&q=80',
-      title: 'Aurora Valentine Journey – Lofoten & Finland 2026',
-      dates: '13-20 ก.พ.',
-      duration: '8 วัน 6 คืน',
-      country: 'นอร์เวย์',
-      flag: '🇳🇴',
-      price: '฿165,900',
-      slots: 'รับ 6 ท่าน'
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80',
-      title: 'LOFOTEN WINTER - Aurora 2026',
-      dates: '18-24 ก.พ.',
-      duration: '7 วัน 5 คืน',
-      country: 'นอร์เวย์',
-      flag: '🇳🇴',
-      price: '฿89,900',
-      slots: 'รับ 6 ท่าน'
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?w=800&q=80',
-      title: 'ICELAND WINTER - Aurora 2026',
-      dates: '25 ก.พ. - 6 มี.ค.   11-20 มี.ค.',
-      duration: '10 วัน 8 คืน',
-      country: 'ไอซ์แลนด์',
-      flag: '🇮🇸',
-      price: '฿139,900',
-      slots: 'รับ 8 ท่าน'
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1544552866-d3ed42536cfd?w=800&q=80',
-      title: 'WINTER IN FINLAND 2026',
-      dates: '22-28 มี.ค.',
-      duration: '7 วัน 5 คืน',
-      country: 'ฟินแลนด์',
-      flag: '🇫🇮',
-      price: '฿99,900',
-      slots: 'รับ 10 ท่าน'
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1570993492903-ba4c3088f100?w=800&q=80',
-      title: 'PATAGONIA',
-      dates: '11-23 เม.ย.',
-      duration: '13 วัน 11 คืน',
-      country: 'อาร์เจนตินา',
-      flag: '🇦🇷',
-      price: '฿289,900',
-      slots: 'รับ 12 ท่าน'
+  const [trips, setTrips] = useState<PublicTripDisplay[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    loadTrips();
+  }, []);
+
+  const loadTrips = async () => {
+    try {
+      const res = await fetch('/api/trips/public');
+      const data = await res.json();
+      // Limit to 6 trips for homepage
+      setTrips((data.trips || []).slice(0, 6));
+    } catch (error) {
+      console.error('Error loading trips:', error);
+    } finally {
+      setIsLoading(false);
     }
-  ];
+  };
+
+  if (isLoading) {
+    return (
+      <section className="bg-gray-50 py-20 px-6">
+        <div className="container mx-auto max-w-7xl">
+          <div className="flex items-center justify-center h-64">
+            <p className="text-gray-500">กำลังโหลด...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (trips.length === 0) {
+    return (
+      <section className="bg-gray-50 py-20 px-6">
+        <div className="container mx-auto max-w-7xl">
+          <div className="text-center py-12">
+            <p className="text-gray-500">ยังไม่มีทริปที่กำลังจะมาถึง</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="bg-gray-50 py-20 px-6">
@@ -81,9 +65,9 @@ export default function UpcomingTrips() {
 
         {/* Trips Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {trips.map((trip, index) => (
+          {trips.map((trip) => (
             <div
-              key={index}
+              key={trip.id}
               className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
             >
               {/* Trip Image */}
@@ -93,11 +77,6 @@ export default function UpcomingTrips() {
                   alt={trip.title}
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                 />
-                {trip.badge && (
-                  <div className="absolute bottom-4 left-4 bg-gray-700/80 backdrop-blur-sm text-white px-4 py-2 rounded text-sm font-semibold">
-                    {trip.badge}
-                  </div>
-                )}
               </div>
 
               {/* Trip Content */}
@@ -141,10 +120,10 @@ export default function UpcomingTrips() {
 
                 {/* Book Button */}
                 <Link
-                  href={`/trips/${index + 1}`}
+                  href={`/trips/${trip.id}`}
                   className="block w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-full text-center transition-colors duration-300"
                 >
-                  ดูทรีป →
+                  ดูทริป →
                 </Link>
               </div>
             </div>

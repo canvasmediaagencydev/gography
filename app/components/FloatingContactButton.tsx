@@ -1,12 +1,19 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 export default function FloatingContactButton() {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const pathname = usePathname();
+
+  // Don't show in admin pages
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   // Close menu when clicking outside
   useEffect(() => {

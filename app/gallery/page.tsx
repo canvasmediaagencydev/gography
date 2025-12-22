@@ -1,68 +1,58 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-
-interface GalleryImage {
-  url: string;
-  country: string;
-  description: string;
-  isHighlight?: boolean;
-}
+import type { GalleryImageWithRelations } from '@/types/database.types';
 
 export default function GalleryPage() {
-  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const [galleryData, setGalleryData] = useState<GalleryImageWithRelations[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<GalleryImageWithRelations | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<string>('all');
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Gallery data organized by country
-  const galleryData: GalleryImage[] = [
-    // Highlights
-    { url: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=80', country: 'ญี่ปุ่น', description: 'ภูเขาฟูจิยามเช้า', isHighlight: true },
-    { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80', country: 'นอร์เวย์', description: 'ฟยอร์ดอันน่าทึ่ง', isHighlight: true },
-    { url: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=1200&q=80', country: 'ไอซ์แลนด์', description: 'ออโรร่ามหัศจรรย์', isHighlight: true },
-    { url: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&q=80', country: 'สวิตเซอร์แลนด์', description: 'เทือกเขาแอลป์', isHighlight: true },
+  useEffect(() => {
+    loadGalleryData();
+  }, []);
 
-    // Japan
-    { url: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=80', country: 'ญี่ปุ่น', description: 'ภูเขาฟูจิยามเช้า' },
-    { url: 'https://images.unsplash.com/photo-1542640244-7e672d6cef4e?w=1200&q=80', country: 'ญี่ปุ่น', description: 'วัดเกียวโต' },
-    { url: 'https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=1200&q=80', country: 'ญี่ปุ่น', description: 'ดอกซากุระบาน' },
-    { url: 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=1200&q=80', country: 'ญี่ปุ่น', description: 'ชิบูย่าโตเกียว' },
-    { url: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&q=80', country: 'ญี่ปุ่น', description: 'ถนนโตเกียว' },
-    { url: 'https://images.unsplash.com/photo-1528164344705-47542687000d?w=1200&q=80', country: 'ญี่ปุ่น', description: 'หมู่บ้านญี่ปุ่น' },
+  const loadGalleryData = async () => {
+    try {
+      const res = await fetch('/api/gallery?is_active=true&pageSize=1000');
+      const data = await res.json();
+      setGalleryData(data.images || []);
+    } catch (error) {
+      console.error('Error loading gallery:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    // Norway
-    { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80', country: 'นอร์เวย์', description: 'ฟยอร์ดอันน่าทึ่ง' },
-    { url: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1200&q=80', country: 'นอร์เวย์', description: 'หมู่บ้านริมทะเล' },
-    { url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80', country: 'นอร์เวย์', description: 'ภูเขาและทะเลสาบ' },
-    { url: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=1200&q=80', country: 'นอร์เวย์', description: 'ทิวทัศน์นอร์เวย์' },
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-gray-500">กำลังโหลด...</p>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
-    // Iceland
-    { url: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=1200&q=80', country: 'ไอซ์แลนด์', description: 'ออโรร่ามหัศจรรย์' },
-    { url: 'https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?w=1200&q=80', country: 'ไอซ์แลนด์', description: 'น้ำตกสวยงาม' },
-    { url: 'https://images.unsplash.com/photo-1504829857797-ddff29c27927?w=1200&q=80', country: 'ไอซ์แลนด์', description: 'ทิวทัศน์ธรรมชาติ' },
-    { url: 'https://images.unsplash.com/photo-1505832018823-50331d70d237?w=1200&q=80', country: 'ไอซ์แลนด์', description: 'ภูเขาไฟไอซ์แลนด์' },
-
-    // Switzerland
-    { url: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&q=80', country: 'สวิตเซอร์แลนด์', description: 'เทือกเขาแอลป์' },
-    { url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=80', country: 'สวิตเซอร์แลนด์', description: 'ทะเลสาบเนวา' },
-    { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80', country: 'สวิตเซอร์แลนด์', description: 'หุบเขาหิมะ' },
-    { url: 'https://images.unsplash.com/photo-1516475429286-465d815a0df7?w=1200&q=80', country: 'สวิตเซอร์แลนด์', description: 'เมืองเล็กในสวิส' },
-
-    // New Zealand
-    { url: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1200&q=80', country: 'นิวซีแลนด์', description: 'ภูเขาและทะเลสาบ' },
-    { url: 'https://images.unsplash.com/photo-1544552866-d3ed42536cfd?w=1200&q=80', country: 'นิวซีแลนด์', description: 'หุบเขาสวยงาม' },
-    { url: 'https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=1200&q=80', country: 'นิวซีแลนด์', description: 'ชายฝั่งทะเล' },
-    { url: 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=1200&q=80', country: 'นิวซีแลนด์', description: 'ภูเขานิวซีแลนด์' },
-  ];
-
-  const highlights = galleryData.filter(img => img.isHighlight);
-  const countries = Array.from(new Set(galleryData.map(img => img.country)));
-  const filteredImages = selectedCountry === 'all'
-    ? galleryData
-    : galleryData.filter(img => img.country === selectedCountry);
+  const highlights = galleryData.filter((img) => img.is_highlight);
+  const countries = Array.from(
+    new Set(
+      galleryData
+        .map((img) => img.country?.name_th)
+        .filter((name): name is string => !!name)
+    )
+  );
+  const filteredImages =
+    selectedCountry === 'all'
+      ? galleryData
+      : galleryData.filter((img) => img.country?.name_th === selectedCountry);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % highlights.length);
@@ -82,7 +72,7 @@ export default function GalleryPage() {
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80)' }}
           >
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
+            <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/50 to-black/70"></div>
           </div>
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center justify-center">
             <div className="text-center text-white">
@@ -106,27 +96,28 @@ export default function GalleryPage() {
         </section>
 
         {/* Featured Carousel Section */}
-        <section className="py-16 px-6 bg-gray-50">
-          <div className="container mx-auto max-w-7xl">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">ภาพไฮไลท์รวม</h2>
-              <p className="text-gray-600 text-lg">ภาพเด่นที่คัดสรรมาจากทุกทริป</p>
-            </div>
+        {highlights.length > 0 && (
+          <section className="py-16 px-6 bg-gray-50">
+            <div className="container mx-auto max-w-7xl">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">ภาพไฮไลท์รวม</h2>
+                <p className="text-gray-600 text-lg">ภาพเด่นที่คัดสรรมาจากทุกทริป</p>
+              </div>
 
-            {/* Main Carousel */}
-            <div className="relative mb-8">
+              {/* Main Carousel */}
+              <div className="relative mb-8">
               <div className="relative h-[500px] md:h-[600px] rounded-2xl overflow-hidden shadow-2xl">
                 <img
-                  src={highlights[currentSlide].url}
-                  alt={highlights[currentSlide].description}
+                  src={highlights[currentSlide].storage_url}
+                  alt={highlights[currentSlide].alt_text || highlights[currentSlide].title}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent">
                   <div className="absolute bottom-0 left-0 right-0 p-8">
                     <span className="inline-block bg-orange-600 text-white text-sm font-semibold px-4 py-2 rounded-full mb-3">
-                      {highlights[currentSlide].country}
+                      {highlights[currentSlide].country?.name_th}
                     </span>
-                    <h3 className="text-white text-2xl md:text-3xl font-bold">{highlights[currentSlide].description}</h3>
+                    <h3 className="text-white text-2xl md:text-3xl font-bold">{highlights[currentSlide].title}</h3>
                   </div>
                 </div>
               </div>
@@ -156,7 +147,7 @@ export default function GalleryPage() {
             <div className="flex gap-3 overflow-x-auto pt-2 pb-4 scrollbar-hide justify-center">
               {highlights.map((image, index) => (
                 <button
-                  key={index}
+                  key={image.id}
                   onClick={() => setCurrentSlide(index)}
                   className={`flex-shrink-0 w-24 h-20 rounded-lg overflow-hidden transition-all duration-300 ${
                     currentSlide === index
@@ -165,8 +156,8 @@ export default function GalleryPage() {
                   }`}
                 >
                   <img
-                    src={image.url}
-                    alt={image.description}
+                    src={image.storage_url}
+                    alt={image.alt_text || image.title}
                     className="w-full h-full object-cover"
                   />
                 </button>
@@ -174,6 +165,7 @@ export default function GalleryPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Gallery by Country */}
         <section className="py-20 px-6 bg-white">
@@ -217,7 +209,9 @@ export default function GalleryPage() {
               {selectedCountry === 'all' ? (
                 // Show all countries in sections
                 countries.map((country) => {
-                  const countryImages = galleryData.filter(img => img.country === country);
+                  const countryImages = galleryData.filter(
+                    (img) => img.country?.name_th === country
+                  );
                   return (
                     <div key={country} className="mb-20">
                       <div className="flex items-center gap-3 mb-8">
@@ -228,22 +222,22 @@ export default function GalleryPage() {
                         <div className="flex-1 h-px bg-gradient-to-r from-gray-300 to-transparent"></div>
                       </div>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {countryImages.map((image, index) => (
+                        {countryImages.map((image) => (
                           <div
-                            key={index}
+                            key={image.id}
                             className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:-translate-y-2"
                             onClick={() => setSelectedImage(image)}
                           >
                             <div className="aspect-square overflow-hidden bg-gray-100">
                               <img
-                                src={image.url}
-                                alt={image.description}
+                                src={image.storage_url}
+                                alt={image.alt_text || image.title}
                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                               />
                             </div>
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <div className="absolute bottom-0 left-0 right-0 p-4">
-                                <p className="text-white text-sm font-semibold">{image.description}</p>
+                                <p className="text-white text-sm font-semibold">{image.title}</p>
                               </div>
                             </div>
                             {/* Hover Icon */}
@@ -262,22 +256,22 @@ export default function GalleryPage() {
               ) : (
                 // Show filtered country
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                  {filteredImages.map((image, index) => (
+                  {filteredImages.map((image) => (
                     <div
-                      key={index}
+                      key={image.id}
                       className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:-translate-y-2"
                       onClick={() => setSelectedImage(image)}
                     >
                       <div className="aspect-square overflow-hidden bg-gray-100">
                         <img
-                          src={image.url}
-                          alt={image.description}
+                          src={image.storage_url}
+                          alt={image.alt_text || image.title}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         />
                       </div>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <div className="absolute bottom-0 left-0 right-0 p-4">
-                          <p className="text-white text-sm font-semibold">{image.description}</p>
+                          <p className="text-white text-sm font-semibold">{image.title}</p>
                         </div>
                       </div>
                       {/* Hover Icon */}
@@ -331,16 +325,19 @@ export default function GalleryPage() {
             </button>
             <div className="max-w-6xl w-full animate-fadeIn">
               <img
-                src={selectedImage.url}
-                alt={selectedImage.description}
+                src={selectedImage.storage_url}
+                alt={selectedImage.alt_text || selectedImage.title}
                 className="w-full h-auto rounded-lg shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
               />
               <div className="mt-6 text-center">
                 <span className="inline-block bg-orange-600 text-white text-sm font-semibold px-5 py-2 rounded-full mb-3">
-                  {selectedImage.country}
+                  {selectedImage.country?.name_th}
                 </span>
-                <p className="text-white text-xl font-semibold">{selectedImage.description}</p>
+                <p className="text-white text-xl font-semibold">{selectedImage.title}</p>
+                {selectedImage.description && (
+                  <p className="text-white/80 text-sm mt-2">{selectedImage.description}</p>
+                )}
               </div>
             </div>
           </div>

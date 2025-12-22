@@ -1,76 +1,41 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Link from 'next/link';
+import type { PublicTripDisplay } from '@/types/database.types';
 
 export default function TripsPage() {
   const [selectedTripType, setSelectedTripType] = useState('ประเภททริปทั้งหมด');
   const [selectedDestination, setSelectedDestination] = useState('ทั่วหมด');
+  const [allTrips, setAllTrips] = useState<PublicTripDisplay[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const allTrips = [
-    {
-      image: 'https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?w=800&q=80',
-      title: '[ Private ]Arctic Aurora: New Year in Norway & Finland & Denmark',
-      dates: '29 ธ.ค. - 6 ม.ค.',
-      duration: '9 วัน 7 คืน',
-      country: 'นอร์เวย์',
-      flag: '🇳🇴',
-      price: '฿229,000',
-      slots: 'เต็ม'
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1579033461380-adb47c3eb938?w=800&q=80',
-      title: 'Aurora Valentine Journey – Lofoten & Finland 2026',
-      dates: '13-20 ก.พ.',
-      duration: '8 วัน 6 คืน',
-      country: 'นอร์เวย์',
-      flag: '🇳🇴',
-      price: '฿165,900',
-      slots: 'รับ 6 ท่าน'
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?w=800&q=80',
-      title: 'BAIKAL WINTER 2026',
-      dates: '21-27 ก.พ.   27 ก.พ. - 5 มี.ค.   11-17 มี.ค.',
-      duration: '7 วัน 6 คืน',
-      country: 'รัสเซีย',
-      flag: '🇷🇺',
-      price: '฿72,900',
-      slots: 'เหลือ 4 ที่'
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80',
-      title: 'ICELAND WINTER - Aurora 2026',
-      dates: '25 ก.พ. - 6 มี.ค.   11-20 มี.ค.',
-      duration: '9 วัน 7 คืน',
-      country: 'ไอซ์แลนด์',
-      flag: '🇮🇸',
-      price: '฿229,000',
-      slots: 'รับ 8 ท่าน'
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1579033461380-adb47c3eb938?w=800&q=80',
-      title: 'LOFOTEN WINTER - Aurora 2026',
-      dates: '11-17 มี.ค.   18-24 มี.ค.',
-      duration: '7 วัน 5 คืน',
-      country: 'นอร์เวย์',
-      flag: '🇳🇴',
-      price: '฿89,900',
-      slots: 'รับ 6 ท่าน'
-    },
-    {
-      image: 'https://images.unsplash.com/photo-1544552866-d3ed42536cfd?w=800&q=80',
-      title: 'WINTER IN FINLAND 2026',
-      dates: '22-28 มี.ค.',
-      duration: '7 วัน 5 คืน',
-      country: 'ฟินแลนด์',
-      flag: '🇫🇮',
-      price: '฿99,900',
-      slots: 'รับ 10 ท่าน'
+  useEffect(() => {
+    loadTrips();
+  }, [selectedTripType, selectedDestination]);
+
+  const loadTrips = async () => {
+    setIsLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (selectedDestination !== 'ทั่วหมด') {
+        params.append('country', selectedDestination);
+      }
+      if (selectedTripType !== 'ประเภททริปทั้งหมด') {
+        params.append('trip_type', selectedTripType);
+      }
+
+      const res = await fetch(`/api/trips/public?${params.toString()}`);
+      const data = await res.json();
+      setAllTrips(data.trips || []);
+    } catch (error) {
+      console.error('Error loading trips:', error);
+    } finally {
+      setIsLoading(false);
     }
-  ];
+  };
 
   return (
     <>
@@ -140,8 +105,17 @@ export default function TripsPage() {
           </div>
 
           {/* Trips Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {allTrips.map((trip, index) => (
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <p className="text-gray-500">กำลังโหลด...</p>
+            </div>
+          ) : allTrips.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500">ไม่พบทริปที่ตรงกับการค้นหา</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {allTrips.map((trip, index) => (
               <div
                 key={index}
                 className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
@@ -196,15 +170,16 @@ export default function TripsPage() {
 
                   {/* Book Button */}
                   <Link
-                    href={`/trips/${index + 1}`}
+                    href={`/trips/${trip.id}`}
                     className="block w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-full text-center transition-colors duration-300"
                   >
                     ดูทริป →
                   </Link>
                 </div>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
