@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { THAI_LABELS } from '@/lib/thai-labels'
-import type { Country } from '@/types/database.types'
+import type { Country, Trip } from '@/types/database.types'
 
 interface UploadedFile {
   file: File
@@ -12,12 +12,18 @@ interface UploadedFile {
   description: string
   alt_text: string
   country_id: string
+  trip_id: string
   is_highlight: boolean
 }
 
-export default function GalleryUploadForm() {
+interface GalleryUploadFormProps {
+  tripId?: string
+}
+
+export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
   const router = useRouter()
   const [countries, setCountries] = useState<Country[]>([])
+  const [trips, setTrips] = useState<Trip[]>([])
   const [files, setFiles] = useState<UploadedFile[]>([])
   const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState('')
@@ -25,6 +31,7 @@ export default function GalleryUploadForm() {
 
   useEffect(() => {
     loadCountries()
+    loadTrips()
   }, [])
 
   const loadCountries = async () => {
@@ -34,6 +41,16 @@ export default function GalleryUploadForm() {
       setCountries(data.countries || [])
     } catch (error) {
       console.error('Error loading countries:', error)
+    }
+  }
+
+  const loadTrips = async () => {
+    try {
+      const res = await fetch('/api/trips?pageSize=1000')
+      const data = await res.json()
+      setTrips(data.trips || [])
+    } catch (error) {
+      console.error('Error loading trips:', error)
     }
   }
 
@@ -83,6 +100,7 @@ export default function GalleryUploadForm() {
       description: '',
       alt_text: '',
       country_id: '',
+      trip_id: tripId || '',
       is_highlight: false,
     }))
 
@@ -154,6 +172,7 @@ export default function GalleryUploadForm() {
             description: uploadFile.description || null,
             alt_text: uploadFile.alt_text || null,
             country_id: uploadFile.country_id || null,
+            trip_id: uploadFile.trip_id || null,
             is_highlight: uploadFile.is_highlight,
             is_active: true,
           }),
@@ -281,6 +300,33 @@ export default function GalleryUploadForm() {
                         </option>
                       ))}
                     </select>
+                  </div>
+
+                  {/* Trip */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      ทริป (ถ้ามี)
+                    </label>
+                    <select
+                      value={uploadFile.trip_id}
+                      onChange={(e) =>
+                        updateFile(index, 'trip_id', e.target.value)
+                      }
+                      disabled={!!tripId}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    >
+                      <option value="">ไม่เชื่อมกับทริป</option>
+                      {trips.map((trip) => (
+                        <option key={trip.id} value={trip.id}>
+                          {trip.title}
+                        </option>
+                      ))}
+                    </select>
+                    {tripId && (
+                      <p className="text-xs text-gray-500 mt-1">
+                        📌 กำลังอัพโหลดให้กับทริปนี้โดยอัตโนมัติ
+                      </p>
+                    )}
                   </div>
 
                   {/* Description */}

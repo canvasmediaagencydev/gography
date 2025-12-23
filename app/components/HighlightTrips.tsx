@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import type { PublicTripDisplay } from '@/types/database.types';
 import TripCard from './TripCard';
 
-export default function UpcomingTrips() {
+export default function HighlightTrips() {
   const [trips, setTrips] = useState<PublicTripDisplay[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedSchedules, setSelectedSchedules] = useState<Record<string, string>>({});
@@ -16,10 +16,10 @@ export default function UpcomingTrips() {
 
   const loadTrips = async () => {
     try {
-      const res = await fetch('/api/trips/public');
+      const res = await fetch('/api/trips/public?pageSize=3');
       const data = await res.json();
-      // Limit to 6 trips for homepage
-      const loadedTrips = (data.trips || []).slice(0, 6);
+      // Get first 3 trips for highlight section
+      const loadedTrips = (data.trips || []).slice(0, 3);
       setTrips(loadedTrips);
 
       // Set default selected schedule (first one) for each trip
@@ -46,7 +46,7 @@ export default function UpcomingTrips() {
 
   if (isLoading) {
     return (
-      <section className="bg-gray-50 py-20 px-6">
+      <section className="py-20 px-6 bg-gray-50">
         <div className="container mx-auto max-w-7xl">
           <div className="flex items-center justify-center h-64">
             <p className="text-gray-500">กำลังโหลด...</p>
@@ -57,31 +57,17 @@ export default function UpcomingTrips() {
   }
 
   if (trips.length === 0) {
-    return (
-      <section className="bg-gray-50 py-20 px-6">
-        <div className="container mx-auto max-w-7xl">
-          <div className="text-center py-12">
-            <p className="text-gray-500">ยังไม่มีทริปที่กำลังจะมาถึง</p>
-          </div>
-        </div>
-      </section>
-    );
+    return null;
   }
 
   return (
-    <section className="bg-gray-50 py-20 px-6">
+    <section className="py-20 px-6 bg-gray-50">
       <div className="container mx-auto max-w-7xl">
-        {/* Section Header */}
-        <h2 className="text-center text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-          UPCOMING TRIPS
-        </h2>
-        <p className="text-center text-gray-700 text-base md:text-lg mb-12 max-w-4xl mx-auto">
-          ลูกค้าทุกท่านจะไม่พลาด<span className="text-orange-600 font-semibold">ความทรงจำที่ดีและรับที่สุดขอมจากภาพของเรา</span>ในทุกการเดินทางอย่างแน่นอน!
-          <br />
-          เราจะพากุกท่านไปอยู่ในใจเคยึ่งที่พิเศษไม่ช่วงเวลาพิเศษเสมอ
-        </p>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">ทริปไฮไลท์</h2>
+          <p className="text-gray-600 text-lg">ทริปยอดนิยมที่คัดสรรมาเพื่อคุณ</p>
+        </div>
 
-        {/* Trips Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {trips.map((trip) => (
             <TripCard
@@ -93,13 +79,12 @@ export default function UpcomingTrips() {
           ))}
         </div>
 
-        {/* View All Button */}
+        {/* View All Trips Button */}
         <div className="text-center mt-12">
-          <Link
-            href="/trips"
-            className="inline-block bg-gray-800 hover:bg-gray-900 text-white font-semibold px-12 py-4 rounded-full transition-colors duration-300"
-          >
-            ดูทริปทั้งหมด
+          <Link href="/trips">
+            <button className="bg-gray-900 hover:bg-gray-800 text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105">
+              สอบถามหรือจองทริป
+            </button>
           </Link>
         </div>
       </div>

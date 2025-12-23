@@ -57,7 +57,12 @@ export async function GET(request: NextRequest) {
       query = query.eq('country_id', country_id)
     }
     if (trip_id) {
-      query = query.eq('trip_id', trip_id)
+      // Handle special case: "null" means filter for images without trip
+      if (trip_id === 'null') {
+        query = query.is('trip_id', null)
+      } else {
+        query = query.eq('trip_id', trip_id)
+      }
     }
     if (is_highlight !== null && is_highlight !== '') {
       query = query.eq('is_highlight', is_highlight === 'true')

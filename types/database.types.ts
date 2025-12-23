@@ -215,6 +215,129 @@ export interface Database {
           updated_at?: string
         }
       }
+      trip_itinerary_days: {
+        Row: {
+          id: string
+          trip_id: string
+          day_number: number
+          day_title: string
+          day_description: string | null
+          order_index: number
+          is_active: boolean
+          created_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          trip_id: string
+          day_number: number
+          day_title: string
+          day_description?: string | null
+          order_index?: number
+          is_active?: boolean
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          trip_id?: string
+          day_number?: number
+          day_title?: string
+          day_description?: string | null
+          order_index?: number
+          is_active?: boolean
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      trip_itinerary_activities: {
+        Row: {
+          id: string
+          itinerary_day_id: string
+          activity_time: string | null
+          activity_description: string
+          order_index: number
+          is_active: boolean
+          created_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          itinerary_day_id: string
+          activity_time?: string | null
+          activity_description: string
+          order_index?: number
+          is_active?: boolean
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          itinerary_day_id?: string
+          activity_time?: string | null
+          activity_description?: string
+          order_index?: number
+          is_active?: boolean
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      trip_itinerary_day_images: {
+        Row: {
+          id: string
+          itinerary_day_id: string
+          storage_path: string
+          storage_url: string
+          file_name: string
+          file_size: number | null
+          mime_type: string | null
+          caption: string | null
+          alt_text: string | null
+          order_index: number
+          is_active: boolean
+          created_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          itinerary_day_id: string
+          storage_path: string
+          storage_url: string
+          file_name: string
+          file_size?: number | null
+          mime_type?: string | null
+          caption?: string | null
+          alt_text?: string | null
+          order_index?: number
+          is_active?: boolean
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          itinerary_day_id?: string
+          storage_path?: string
+          storage_url?: string
+          file_name?: string
+          file_size?: number | null
+          mime_type?: string | null
+          caption?: string | null
+          alt_text?: string | null
+          order_index?: number
+          is_active?: boolean
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
   }
 }
@@ -230,6 +353,9 @@ export type Trip = Tables<'trips'>
 export type TripSchedule = Tables<'trip_schedules'>
 export type AdminUser = Tables<'admin_users'>
 export type GalleryImage = Tables<'gallery_images'>
+export type TripItineraryDay = Tables<'trip_itinerary_days'>
+export type TripItineraryActivity = Tables<'trip_itinerary_activities'>
+export type TripItineraryDayImage = Tables<'trip_itinerary_day_images'>
 
 // Extended types with relations
 export interface TripWithRelations extends Trip {
@@ -294,4 +420,31 @@ export interface GalleryImageUploadResult {
   image: GalleryImageWithRelations
   storagePath: string
   publicUrl: string
+}
+
+// Itinerary types with relations
+export interface TripItineraryDayWithRelations extends TripItineraryDay {
+  activities?: TripItineraryActivity[]
+  images?: TripItineraryDayImage[]
+}
+
+export interface TripItineraryComplete {
+  days: TripItineraryDayWithRelations[]
+}
+
+// Itinerary API response types
+export interface ItineraryDaysResponse {
+  days: TripItineraryDayWithRelations[]
+}
+
+export interface ItineraryDayResponse {
+  day: TripItineraryDayWithRelations
+}
+
+export interface ActivityResponse {
+  activity: TripItineraryActivity
+}
+
+export interface DayImageResponse {
+  image: TripItineraryDayImage
 }

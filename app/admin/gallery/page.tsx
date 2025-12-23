@@ -8,16 +8,19 @@ import GalleryTable from '@/app/components/admin/GalleryTable'
 import type {
   GalleryImageWithRelations,
   Country,
+  Trip,
 } from '@/types/database.types'
 
 export default function GalleryPage() {
   const router = useRouter()
   const [images, setImages] = useState<GalleryImageWithRelations[]>([])
   const [countries, setCountries] = useState<Country[]>([])
+  const [trips, setTrips] = useState<Trip[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [filters, setFilters] = useState({
     search: '',
     country_id: '',
+    trip_id: '',
     is_highlight: '',
     is_active: '',
   })
@@ -34,10 +37,16 @@ export default function GalleryPage() {
       const countriesData = await countriesRes.json()
       setCountries(countriesData.countries || [])
 
+      // Load trips
+      const tripsRes = await fetch('/api/trips?pageSize=1000')
+      const tripsData = await tripsRes.json()
+      setTrips(tripsData.trips || [])
+
       // Build query params
       const params = new URLSearchParams()
       if (filters.search) params.append('search', filters.search)
       if (filters.country_id) params.append('country_id', filters.country_id)
+      if (filters.trip_id) params.append('trip_id', filters.trip_id)
       if (filters.is_highlight !== '')
         params.append('is_highlight', filters.is_highlight)
       if (filters.is_active !== '')
@@ -117,7 +126,7 @@ export default function GalleryPage() {
 
       {/* Filters */}
       <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {/* Search */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -150,6 +159,28 @@ export default function GalleryPage() {
               {countries.map((country) => (
                 <option key={country.id} value={country.id}>
                   {country.flag_emoji} {country.name_th}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Trip Filter */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              ทริป
+            </label>
+            <select
+              value={filters.trip_id}
+              onChange={(e) =>
+                setFilters({ ...filters, trip_id: e.target.value })
+              }
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            >
+              <option value="">ทั้งหมด</option>
+              <option value="null">ไม่เชื่อมกับทริป</option>
+              {trips.map((trip) => (
+                <option key={trip.id} value={trip.id}>
+                  {trip.title}
                 </option>
               ))}
             </select>

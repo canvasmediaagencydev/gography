@@ -44,35 +44,75 @@ export async function GET(request: NextRequest) {
     // Filters
     const country = searchParams.get('country')
     const trip_type = searchParams.get('trip_type')
+    const month = searchParams.get('month') // Format: YYYY-MM
 
-    // Build query - only get active trips with at least one active upcoming schedule
-    let query = supabase
+    // Pagination parameters
+    const page = parseInt(searchParams.get('page') || '1')
+    const pageSize = parseInt(searchParams.get('pageSize') || '20')
+    const offset = (page - 1) * pageSize
+
+    // Build base query for counting and fetching
+    const buildQuery = () => {
+      let query = supabase
+        .from('trips')
+        .select(
+          `
+          *,
+          country:countries!inner(*),
+          trip_schedules!inner(*)
+        `,
+          { count: 'exact' }
+        )
+        .eq('is_active', true)
+        .eq('trip_schedules.is_active', true)
+        .gte('trip_schedules.departure_date', new Date().toISOString().split('T')[0])
+
+      // Apply filters
+      if (country && country !== 'ทั่วหมด') {
+        query = query.eq('country.name_th', country)
+      }
+      if (trip_type && trip_type !== 'ประเภททริปทั้งหมด') {
+        const typeValue = trip_type === 'กรุ๊ปทัวร์' ? 'group' : 'private'
+        query = query.eq('trip_type', typeValue)
+      }
+      // Month filter - filter by departure date within the specified month
+      if (month && month !== 'ทุกเดือน') {
+        const [year, monthNum] = month.split('-')
+        const startDate = `${year}-${monthNum}-01`
+        const endDate = new Date(parseInt(year), parseInt(monthNum), 0).toISOString().split('T')[0]
+        query = query.gte('trip_schedules.departure_date', startDate)
+          .lte('trip_schedules.departure_date', endDate)
+      }
+
+      return query
+    }
+
+    // First, get total count of unique trips (without pagination)
+    let countQuery = supabase
       .from('trips')
-      .select(
-        `
-        *,
-        country:countries!inner(*),
-        trip_schedules!inner(*)
-      `
-      )
+      .select('id', { count: 'exact', head: false })
       .eq('is_active', true)
-      .eq('trip_schedules.is_active', true)
-      .gte('trip_schedules.departure_date', new Date().toISOString().split('T')[0])
+
+    // Apply same filters to count query
+    if (country && country !== 'ทั่วหมด') {
+      // Need to join with countries for filtering
+      countQuery = supabase
+        .from('trips')
+        .select('id, country:countries!inner(name_th)', { count: 'exact', head: false })
+        .eq('is_active', true)
+        .eq('country.name_th', country)
+    }
+
+    const { count: totalCount } = await countQuery
+
+    // Execute main query with pagination
+    const { data: trips, error } = await buildQuery()
       .order('departure_date', {
         foreignTable: 'trip_schedules',
         ascending: true,
       })
-
-    // Apply filters
-    if (country && country !== 'ทั่วหมด') {
-      query = query.eq('countries.name_th', country)
-    }
-    if (trip_type && trip_type !== 'ประเภททริปทั้งหมด') {
-      const typeValue = trip_type === 'กรุ๊ปทัวร์' ? 'group' : 'private'
-      query = query.eq('trip_type', typeValue)
-    }
-
-    const { data: trips, error } = await query.returns<TripRecord[]>()
+      .range(offset, offset + pageSize - 1)
+      .returns<TripRecord[]>()
 
     if (error) {
       console.error('Error fetching public trips:', error)
@@ -154,7 +194,21 @@ export async function GET(request: NextRequest) {
       })
     })
 
-    return NextResponse.json({ trips: displayTrips })
+    // Calculate pagination metadata
+    const totalTrips = totalCount || 0
+    const totalPages = Math.ceil(totalTrips / pageSize)
+
+    return NextResponse.json({
+      trips: displayTrips,
+      pagination: {
+        page,
+        pageSize,
+        total: totalTrips,
+        totalPages,
+        hasMore: page < totalPages,
+        hasPrevious: page > 1,
+      },
+    })
   } catch (error) {
     console.error('Unexpected error:', error)
     return NextResponse.json(

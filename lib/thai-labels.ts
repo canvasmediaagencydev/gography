@@ -110,6 +110,25 @@ export const THAI_LABELS = {
   totalImages: 'รูปภาพทั้งหมด',
   highlightedImages: 'รูปภาพไฮไลท์',
   imagesByCountry: 'รูปภาพแต่ละประเทศ',
+
+  // Itinerary Management
+  manageItinerary: 'จัดการกำหนดการเดินทาง',
+  dailyItinerary: 'กำหนดการเดินทางรายวัน',
+  addDay: 'เพิ่มวันเดินทาง',
+  editDay: 'แก้ไขวันเดินทาง',
+  deleteDay: 'ลบวันเดินทาง',
+  dayNumber: 'วันที่',
+  dayTitle: 'ชื่อวัน',
+  dayDescription: 'รายละเอียดวัน',
+  activity: 'กิจกรรม',
+  activities: 'กิจกรรม',
+  addActivity: 'เพิ่มกิจกรรม',
+  activityTime: 'เวลา',
+  activityDescription: 'รายละเอียดกิจกรรม',
+  dayImages: 'รูปภาพของวัน',
+  uploadDayImage: 'อัปโหลดรูปภาพวัน',
+  imageCaption: 'คำบรรยายรูป',
+  noItinerary: 'ยังไม่มีกำหนดการเดินทาง',
 } as const
 
 export type ThaiLabel = keyof typeof THAI_LABELS

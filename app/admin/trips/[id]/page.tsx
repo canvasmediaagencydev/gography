@@ -82,6 +82,20 @@ export default function ViewTripPage({ params }: { params: Promise<{ id: string 
         </div>
         <div className="flex items-center gap-3">
           <Link
+            href={`/admin/trips/${trip.id}/gallery`}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+          >
+            <span>📸</span>
+            <span>จัดการรูปภาพ</span>
+          </Link>
+          <Link
+            href={`/admin/trips/${trip.id}/itinerary`}
+            className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+          >
+            <span>📋</span>
+            <span>กำหนดการเดินทาง</span>
+          </Link>
+          <Link
             href={`/admin/trips/edit/${trip.id}`}
             className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors"
           >
