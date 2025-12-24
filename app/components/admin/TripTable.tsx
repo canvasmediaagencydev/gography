@@ -64,13 +64,8 @@ export default function TripTable({ trips, onDelete, onToggleActive }: TripTable
                 <tr key={trip.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      <div>
-                        <div className="text-sm font-medium text-gray-900">
-                          {trip.title}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          {trip.trip_type === 'private' ? THAI_LABELS.privateTour : THAI_LABELS.groupTour}
-                        </div>
+                      <div className="text-sm font-medium text-gray-900">
+                        {trip.title}
                       </div>
                     </div>
                   </td>

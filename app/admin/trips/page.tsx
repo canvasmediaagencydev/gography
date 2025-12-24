@@ -15,7 +15,6 @@ export default function TripsPage() {
   const [filters, setFilters] = useState({
     search: '',
     country_id: '',
-    trip_type: '',
     is_active: '',
   })
 
@@ -35,7 +34,6 @@ export default function TripsPage() {
       const params = new URLSearchParams()
       if (filters.search) params.append('search', filters.search)
       if (filters.country_id) params.append('country_id', filters.country_id)
-      if (filters.trip_type) params.append('trip_type', filters.trip_type)
       if (filters.is_active !== '') params.append('is_active', filters.is_active)
       params.append('pageSize', '100')
 
@@ -128,22 +126,6 @@ export default function TripsPage() {
                   {country.flag_emoji} {country.name_th}
                 </option>
               ))}
-            </select>
-          </div>
-
-          {/* Trip Type Filter */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {THAI_LABELS.tripType}
-            </label>
-            <select
-              value={filters.trip_type}
-              onChange={(e) => setFilters({ ...filters, trip_type: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-            >
-              <option value="">{THAI_LABELS.allTypes}</option>
-              <option value="group">{THAI_LABELS.groupTour}</option>
-              <option value="private">{THAI_LABELS.privateTour}</option>
             </select>
           </div>
 

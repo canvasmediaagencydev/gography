@@ -15,6 +15,9 @@ export default function TripForm({ trip, mode }: TripFormProps) {
   const [countries, setCountries] = useState<Country[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [coverImageFile, setCoverImageFile] = useState<File | null>(null)
+  const [coverImagePreview, setCoverImagePreview] = useState<string>(trip?.cover_image_url || '')
+  const [isUploading, setIsUploading] = useState(false)
 
   const [formData, setFormData] = useState({
     title: trip?.title || '',
@@ -41,19 +44,85 @@ export default function TripForm({ trip, mode }: TripFormProps) {
     }
   }
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+      if (!allowedTypes.includes(file.type)) {
+        setError('รองรับเฉพาะไฟล์ JPG, PNG, WebP เท่านั้น')
+        return
+      }
+
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setError('ขนาดไฟล์ต้องไม่เกิน 5MB')
+        return
+      }
+
+      setCoverImageFile(file)
+      // Create preview
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setCoverImagePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+      setError('')
+    }
+  }
+
+  const uploadCoverImage = async (): Promise<string> => {
+    if (!coverImageFile) {
+      return formData.cover_image_url
+    }
+
+    setIsUploading(true)
+    try {
+      const uploadFormData = new FormData()
+      uploadFormData.append('file', coverImageFile)
+
+      const res = await fetch('/api/trips/upload-cover', {
+        method: 'POST',
+        body: uploadFormData,
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.error || 'เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ')
+      }
+
+      return data.cover_image_url
+    } catch (err: any) {
+      setError(err.message || 'เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ')
+      throw err
+    } finally {
+      setIsUploading(false)
+    }
+  }
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError('')
     setIsLoading(true)
 
     try {
+      // Upload cover image first if a new file is selected
+      let coverImageUrl = formData.cover_image_url
+      if (coverImageFile) {
+        coverImageUrl = await uploadCoverImage()
+      }
+
       const url = mode === 'create' ? '/api/trips' : `/api/trips/${trip?.id}`
       const method = mode === 'create' ? 'POST' : 'PUT'
 
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          cover_image_url: coverImageUrl,
+        }),
       })
 
       const data = await res.json()
@@ -164,18 +233,47 @@ export default function TripForm({ trip, mode }: TripFormProps) {
         />
       </div>
 
-      {/* Cover Image URL */}
+      {/* Cover Image Upload */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          {THAI_LABELS.coverImage} (URL)
+          {THAI_LABELS.coverImage}
         </label>
         <input
-          type="url"
-          value={formData.cover_image_url}
-          onChange={(e) => setFormData({ ...formData, cover_image_url: e.target.value })}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-          placeholder="https://example.com/image.jpg"
+          type="file"
+          accept="image/jpeg,image/jpg,image/png,image/webp"
+          onChange={handleFileChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100"
         />
+        <p className="text-xs text-gray-500 mt-1">
+          รองรับไฟล์ JPG, PNG, WebP (สูงสุด 5MB)
+        </p>
+        {coverImagePreview && (
+          <div className="mt-4">
+            <p className="text-sm font-medium text-gray-700 mb-2">ตัวอย่างรูปภาพ:</p>
+            <div className="relative w-full max-w-md">
+              <img
+                src={coverImagePreview}
+                alt="Preview"
+                className="w-full h-48 object-cover rounded-lg border border-gray-300"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  setCoverImageFile(null)
+                  setCoverImagePreview('')
+                  if (mode === 'edit') {
+                    setCoverImagePreview(trip?.cover_image_url || '')
+                  }
+                }}
+                className="absolute top-2 right-2 p-2 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* File Link */}
@@ -210,10 +308,14 @@ export default function TripForm({ trip, mode }: TripFormProps) {
       <div className="flex items-center gap-4">
         <button
           type="submit"
-          disabled={isLoading}
+          disabled={isLoading || isUploading}
           className="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
         >
-          {isLoading ? THAI_LABELS.loading : THAI_LABELS.save}
+          {isUploading
+            ? 'กำลังอัปโหลดรูปภาพ...'
+            : isLoading
+            ? THAI_LABELS.loading
+            : THAI_LABELS.save}
         </button>
         <button
           type="button"

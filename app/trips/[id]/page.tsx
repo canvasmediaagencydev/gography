@@ -7,6 +7,8 @@ import Head from 'next/head'
 import Navbar from '@/app/components/Navbar'
 import Footer from '@/app/components/Footer'
 
+const DEFAULT_HERO_IMAGE = 'https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?w=1600&q=80&auto=format&fit=crop'
+
 interface TripData {
   trip: {
     id: string
@@ -72,6 +74,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
   const [error, setError] = useState<string | null>(null)
   const [isGalleryOpen, setIsGalleryOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [heroImageUrl, setHeroImageUrl] = useState<string>(DEFAULT_HERO_IMAGE)
 
   useEffect(() => {
     loadTripData()
@@ -89,6 +92,13 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
       }
     }
   }, [tripData, searchParams])
+
+  useEffect(() => {
+    if (!tripData) return
+    const fallbackImage = tripData.gallery[0]?.storage_url || DEFAULT_HERO_IMAGE
+    const imageUrl = tripData.trip.cover_image_url || fallbackImage
+    setHeroImageUrl(imageUrl)
+  }, [tripData])
 
   const loadTripData = async () => {
     try {
@@ -208,6 +218,8 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
   }
 
   const { trip, schedules, gallery } = tripData
+  const fallbackHeroImage = gallery[0]?.storage_url || DEFAULT_HERO_IMAGE
+  const shareImage = trip.cover_image_url || gallery[0]?.storage_url || DEFAULT_HERO_IMAGE
 
   return (
     <>
@@ -216,22 +228,40 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
         <meta name="description" content={trip.description?.substring(0, 160) || `เที่ยว${trip.country.name_th} กับ Gography - ${trip.title}`} />
         <meta property="og:title" content={`${trip.title} | Gography`} />
         <meta property="og:description" content={trip.description?.substring(0, 160) || `เที่ยว${trip.country.name_th} กับ Gography`} />
-        {trip.cover_image_url && <meta property="og:image" content={trip.cover_image_url} />}
+        {shareImage && <meta property="og:image" content={shareImage} />}
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${trip.title} | Gography`} />
         <meta name="twitter:description" content={trip.description?.substring(0, 160) || `เที่ยว${trip.country.name_th} กับ Gography`} />
-        {trip.cover_image_url && <meta name="twitter:image" content={trip.cover_image_url} />}
+        {shareImage && <meta name="twitter:image" content={shareImage} />}
       </Head>
       <Navbar />
 
       {/* Hero Section */}
-      <div
-        className="relative h-[50vh] lg:h-[60vh] bg-cover bg-center"
-        style={{ backgroundImage: trip.cover_image_url ? `url(${trip.cover_image_url})` : 'none' }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-6">
+      <div className="relative h-[50vh] lg:h-[60vh] overflow-hidden">
+        {heroImageUrl ? (
+          <img
+            src={heroImageUrl}
+            alt={trip.title}
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ zIndex: 1 }}
+            onError={(e) => {
+              if (heroImageUrl !== fallbackHeroImage) {
+                setHeroImageUrl(fallbackHeroImage)
+                return
+              }
+              if (heroImageUrl !== DEFAULT_HERO_IMAGE) {
+                setHeroImageUrl(DEFAULT_HERO_IMAGE)
+                return
+              }
+              e.currentTarget.style.display = 'none'
+            }}
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-indigo-700"></div>
+        )}
+        <div className="absolute inset-0 bg-black/30" style={{ zIndex: 2 }}></div>
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-6" style={{ zIndex: 3 }}>
           {/* Breadcrumb */}
           <div className="text-sm mb-4 opacity-90">
             <Link href="/" className="hover:underline">หน้าแรก</Link>
@@ -246,10 +276,6 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
           <div className="flex items-center gap-4 text-lg">
             <span className="text-2xl">{trip.country.flag_emoji}</span>
             <span>{trip.country.name_th}</span>
-            <span>•</span>
-            <span className="px-3 py-1 bg-white bg-opacity-20 rounded-full">
-              {trip.trip_type === 'private' ? '[Private]' : 'Group'}
-            </span>
           </div>
         </div>
       </div>
