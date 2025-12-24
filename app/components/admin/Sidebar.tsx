@@ -1,13 +1,17 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { THAI_LABELS } from '@/lib/thai-labels'
 import type { IconType } from 'react-icons'
-import { FiGlobe, FiImage, FiLayout, FiMap } from 'react-icons/fi'
+import { FiGlobe, FiImage, FiLayout, FiLogOut, FiMap } from 'react-icons/fi'
 
 export default function Sidebar() {
   const pathname = usePathname()
+  const router = useRouter()
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const [logoutError, setLogoutError] = useState<string | null>(null)
 
   const menuItems: Array<{
     href: string
@@ -43,8 +47,33 @@ export default function Sidebar() {
     return pathname.startsWith(href)
   }
 
+  const handleLogout = async () => {
+    if (isLoggingOut) return
+    setLogoutError(null)
+    setIsLoggingOut(true)
+
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+      })
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}))
+        throw new Error(data.error || 'Logout failed')
+      }
+
+      router.push('/admin/login')
+      router.refresh()
+    } catch (error) {
+      console.error('Logout error:', error)
+      setLogoutError('ออกจากระบบไม่สำเร็จ กรุณาลองอีกครั้ง')
+    } finally {
+      setIsLoggingOut(false)
+    }
+  }
+
   return (
-    <div className="w-64 lg:w-72 bg-slate-950 text-white min-h-screen fixed left-0 top-0 border-r border-white/10 shadow-xl">
+    <div className="fixed left-0 top-0 flex min-h-screen w-64 flex-col bg-slate-950 text-white border-r border-white/10 shadow-xl lg:w-72">
       <div className="p-6 border-b border-white/10">
         <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
           Admin
@@ -86,9 +115,29 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="mt-auto p-6 text-xs text-slate-400">
-        <p>Gography Admin © {new Date().getFullYear()}</p>
-        <p className="text-slate-500">จัดการด้วยความมั่นใจ</p>
+      <div className="mt-auto border-t border-white/10 p-6">
+        <button
+          type="button"
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+          className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-sm font-medium text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          <span className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-lg">
+              <FiLogOut />
+            </span>
+            <div className="flex flex-col">
+              <span>{THAI_LABELS.logout}</span>
+              <span className="text-xs text-white/70">
+                {isLoggingOut ? 'กำลังออกจากระบบ...' : 'เปลี่ยนบัญชีผู้ใช้'}
+              </span>
+            </div>
+          </span>
+        </button>
+        {logoutError && (
+          <p className="mt-3 text-xs text-red-300">{logoutError}</p>
+        )}
+
       </div>
     </div>
   )
