@@ -88,12 +88,7 @@ export async function GET(request: NextRequest) {
     }
 
     // First, get total count of unique trips (without pagination)
-    let countQuery = supabase
-      .from('trips')
-      .select('id', { count: 'exact', head: false })
-      .eq('is_active', true)
-
-    // Apply same filters to count query
+    let countQuery
     if (country && country !== 'ทั่วหมด') {
       // Need to join with countries for filtering
       countQuery = supabase
@@ -101,6 +96,11 @@ export async function GET(request: NextRequest) {
         .select('id, country:countries!inner(name_th)', { count: 'exact', head: false })
         .eq('is_active', true)
         .eq('country.name_th', country)
+    } else {
+      countQuery = supabase
+        .from('trips')
+        .select('id', { count: 'exact', head: false })
+        .eq('is_active', true)
     }
 
     const { count: totalCount } = await countQuery
@@ -158,7 +158,7 @@ export async function GET(request: NextRequest) {
       const duration = calculateDuration(nextSchedule.departure_date, nextSchedule.return_date)
       const dates = formatThaiDateRange(nextSchedule.departure_date, nextSchedule.return_date)
       const durationText = formatDurationThai(duration.days, duration.nights)
-      const slots = formatSlotsDisplay(nextSchedule.available_seats, nextSchedule.total_seats)
+      const slots = formatSlotsDisplay(nextSchedule.available_seats || 0, nextSchedule.total_seats || 0)
 
       // Format all schedules for selection
       const schedulesDisplay = sortedSchedules.map((schedule) => {
@@ -171,7 +171,7 @@ export async function GET(request: NextRequest) {
           duration: formatDurationThai(schedDuration.days, schedDuration.nights),
           available_seats: schedule.available_seats || 0,
           total_seats: schedule.total_seats || 0,
-          slots: formatSlotsDisplay(schedule.available_seats, schedule.total_seats),
+          slots: formatSlotsDisplay(schedule.available_seats || 0, schedule.total_seats || 0),
           is_active: schedule.is_active,
         }
       })
@@ -187,7 +187,7 @@ export async function GET(request: NextRequest) {
         duration: durationText,
         country: trip.country?.name_th || '',
         flag: trip.country?.flag_emoji || '',
-        price: formatPrice(trip.price_per_person),
+        price: formatPrice(trip.price_per_person || 0),
         slots,
         trip_type: trip.trip_type,
         schedules: schedulesDisplay,
