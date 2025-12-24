@@ -90,7 +90,7 @@ export default function GalleryTable({
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
-                    onClick={() => onToggleHighlight(image.id, image.is_highlight)}
+                    onClick={() => onToggleHighlight(image.id, image.is_highlight ?? false)}
                     className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       image.is_highlight
                         ? 'bg-yellow-100 text-yellow-800'
@@ -104,7 +104,7 @@ export default function GalleryTable({
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
-                    onClick={() => onToggleActive(image.id, image.is_active)}
+                    onClick={() => onToggleActive(image.id, image.is_active ?? true)}
                     className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       image.is_active
                         ? 'bg-green-100 text-green-800'

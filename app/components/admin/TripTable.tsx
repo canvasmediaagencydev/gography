@@ -99,7 +99,7 @@ export default function TripTable({ trips, onDelete, onToggleActive }: TripTable
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <button
-                      onClick={() => onToggleActive(trip.id, trip.is_active)}
+                      onClick={() => onToggleActive(trip.id, trip.is_active ?? true)}
                       className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         trip.is_active
                           ? 'bg-green-100 text-green-800'

@@ -63,6 +63,17 @@ interface TripData {
       alt_text: string | null
     }>
   }>
+  faqs?: Array<{
+    id: string
+    question: string
+    answer: string
+    images?: Array<{
+      id: string
+      storage_url: string
+      caption: string | null
+      alt_text: string | null
+    }>
+  }>
 }
 
 export default function TripDetailsPage({ params }: { params: Promise<{ id: string }> }) {
@@ -439,6 +450,18 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
               </div>
             )}
 
+            {/* FAQ Section */}
+            {tripData?.faqs && tripData.faqs.length > 0 && (
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold mb-6 text-gray-900">คำถามที่พบบ่อย (FAQ)</h2>
+                <div className="space-y-4">
+                  {tripData.faqs.map((faq, index) => (
+                    <FAQAccordionItem key={faq.id} faq={faq} index={index} />
+                  ))}
+                </div>
+              </div>
+            )}
+
           </div>
 
           {/* Right Column - Booking Card (Sticky) */}
@@ -544,7 +567,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
 
       {/* Gallery Modal */}
       {isGalleryOpen && gallery.length > 0 && (
-        <div className="fixed inset-0 z-[9999] bg-black bg-opacity-90 flex items-center justify-center">
+        <div className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center">
           <button
             onClick={closeGallery}
             className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
@@ -587,5 +610,86 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
 
       <Footer />
     </>
+  )
+}
+
+// FAQ Accordion Item Component
+function FAQAccordionItem({ faq, index }: {
+  faq: {
+    id: string
+    question: string
+    answer: string
+    images?: Array<{
+      id: string
+      storage_url: string
+      caption: string | null
+      alt_text: string | null
+    }>
+  }
+  index: number
+}) {
+  const [isExpanded, setIsExpanded] = useState(false)
+
+  return (
+    <div className="border-2 border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+      {/* Question Header */}
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full p-5 flex items-center gap-4 hover:bg-gray-50 transition-colors text-left"
+      >
+        <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-base shadow-md">
+          {index + 1}
+        </div>
+        <h3 className="flex-1 font-bold text-lg text-gray-900">{faq.question}</h3>
+        <svg
+          className={`w-6 h-6 text-gray-400 transition-transform flex-shrink-0 ${isExpanded ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {/* Answer Content */}
+      {isExpanded && (
+        <div className="border-t-2 border-gray-100 bg-gray-50 p-5 space-y-4">
+          {/* Answer Text */}
+          <div className="bg-white p-4 rounded-lg border border-gray-200">
+            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-base">
+              {faq.answer}
+            </p>
+          </div>
+
+          {/* Answer Images */}
+          {faq.images && faq.images.length > 0 && (
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 className="font-semibold text-gray-900 mb-3 text-base flex items-center gap-2">
+                <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                </svg>
+                รูปภาพประกอบ
+              </h4>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {faq.images.map((img) => (
+                  <div key={img.id} className="relative aspect-video rounded-lg overflow-hidden border-2 border-gray-200 hover:border-purple-400 transition-colors">
+                    <img
+                      src={img.storage_url}
+                      alt={img.alt_text || img.caption || 'FAQ image'}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                    {img.caption && (
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent text-white text-sm p-3 font-medium">
+                        {img.caption}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   )
 }

@@ -96,6 +96,13 @@ export default function ViewTripPage({ params }: { params: Promise<{ id: string 
             <span>กำหนดการเดินทาง</span>
           </Link>
           <Link
+            href={`/admin/trips/${trip.id}/faqs`}
+            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+          >
+            <span>❓</span>
+            <span>จัดการ FAQ</span>
+          </Link>
+          <Link
             href={`/admin/trips/edit/${trip.id}`}
             className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors"
           >

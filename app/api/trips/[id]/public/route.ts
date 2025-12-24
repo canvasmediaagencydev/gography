@@ -115,6 +115,27 @@ export async function GET(
       images: (day.images || []).sort((a: any, b: any) => a.order_index - b.order_index),
     }))
 
+    // Fetch FAQs with images
+    const { data: faqsData, error: faqsError } = await supabase
+      .from('trip_faqs')
+      .select(`
+        *,
+        images:trip_faq_images(*)
+      `)
+      .eq('trip_id', id)
+      .eq('is_active', true)
+      .order('order_index', { ascending: true })
+
+    if (faqsError) {
+      console.error('Error fetching FAQs:', faqsError)
+    }
+
+    // Sort images within each FAQ
+    const sortedFaqs = (faqsData || []).map((faq: any) => ({
+      ...faq,
+      images: (faq.images || []).sort((a: any, b: any) => a.order_index - b.order_index),
+    }))
+
     // Format trip data for public display
     const publicTripData = {
       trip: {
@@ -143,6 +164,7 @@ export async function GET(
         order_index: img.order_index,
       })),
       itinerary: sortedItinerary,
+      faqs: sortedFaqs,
     }
 
     return NextResponse.json(publicTripData)

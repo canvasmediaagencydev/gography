@@ -1,17 +1,34 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import type { GalleryImageWithRelations } from '@/types/database.types';
 
 export default function Gallery() {
-  // Preview images for home page
-  const previewImages = [
-    { url: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=80', country: 'ญี่ปุ่น', description: 'ภูเขาฟูจิยามเช้า' },
-    { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80', country: 'นอร์เวย์', description: 'ฟยอร์ดอันน่าทึ่ง' },
-    { url: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=1200&q=80', country: 'ไอซ์แลนด์', description: 'ออโรร่ามหัศจรรย์' },
-    { url: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&q=80', country: 'สวิตเซอร์แลนด์', description: 'เทือกเขาแอลป์' },
-    { url: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1200&q=80', country: 'นิวซีแลนด์', description: 'ภูเขาและทะเลสาบ' },
-    { url: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1200&q=80', country: 'นอร์เวย์', description: 'หมู่บ้านริมทะเล' },
-  ];
+  const [images, setImages] = useState<GalleryImageWithRelations[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLatestImages = async () => {
+      try {
+        const res = await fetch('/api/gallery?is_active=true&pageSize=12');
+        const data = await res.json();
+        const sorted = (data?.images || [])
+          .sort(
+            (a: GalleryImageWithRelations, b: GalleryImageWithRelations) =>
+              new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()
+          )
+          .slice(0, 6);
+        setImages(sorted);
+      } catch (error) {
+        console.error('Error loading home gallery:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchLatestImages();
+  }, []);
 
   return (
     <section className="bg-white py-20 px-6">
@@ -33,40 +50,56 @@ export default function Gallery() {
 
         {/* Preview Gallery Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
-          {previewImages.map((image, index) => (
-            <Link
-              key={index}
-              href="/gallery"
-              className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer"
-            >
-              <div className="aspect-square overflow-hidden">
-                <img
-                  src={image.url}
-                  alt={image.description}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute bottom-0 left-0 right-0 p-3">
-                  <span className="inline-block bg-orange-600 text-white text-xs font-semibold px-2 py-1 rounded-full mb-1">
-                    {image.country}
-                  </span>
-                  <p className="text-white text-sm font-semibold">{image.description}</p>
+          {isLoading &&
+            Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="aspect-square rounded-xl bg-gray-100 animate-pulse" />
+            ))}
+          {!isLoading && images.length === 0 && (
+            <div className="col-span-2 md:col-span-3 text-center text-gray-500">
+              ยังไม่มีรูปในแกลเลอรีตอนนี้
+            </div>
+          )}
+          {!isLoading &&
+            images.map((image) => (
+              <Link
+                key={image.id}
+                href="/gallery"
+                className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer"
+              >
+                <div className="aspect-square overflow-hidden">
+                  <img
+                    src={image.storage_url}
+                    alt={image.alt_text || image.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
                 </div>
-              </div>
-            </Link>
-          ))}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
+                    {image.country?.name_th && (
+                      <span className="inline-block bg-orange-600 text-white text-xs font-semibold px-2 py-1 rounded-full mb-1">
+                        {image.country?.name_th}
+                      </span>
+                    )}
+                    <p className="text-white text-sm font-semibold">{image.title}</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
         </div>
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300">
+          <Link
+            href="/contact"
+            className="text-center bg-orange-600 hover:bg-orange-700 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300"
+          >
             สอบถามหรือจองทริป
-          </button>
-          <Link href="/gallery">
-            <button className="bg-gray-800 hover:bg-gray-900 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300">
-              ดูภาพทั้งหมด
-            </button>
+          </Link>
+          <Link
+            href="/gallery"
+            className="text-center bg-gray-800 hover:bg-gray-900 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300"
+          >
+            ดูภาพทั้งหมด
           </Link>
         </div>
       </div>

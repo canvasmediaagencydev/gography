@@ -35,7 +35,7 @@ export default function CountryFormModal({
         name_th: country.name_th,
         name_en: country.name_en,
         flag_emoji: country.flag_emoji || '',
-        is_active: country.is_active,
+        is_active: country.is_active ?? true,
       })
     } else {
       setFormData({
@@ -97,7 +97,7 @@ export default function CountryFormModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-lg w-full p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold text-gray-900">

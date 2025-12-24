@@ -207,7 +207,7 @@ export default function GalleryEditForm({ image }: GalleryEditFormProps) {
         </label>
         <input
           type="number"
-          value={formData.order_index}
+          value={formData.order_index ?? 0}
           onChange={(e) =>
             setFormData({ ...formData, order_index: parseInt(e.target.value) })
           }
@@ -225,7 +225,7 @@ export default function GalleryEditForm({ image }: GalleryEditFormProps) {
           <input
             type="checkbox"
             id="is_highlight"
-            checked={formData.is_highlight}
+            checked={formData.is_highlight ?? false}
             onChange={(e) =>
               setFormData({ ...formData, is_highlight: e.target.checked })
             }
@@ -243,7 +243,7 @@ export default function GalleryEditForm({ image }: GalleryEditFormProps) {
           <input
             type="checkbox"
             id="is_active"
-            checked={formData.is_active}
+            checked={formData.is_active ?? true}
             onChange={(e) =>
               setFormData({ ...formData, is_active: e.target.checked })
             }

@@ -209,7 +209,7 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
                       ✏️ แก้ไข
                     </Link>
                     <button
-                      onClick={() => handleToggleActive(image.id, image.is_active)}
+                      onClick={() => handleToggleActive(image.id, image.is_active ?? true)}
                       className={`flex-1 px-3 py-1.5 text-sm font-medium rounded transition-colors ${
                         image.is_active
                           ? 'bg-gray-600 hover:bg-gray-700 text-white'
@@ -219,7 +219,7 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
                       {image.is_active ? '👁️ ซ่อน' : '👁️ แสดง'}
                     </button>
                     <button
-                      onClick={() => handleToggleHighlight(image.id, image.is_highlight)}
+                      onClick={() => handleToggleHighlight(image.id, image.is_highlight ?? false)}
                       className={`flex-1 px-3 py-1.5 text-sm font-medium rounded transition-colors ${
                         image.is_highlight
                           ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
