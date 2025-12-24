@@ -206,10 +206,6 @@ export default function AdminDashboard() {
               ตรวจสอบสถานะทริป กำหนดการ และจำนวนที่นั่งได้จากที่นี่แบบเรียลไทม์
             </p>
           </div>
-          <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-5 py-4 text-sm text-slate-500">
-            <p className="font-medium text-slate-700">การเชื่อมต่อ Supabase</p>
-            <p>ข้อมูลล่าสุดอัปเดตเมื่อ {new Date().toLocaleDateString('th-TH')}</p>
-          </div>
         </div>
       </section>
 
