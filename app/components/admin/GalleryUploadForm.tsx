@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { THAI_LABELS } from '@/lib/thai-labels'
+import { uploadWithProgress } from '@/lib/upload-helpers'
+import ProgressBar from '@/app/components/admin/ProgressBar'
 import type { Country, Trip } from '@/types/database.types'
 
 interface UploadedFile {
@@ -28,6 +30,9 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
   const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState('')
   const [isDragging, setIsDragging] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+  const [currentFileIndex, setCurrentFileIndex] = useState(0)
+  const [uploadMessage, setUploadMessage] = useState('')
 
   useEffect(() => {
     loadCountries()
@@ -132,11 +137,19 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
 
     setIsUploading(true)
     setError('')
+    setUploadProgress(0)
+    setCurrentFileIndex(0)
 
     try {
+      const totalFiles = files.length
+
       // Upload each file
-      for (const uploadFile of files) {
-        // Step 1: Upload file to storage
+      for (let i = 0; i < totalFiles; i++) {
+        const uploadFile = files[i]
+        setCurrentFileIndex(i + 1)
+        setUploadMessage(`กำลังอัปโหลด ${uploadFile.title} (${i + 1}/${totalFiles})`)
+
+        // Step 1: Upload file to storage with progress tracking
         const formData = new FormData()
         formData.append('file', uploadFile.file)
 
@@ -146,19 +159,21 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
           formData.append('country_code', country.code)
         }
 
-        const uploadRes = await fetch('/api/gallery/upload', {
-          method: 'POST',
-          body: formData,
-        })
-
-        if (!uploadRes.ok) {
-          const errorData = await uploadRes.json()
-          throw new Error(errorData.error || 'Upload failed')
-        }
-
-        const uploadData = await uploadRes.json()
+        const uploadData = await uploadWithProgress(
+          '/api/gallery/upload',
+          formData,
+          (progress) => {
+            // Calculate overall progress
+            const completedFiles = i
+            const currentFileProgress = progress / 100
+            const overallProgress = ((completedFiles + currentFileProgress) / totalFiles) * 100
+            setUploadProgress(overallProgress)
+          }
+        )
 
         // Step 2: Create database record
+        setUploadMessage(`กำลังบันทึกข้อมูล ${uploadFile.title} (${i + 1}/${totalFiles})`)
+
         const createRes = await fetch('/api/gallery', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -184,12 +199,20 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
         }
       }
 
-      // Success - redirect to gallery list
+      // Success
+      setUploadProgress(100)
+      setUploadMessage('อัปโหลดสำเร็จ!')
+
+      // Wait a bit to show completion
+      await new Promise(resolve => setTimeout(resolve, 500))
+
       router.push('/admin/gallery')
       router.refresh()
     } catch (err: any) {
       console.error('Upload error:', err)
       setError(err.message || 'เกิดข้อผิดพลาดในการอัปโหลด')
+      setUploadProgress(0)
+      setUploadMessage('')
     } finally {
       setIsUploading(false)
     }
@@ -200,6 +223,17 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
       {error && (
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
           <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
+
+      {/* Upload Progress */}
+      {isUploading && (
+        <div className="p-6 bg-orange-50 border border-orange-200 rounded-lg">
+          <ProgressBar
+            progress={uploadProgress}
+            message={uploadMessage}
+            showPercentage={true}
+          />
         </div>
       )}
 

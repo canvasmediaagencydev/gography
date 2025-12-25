@@ -43,15 +43,53 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
     }
   }
 
-  const handleAddFaq = async (data: { question: string; answer: string; order_index: number }) => {
+  const handleAddFaq = async (
+    data: { question: string; answer: string; order_index: number; images?: { file: File; caption: string }[] },
+    onProgress?: (progress: number, message: string) => void
+  ) => {
+    // Create FAQ first
+    onProgress?.(10, 'กำลังสร้าง FAQ...')
     const res = await fetch(`/api/trips/${tripId}/faqs`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ question: data.question, answer: data.answer, order_index: data.order_index }),
     })
 
     if (!res.ok) throw new Error('Failed to add FAQ')
 
+    const result = await res.json()
+    const faqId = result.faq?.id
+
+    // Upload images if any
+    if (faqId && data.images && data.images.length > 0) {
+      const totalImages = data.images.length
+
+      for (let i = 0; i < totalImages; i++) {
+        const { file, caption } = data.images[i]
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('caption', caption || '')
+        formData.append('order_index', i.toString())
+
+        // Calculate progress (10% for FAQ creation, 90% for image uploads)
+        const baseProgress = 10
+        const uploadProgress = ((i + 1) / totalImages) * 90
+        const totalProgress = baseProgress + uploadProgress
+
+        onProgress?.(totalProgress, `กำลังอัปโหลดรูปภาพ ${i + 1}/${totalImages}...`)
+
+        const uploadRes = await fetch(`/api/faqs/${faqId}/images/upload`, {
+          method: 'POST',
+          body: formData,
+        })
+
+        if (!uploadRes.ok) {
+          console.error('Failed to upload image:', i + 1)
+        }
+      }
+    }
+
+    onProgress?.(100, 'เสร็จสิ้น!')
     await loadFaqs()
   }
 
@@ -341,6 +379,7 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
         isOpen={showAddModal}
         onClose={() => setShowAddModal(false)}
         onAdd={handleAddFaq}
+        tripId={tripId}
       />
 
       {/* Edit FAQ Modal */}

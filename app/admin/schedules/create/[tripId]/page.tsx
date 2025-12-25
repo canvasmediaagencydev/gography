@@ -17,7 +17,7 @@ export default function CreateSchedulePage({ params }: { params: Promise<{ tripI
     return_date: '',
     registration_deadline: '',
     total_seats: 10,
-    available_seats: 10,
+    available_seats: '' as number | '',
     is_active: true,
   })
 
@@ -41,11 +41,15 @@ export default function CreateSchedulePage({ params }: { params: Promise<{ tripI
     setIsLoading(true)
 
     try {
+      // Use total_seats as default if available_seats is not specified
+      const finalAvailableSeats = formData.available_seats === '' ? formData.total_seats : formData.available_seats
+
       const res = await fetch('/api/schedules', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          available_seats: finalAvailableSeats,
           trip_id: tripId,
         }),
       })
@@ -115,11 +119,10 @@ export default function CreateSchedulePage({ params }: { params: Promise<{ tripI
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {THAI_LABELS.registrationDeadline} *
+              {THAI_LABELS.registrationDeadline}
             </label>
             <input
               type="date"
-              required
               value={formData.registration_deadline}
               onChange={(e) => setFormData({ ...formData, registration_deadline: e.target.value })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
@@ -140,10 +143,11 @@ export default function CreateSchedulePage({ params }: { params: Promise<{ tripI
               value={formData.total_seats}
               onChange={(e) => {
                 const total = parseInt(e.target.value)
+                const currentAvailable = formData.available_seats
                 setFormData({
                   ...formData,
                   total_seats: total,
-                  available_seats: Math.min(formData.available_seats, total),
+                  available_seats: currentAvailable !== '' ? Math.min(Number(currentAvailable), total) : '',
                 })
               }}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
@@ -152,17 +156,18 @@ export default function CreateSchedulePage({ params }: { params: Promise<{ tripI
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {THAI_LABELS.availableSeats} *
+              {THAI_LABELS.availableSeats}
             </label>
             <input
               type="number"
-              required
               min="0"
               max={formData.total_seats}
               value={formData.available_seats}
-              onChange={(e) => setFormData({ ...formData, available_seats: parseInt(e.target.value) })}
+              onChange={(e) => setFormData({ ...formData, available_seats: e.target.value === '' ? '' : parseInt(e.target.value) })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              placeholder={`ค่าเริ่มต้น: ${formData.total_seats}`}
             />
+            <p className="text-xs text-gray-500 mt-1">ถ้าไม่ระบุ จะใช้ค่าเท่ากับจำนวนที่นั่งทั้งหมด</p>
           </div>
         </div>
 

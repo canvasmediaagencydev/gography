@@ -11,7 +11,7 @@ const createScheduleSchema = z.object({
   return_date: z.string().refine((date) => !isNaN(Date.parse(date)), {
     message: 'วันที่กลับไม่ถูกต้อง',
   }),
-  registration_deadline: z.string().refine((date) => !isNaN(Date.parse(date)), {
+  registration_deadline: z.string().optional().refine((date) => !date || !isNaN(Date.parse(date)), {
     message: 'วันปิดรับสมัครไม่ถูกต้อง',
   }),
   total_seats: z.number().int().positive('จำนวนที่นั่งต้องมากกว่า 0'),
@@ -90,7 +90,6 @@ export async function POST(request: NextRequest) {
     // Additional validation: check dates
     const departureDate = new Date(scheduleData.departure_date)
     const returnDate = new Date(scheduleData.return_date)
-    const deadlineDate = new Date(scheduleData.registration_deadline)
 
     if (returnDate < departureDate) {
       return NextResponse.json(
@@ -99,11 +98,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (deadlineDate > departureDate) {
-      return NextResponse.json(
-        { error: 'วันปิดรับสมัครต้องไม่เกินวันที่เดินทาง' },
-        { status: 400 }
-      )
+    // Only validate deadline if it's provided
+    if (scheduleData.registration_deadline) {
+      const deadlineDate = new Date(scheduleData.registration_deadline)
+      if (deadlineDate > departureDate) {
+        return NextResponse.json(
+          { error: 'วันปิดรับสมัครต้องไม่เกินวันที่เดินทาง' },
+          { status: 400 }
+        )
+      }
     }
 
     if (scheduleData.available_seats > scheduleData.total_seats) {

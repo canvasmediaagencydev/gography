@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { THAI_LABELS } from '@/lib/thai-labels'
 import { formatPrice, formatThaiDateRange, formatDurationThai, calculateDuration, formatSlotsDisplay } from '@/lib/migration-helpers'
 import type { TripWithRelations, TripSchedule } from '@/types/database.types'
+import EditScheduleModal from '@/app/components/admin/schedules/EditScheduleModal'
 
 export default function ViewTripPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
@@ -13,6 +14,8 @@ export default function ViewTripPage({ params }: { params: Promise<{ id: string 
   const [trip, setTrip] = useState<TripWithRelations | null>(null)
   const [schedules, setSchedules] = useState<TripSchedule[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [showEditScheduleModal, setShowEditScheduleModal] = useState(false)
+  const [selectedSchedule, setSelectedSchedule] = useState<TripSchedule | null>(null)
 
   useEffect(() => {
     loadTrip()
@@ -39,6 +42,33 @@ export default function ViewTripPage({ params }: { params: Promise<{ id: string 
     } catch (error) {
       console.error('Error loading schedules:', error)
     }
+  }
+
+  const handleOpenEditScheduleModal = (schedule: TripSchedule) => {
+    setSelectedSchedule(schedule)
+    setShowEditScheduleModal(true)
+  }
+
+  const handleUpdateSchedule = async (scheduleId: string, data: {
+    departure_date: string
+    return_date: string
+    registration_deadline: string | null
+    total_seats: number
+    available_seats: number
+    is_active: boolean
+  }) => {
+    const res = await fetch(`/api/schedules/${scheduleId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+
+    if (!res.ok) {
+      const errorData = await res.json()
+      throw new Error(errorData.error || 'Failed to update schedule')
+    }
+
+    await loadSchedules()
   }
 
   const handleDeleteSchedule = async (scheduleId: string) => {
@@ -206,12 +236,20 @@ export default function ViewTripPage({ params }: { params: Promise<{ id: string 
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button
-                          onClick={() => handleDeleteSchedule(schedule.id)}
-                          className="text-red-600 hover:text-red-900"
-                        >
-                          {THAI_LABELS.delete}
-                        </button>
+                        <div className="flex items-center justify-end gap-3">
+                          <button
+                            onClick={() => handleOpenEditScheduleModal(schedule)}
+                            className="text-orange-600 hover:text-orange-900 font-semibold"
+                          >
+                            {THAI_LABELS.edit}
+                          </button>
+                          <button
+                            onClick={() => handleDeleteSchedule(schedule.id)}
+                            className="text-red-600 hover:text-red-900 font-semibold"
+                          >
+                            {THAI_LABELS.delete}
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   )
@@ -221,6 +259,17 @@ export default function ViewTripPage({ params }: { params: Promise<{ id: string 
           </div>
         )}
       </div>
+
+      {/* Edit Schedule Modal */}
+      <EditScheduleModal
+        isOpen={showEditScheduleModal}
+        onClose={() => {
+          setShowEditScheduleModal(false)
+          setSelectedSchedule(null)
+        }}
+        onUpdate={handleUpdateSchedule}
+        schedule={selectedSchedule}
+      />
     </div>
   )
 }

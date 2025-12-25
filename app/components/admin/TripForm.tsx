@@ -3,6 +3,8 @@
 import { useState, useEffect, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { THAI_LABELS } from '@/lib/thai-labels'
+import { uploadWithProgress } from '@/lib/upload-helpers'
+import ProgressBar from '@/app/components/admin/ProgressBar'
 import type { Trip, Country } from '@/types/database.types'
 
 interface TripFormProps {
@@ -18,6 +20,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null)
   const [coverImagePreview, setCoverImagePreview] = useState<string>(trip?.cover_image_url || '')
   const [isUploading, setIsUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
 
   const [formData, setFormData] = useState({
     title: trip?.title || '',
@@ -77,24 +80,23 @@ export default function TripForm({ trip, mode }: TripFormProps) {
     }
 
     setIsUploading(true)
+    setUploadProgress(0)
     try {
       const uploadFormData = new FormData()
       uploadFormData.append('file', coverImageFile)
 
-      const res = await fetch('/api/trips/upload-cover', {
-        method: 'POST',
-        body: uploadFormData,
-      })
-
-      const data = await res.json()
-
-      if (!res.ok) {
-        throw new Error(data.error || 'เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ')
-      }
+      const data = await uploadWithProgress(
+        '/api/trips/upload-cover',
+        uploadFormData,
+        (progress) => {
+          setUploadProgress(progress)
+        }
+      )
 
       return data.cover_image_url
     } catch (err: any) {
       setError(err.message || 'เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ')
+      setUploadProgress(0)
       throw err
     } finally {
       setIsUploading(false)
@@ -147,6 +149,17 @@ export default function TripForm({ trip, mode }: TripFormProps) {
       {error && (
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
           <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
+
+      {/* Upload Progress */}
+      {isUploading && (
+        <div className="p-6 bg-orange-50 border border-orange-200 rounded-lg">
+          <ProgressBar
+            progress={uploadProgress}
+            message="กำลังอัปโหลดรูปปก..."
+            showPercentage={true}
+          />
         </div>
       )}
 

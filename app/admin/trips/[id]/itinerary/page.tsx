@@ -2,9 +2,13 @@
 
 import { use, useState, useEffect } from 'react'
 import Link from 'next/link'
+import { uploadWithProgress } from '@/lib/upload-helpers'
 import type { TripItineraryDayWithRelations, TripItineraryActivity, TripItineraryDayImage } from '@/types/database.types'
 import AddDayModal from '@/app/components/admin/itinerary/AddDayModal'
 import AddActivityModal from '@/app/components/admin/itinerary/AddActivityModal'
+import EditDayModal from '@/app/components/admin/itinerary/EditDayModal'
+import EditActivityModal from '@/app/components/admin/itinerary/EditActivityModal'
+import ProgressBar from '@/app/components/admin/ProgressBar'
 
 export default function TripItineraryPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: tripId } = use(params)
@@ -15,6 +19,12 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
   const [showAddModal, setShowAddModal] = useState(false)
   const [showAddActivityModal, setShowAddActivityModal] = useState(false)
   const [selectedDayForActivity, setSelectedDayForActivity] = useState<{ id: string; title: string } | null>(null)
+  const [showEditDayModal, setShowEditDayModal] = useState(false)
+  const [selectedDayForEdit, setSelectedDayForEdit] = useState<{ id: string; day_number: number; day_title: string; day_description: string | null } | null>(null)
+  const [showEditActivityModal, setShowEditActivityModal] = useState(false)
+  const [selectedActivityForEdit, setSelectedActivityForEdit] = useState<{ id: string; activity_time: string | null; activity_description: string; dayTitle: string } | null>(null)
+  const [uploadingDayId, setUploadingDayId] = useState<string | null>(null)
+  const [uploadProgress, setUploadProgress] = useState(0)
 
   useEffect(() => {
     loadTrip()
@@ -55,6 +65,28 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
     await loadItinerary()
   }
 
+  const handleOpenEditDayModal = (day: TripItineraryDayWithRelations) => {
+    setSelectedDayForEdit({
+      id: day.id,
+      day_number: day.day_number,
+      day_title: day.day_title,
+      day_description: day.day_description,
+    })
+    setShowEditDayModal(true)
+  }
+
+  const handleUpdateDay = async (dayId: string, data: { day_number: number; day_title: string; day_description: string | null }) => {
+    const res = await fetch(`/api/trips/${tripId}/itinerary/${dayId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+
+    if (!res.ok) throw new Error('Failed to update day')
+
+    await loadItinerary()
+  }
+
   const handleDeleteDay = async (dayId: string) => {
     if (!confirm('คุณแน่ใจหรือไม่ที่จะลบวันนี้? กิจกรรมและรูปภาพทั้งหมดจะถูกลบด้วย')) return
 
@@ -90,6 +122,28 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
     await loadItinerary()
   }
 
+  const handleOpenEditActivityModal = (activity: TripItineraryActivity, dayTitle: string) => {
+    setSelectedActivityForEdit({
+      id: activity.id,
+      activity_time: activity.activity_time,
+      activity_description: activity.activity_description,
+      dayTitle,
+    })
+    setShowEditActivityModal(true)
+  }
+
+  const handleUpdateActivity = async (activityId: string, data: { activity_time: string | null; activity_description: string }) => {
+    const res = await fetch(`/api/itinerary/activities/${activityId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+
+    if (!res.ok) throw new Error('Failed to update activity')
+
+    await loadItinerary()
+  }
+
   const handleDeleteActivity = async (activityId: string) => {
     if (!confirm('คุณแน่ใจหรือไม่ที่จะลบกิจกรรมนี้?')) return
 
@@ -116,17 +170,25 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
     const caption = prompt('คำบรรยายรูป (ไม่ระบุก็ได้):')
     if (caption) formData.append('caption', caption)
 
-    try {
-      const res = await fetch(`/api/itinerary/${dayId}/images/upload`, {
-        method: 'POST',
-        body: formData,
-      })
+    setUploadingDayId(dayId)
+    setUploadProgress(0)
 
-      if (res.ok) {
-        await loadItinerary()
-      }
+    try {
+      await uploadWithProgress(
+        `/api/itinerary/${dayId}/images/upload`,
+        formData,
+        (progress) => {
+          setUploadProgress(progress)
+        }
+      )
+
+      await loadItinerary()
     } catch (error) {
       console.error('Error uploading image:', error)
+      alert('เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ')
+    } finally {
+      setUploadingDayId(null)
+      setUploadProgress(0)
     }
   }
 
@@ -246,6 +308,15 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
+                      handleOpenEditDayModal(day)
+                    }}
+                    className="px-3 py-1.5 text-orange-600 hover:bg-orange-50 font-semibold text-sm rounded-lg transition-colors"
+                  >
+                    แก้ไข
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
                       handleDeleteDay(day.id)
                     }}
                     className="px-3 py-1.5 text-red-600 hover:bg-red-50 font-semibold text-sm rounded-lg transition-colors"
@@ -306,12 +377,20 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                                 </span>
                               )}
                               <span className="flex-1 text-gray-800 font-medium leading-relaxed">{activity.activity_description}</span>
-                              <button
-                                onClick={() => handleDeleteActivity(activity.id)}
-                                className="flex-shrink-0 px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
-                              >
-                                ลบ
-                              </button>
+                              <div className="flex gap-2 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button
+                                  onClick={() => handleOpenEditActivityModal(activity, day.day_title)}
+                                  className="px-3 py-1 text-xs bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md"
+                                >
+                                  แก้ไข
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteActivity(activity.id)}
+                                  className="px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md"
+                                >
+                                  ลบ
+                                </button>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -340,19 +419,32 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                           </svg>
                           รูปภาพ
                         </h4>
-                        <label className="flex items-center gap-1 px-4 py-2 text-sm bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors cursor-pointer">
+                        <label className={`flex items-center gap-1 px-4 py-2 text-sm bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors ${uploadingDayId === day.id ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
-                          อัปโหลดรูปภาพ
+                          {uploadingDayId === day.id ? 'กำลังอัปโหลด...' : 'อัปโหลดรูปภาพ'}
                           <input
                             type="file"
                             accept="image/jpeg,image/jpg,image/png,image/webp"
                             onChange={(e) => handleUploadImage(day.id, e)}
                             className="hidden"
+                            disabled={uploadingDayId === day.id}
                           />
                         </label>
                       </div>
+
+                      {/* Upload Progress */}
+                      {uploadingDayId === day.id && (
+                        <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                          <ProgressBar
+                            progress={uploadProgress}
+                            message="กำลังอัปโหลดรูปภาพ..."
+                            showPercentage={true}
+                          />
+                        </div>
+                      )}
+
                       {day.images && day.images.length > 0 ? (
                         <div className="grid grid-cols-3 lg:grid-cols-4 gap-4">
                           {day.images.map((img: TripItineraryDayImage) => (
@@ -382,13 +474,14 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
                           <p className="text-sm text-gray-500">ยังไม่มีรูปภาพ</p>
-                          <label className="mt-2 inline-block text-sm text-green-600 hover:text-green-700 font-semibold cursor-pointer">
-                            + อัปโหลดรูปภาพแรก
+                          <label className={`mt-2 inline-block text-sm text-green-600 hover:text-green-700 font-semibold ${uploadingDayId === day.id ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
+                            {uploadingDayId === day.id ? 'กำลังอัปโหลด...' : '+ อัปโหลดรูปภาพแรก'}
                             <input
                               type="file"
                               accept="image/jpeg,image/jpg,image/png,image/webp"
                               onChange={(e) => handleUploadImage(day.id, e)}
                               className="hidden"
+                              disabled={uploadingDayId === day.id}
                             />
                           </label>
                         </div>
@@ -419,6 +512,30 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
         }}
         onAdd={handleAddActivity}
         dayTitle={selectedDayForActivity?.title || ''}
+      />
+
+      {/* Edit Day Modal */}
+      <EditDayModal
+        isOpen={showEditDayModal}
+        onClose={() => {
+          setShowEditDayModal(false)
+          setSelectedDayForEdit(null)
+        }}
+        onUpdate={handleUpdateDay}
+        day={selectedDayForEdit}
+        existingDayNumbers={existingDayNumbers}
+      />
+
+      {/* Edit Activity Modal */}
+      <EditActivityModal
+        isOpen={showEditActivityModal}
+        onClose={() => {
+          setShowEditActivityModal(false)
+          setSelectedActivityForEdit(null)
+        }}
+        onUpdate={handleUpdateActivity}
+        activity={selectedActivityForEdit}
+        dayTitle={selectedActivityForEdit?.dayTitle || ''}
       />
     </div>
   )
