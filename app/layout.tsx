@@ -1,18 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import GoogleTranslateProvider from "./components/GoogleTranslateProvider";
 import FloatingContactButton from "./components/FloatingContactButton";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Gography - ทัวร์ถ่ายภาพและท่องเที่ยว",
@@ -27,9 +16,7 @@ export default function RootLayout({
   return (
     <html lang="th">
       <head />
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="antialiased">
         <GoogleTranslateProvider />
         {children}
         <FloatingContactButton />

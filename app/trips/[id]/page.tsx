@@ -7,6 +7,13 @@ import Head from 'next/head'
 import Navbar from '@/app/components/Navbar'
 import Footer from '@/app/components/Footer'
 
+type FaqImage = {
+  id: string
+  storage_url: string
+  caption: string | null
+  alt_text: string | null
+}
+
 const DEFAULT_HERO_IMAGE = 'https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?w=1600&q=80&auto=format&fit=crop'
 
 interface TripData {
@@ -86,6 +93,12 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
   const [isGalleryOpen, setIsGalleryOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [heroImageUrl, setHeroImageUrl] = useState<string>(DEFAULT_HERO_IMAGE)
+  const [isItineraryImageOpen, setIsItineraryImageOpen] = useState(false)
+  const [currentItineraryImages, setCurrentItineraryImages] = useState<Array<{id: string, storage_url: string, caption: string | null, alt_text: string | null}>>([])
+  const [currentItineraryImageIndex, setCurrentItineraryImageIndex] = useState(0)
+  const [isFaqImageOpen, setIsFaqImageOpen] = useState(false)
+  const [currentFaqImages, setCurrentFaqImages] = useState<FaqImage[]>([])
+  const [currentFaqImageIndex, setCurrentFaqImageIndex] = useState(0)
 
   useEffect(() => {
     loadTripData()
@@ -179,6 +192,42 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
     setCurrentImageIndex((prev) => (prev - 1 + tripData.gallery.length) % tripData.gallery.length)
   }
 
+  const openItineraryImage = (images: typeof currentItineraryImages, index: number) => {
+    setCurrentItineraryImages(images)
+    setCurrentItineraryImageIndex(index)
+    setIsItineraryImageOpen(true)
+  }
+
+  const closeItineraryImage = () => {
+    setIsItineraryImageOpen(false)
+  }
+
+  const nextItineraryImage = () => {
+    setCurrentItineraryImageIndex((prev) => (prev + 1) % currentItineraryImages.length)
+  }
+
+  const prevItineraryImage = () => {
+    setCurrentItineraryImageIndex((prev) => (prev - 1 + currentItineraryImages.length) % currentItineraryImages.length)
+  }
+
+  const openFaqImage = (images: FaqImage[], index: number) => {
+    setCurrentFaqImages(images)
+    setCurrentFaqImageIndex(index)
+    setIsFaqImageOpen(true)
+  }
+
+  const closeFaqImage = () => {
+    setIsFaqImageOpen(false)
+  }
+
+  const nextFaqImage = () => {
+    setCurrentFaqImageIndex((prev) => (prev + 1) % currentFaqImages.length)
+  }
+
+  const prevFaqImage = () => {
+    setCurrentFaqImageIndex((prev) => (prev - 1 + currentFaqImages.length) % currentFaqImages.length)
+  }
+
   // Handle keyboard navigation in gallery
   useEffect(() => {
     if (!isGalleryOpen) return
@@ -192,6 +241,34 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isGalleryOpen, tripData])
+
+  // Handle keyboard navigation in itinerary image modal
+  useEffect(() => {
+    if (!isItineraryImageOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeItineraryImage()
+      if (e.key === 'ArrowLeft') prevItineraryImage()
+      if (e.key === 'ArrowRight') nextItineraryImage()
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isItineraryImageOpen, currentItineraryImages])
+
+  // Handle keyboard navigation in FAQ image modal
+  useEffect(() => {
+    if (!isFaqImageOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeFaqImage()
+      if (e.key === 'ArrowLeft') prevFaqImage()
+      if (e.key === 'ArrowRight') nextFaqImage()
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isFaqImageOpen, currentFaqImages])
 
   if (isLoading) {
     return (
@@ -426,18 +503,28 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
                               รูปภาพ
                             </h3>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                              {day.images.map((img) => (
-                                <div key={img.id} className="relative aspect-video rounded-lg overflow-hidden border-2 border-gray-200 hover:border-green-400 transition-colors">
+                              {day.images.map((img, imgIdx) => (
+                                <div
+                                  key={img.id}
+                                  className="relative aspect-video rounded-lg overflow-hidden border-2 border-gray-200 hover:border-green-400 transition-colors cursor-pointer group"
+                                  onClick={() => openItineraryImage(day.images || [], imgIdx)}
+                                >
                                   <img
                                     src={img.storage_url}
                                     alt={img.alt_text || img.caption || `Day ${day.day_number}`}
-                                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                   />
                                   {img.caption && (
                                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent text-white text-sm p-3 font-medium">
                                       {img.caption}
                                     </div>
                                   )}
+                                  {/* Click indicator */}
+                                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                                    <svg className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                    </svg>
+                                  </div>
                                 </div>
                               ))}
                             </div>
@@ -456,7 +543,12 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
                 <h2 className="text-2xl font-bold mb-6 text-gray-900">คำถามที่พบบ่อย (FAQ)</h2>
                 <div className="space-y-4">
                   {tripData.faqs.map((faq, index) => (
-                    <FAQAccordionItem key={faq.id} faq={faq} index={index} />
+                    <FAQAccordionItem
+                      key={faq.id}
+                      faq={faq}
+                      index={index}
+                      onOpenImage={openFaqImage}
+                    />
                   ))}
                 </div>
               </div>
@@ -608,25 +700,117 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
         </div>
       )}
 
+      {/* Itinerary Image Modal */}
+      {isItineraryImageOpen && currentItineraryImages.length > 0 && (
+        <div className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center">
+          <button
+            onClick={closeItineraryImage}
+            className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
+          >
+            ×
+          </button>
+
+          {currentItineraryImages.length > 1 && (
+            <>
+              <button
+                onClick={prevItineraryImage}
+                className="absolute left-4 text-white text-4xl hover:text-gray-300 z-10"
+              >
+                ‹
+              </button>
+
+              <button
+                onClick={nextItineraryImage}
+                className="absolute right-4 text-white text-4xl hover:text-gray-300 z-10"
+              >
+                ›
+              </button>
+            </>
+          )}
+
+          <div className="max-w-6xl max-h-[90vh] mx-auto px-16">
+            <img
+              src={currentItineraryImages[currentItineraryImageIndex].storage_url}
+              alt={currentItineraryImages[currentItineraryImageIndex].alt_text || currentItineraryImages[currentItineraryImageIndex].caption || 'Itinerary image'}
+              className="max-w-full max-h-[90vh] object-contain"
+            />
+            <div className="text-center text-white mt-4">
+              {currentItineraryImages[currentItineraryImageIndex].caption && (
+                <p className="text-lg font-semibold">{currentItineraryImages[currentItineraryImageIndex].caption}</p>
+              )}
+              {currentItineraryImages.length > 1 && (
+                <p className="text-sm text-gray-400 mt-2">
+                  {currentItineraryImageIndex + 1} / {currentItineraryImages.length}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* FAQ Image Modal */}
+      {isFaqImageOpen && currentFaqImages.length > 0 && (
+        <div className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center">
+          <button
+            onClick={closeFaqImage}
+            className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
+          >
+            ×
+          </button>
+
+          {currentFaqImages.length > 1 && (
+            <>
+              <button
+                onClick={prevFaqImage}
+                className="absolute left-4 text-white text-4xl hover:text-gray-300 z-10"
+              >
+                ‹
+              </button>
+
+              <button
+                onClick={nextFaqImage}
+                className="absolute right-4 text-white text-4xl hover:text-gray-300 z-10"
+              >
+                ›
+              </button>
+            </>
+          )}
+
+          <div className="max-w-6xl max-h-[90vh] mx-auto px-16">
+            <img
+              src={currentFaqImages[currentFaqImageIndex].storage_url}
+              alt={currentFaqImages[currentFaqImageIndex].alt_text || currentFaqImages[currentFaqImageIndex].caption || 'FAQ image'}
+              className="max-w-full max-h-[90vh] object-contain"
+            />
+            <div className="text-center text-white mt-4">
+              {currentFaqImages[currentFaqImageIndex].caption && (
+                <p className="text-lg font-semibold">{currentFaqImages[currentFaqImageIndex].caption}</p>
+              )}
+              {currentFaqImages.length > 1 && (
+                <p className="text-sm text-gray-400 mt-2">
+                  {currentFaqImageIndex + 1} / {currentFaqImages.length}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </>
   )
 }
 
 // FAQ Accordion Item Component
-function FAQAccordionItem({ faq, index }: {
+function FAQAccordionItem({ faq, index, onOpenImage }: {
   faq: {
     id: string
     question: string
     answer: string
-    images?: Array<{
-      id: string
-      storage_url: string
-      caption: string | null
-      alt_text: string | null
-    }>
+    images?: FaqImage[]
   }
   index: number
+  onOpenImage: (images: FaqImage[], index: number) => void
 }) {
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -671,18 +855,28 @@ function FAQAccordionItem({ faq, index }: {
                 รูปภาพประกอบ
               </h4>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {faq.images.map((img) => (
-                  <div key={img.id} className="relative aspect-video rounded-lg overflow-hidden border-2 border-gray-200 hover:border-purple-400 transition-colors">
+                {faq.images.map((img, imgIdx) => (
+                  <div
+                    key={img.id}
+                    className="relative aspect-video rounded-lg overflow-hidden border-2 border-gray-200 hover:border-purple-400 transition-colors cursor-pointer group"
+                    onClick={() => onOpenImage(faq.images || [], imgIdx)}
+                  >
                     <img
                       src={img.storage_url}
                       alt={img.alt_text || img.caption || 'FAQ image'}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     {img.caption && (
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent text-white text-sm p-3 font-medium">
                         {img.caption}
                       </div>
                     )}
+                    {/* Click indicator */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                      <svg className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                      </svg>
+                    </div>
                   </div>
                 ))}
               </div>
