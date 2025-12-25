@@ -14,17 +14,23 @@ export async function GET(
   try {
     const { id } = await context.params
     const supabase = await createClient()
+    const previewMode = request.nextUrl.searchParams.get('preview') === '1' ||
+      request.nextUrl.searchParams.get('preview') === 'true'
 
     // Fetch trip with country relation
-    const { data: trip, error: tripError } = await supabase
+    let tripQuery = supabase
       .from('trips')
       .select(`
         *,
         country:countries(*)
       `)
       .eq('id', id)
-      .eq('is_active', true)
-      .single()
+
+    if (!previewMode) {
+      tripQuery = tripQuery.eq('is_active', true)
+    }
+
+    const { data: trip, error: tripError } = await tripQuery.single()
 
     if (tripError || !trip) {
       return NextResponse.json(

@@ -86,6 +86,7 @@ interface TripData {
 export default function TripDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const searchParams = useSearchParams()
+  const previewMode = searchParams.get('preview') === '1' || searchParams.get('preview') === 'true'
   const [tripData, setTripData] = useState<TripData | null>(null)
   const [selectedScheduleId, setSelectedScheduleId] = useState<string>('')
   const [isLoading, setIsLoading] = useState(true)
@@ -102,7 +103,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
 
   useEffect(() => {
     loadTripData()
-  }, [id])
+  }, [id, previewMode])
 
   useEffect(() => {
     if (tripData && tripData.schedules.length > 0) {
@@ -126,7 +127,8 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
 
   const loadTripData = async () => {
     try {
-      const res = await fetch(`/api/trips/${id}/public`)
+      const previewParam = previewMode ? '?preview=1' : ''
+      const res = await fetch(`/api/trips/${id}/public${previewParam}`)
       if (!res.ok) {
         if (res.status === 404) {
           setError('ไม่พบทริปนี้')
