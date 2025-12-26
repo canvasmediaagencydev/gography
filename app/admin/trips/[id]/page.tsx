@@ -235,7 +235,9 @@ export default function ViewTripPage({ params }: { params: Promise<{ id: string 
                         {formatSlotsDisplay(schedule.available_seats, schedule.total_seats)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {new Date(schedule.registration_deadline).toLocaleDateString('th-TH')}
+                        {schedule.registration_deadline
+                          ? new Date(schedule.registration_deadline).toLocaleDateString('th-TH')
+                          : '-'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${

@@ -167,7 +167,7 @@ export default function CreateSchedulePage({ params }: { params: Promise<{ tripI
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               placeholder={`ค่าเริ่มต้น: ${formData.total_seats}`}
             />
-            <p className="text-xs text-gray-500 mt-1">ถ้าไม่ระบุ จะใช้ค่าเท่ากับจำนวนที่นั่งทั้งหมด</p>
+            <p className="text-xs text-gray-500 mt-1">ถ้าไม่ระบุ จะแสดงเป็น -</p>
           </div>
         </div>
 

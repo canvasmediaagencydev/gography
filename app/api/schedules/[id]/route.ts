@@ -6,7 +6,7 @@ import { z } from 'zod'
 const updateScheduleSchema = z.object({
   departure_date: z.string().refine((date) => !isNaN(Date.parse(date))).optional(),
   return_date: z.string().refine((date) => !isNaN(Date.parse(date))).optional(),
-  registration_deadline: z.string().optional().refine((date) => !date || !isNaN(Date.parse(date)), {
+  registration_deadline: z.string().optional().transform((val) => val === '' ? null : val).refine((date) => !date || !isNaN(Date.parse(date)), {
     message: 'วันปิดรับสมัครไม่ถูกต้อง',
   }),
   total_seats: z.number().int().positive().optional(),

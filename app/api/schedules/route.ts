@@ -11,7 +11,7 @@ const createScheduleSchema = z.object({
   return_date: z.string().refine((date) => !isNaN(Date.parse(date)), {
     message: 'วันที่กลับไม่ถูกต้อง',
   }),
-  registration_deadline: z.string().optional().refine((date) => !date || !isNaN(Date.parse(date)), {
+  registration_deadline: z.string().optional().transform((val) => val === '' ? null : val).refine((date) => !date || !isNaN(Date.parse(date)), {
     message: 'วันปิดรับสมัครไม่ถูกต้อง',
   }),
   total_seats: z.number().int().positive('จำนวนที่นั่งต้องมากกว่า 0'),

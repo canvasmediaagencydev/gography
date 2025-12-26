@@ -117,7 +117,8 @@ export function calculateDuration(departureDate: Date | string, returnDate: Date
 /**
  * Format available seats for display
  */
-export function formatSlotsDisplay(availableSeats: number, totalSeats?: number): string {
+export function formatSlotsDisplay(availableSeats: number | null | undefined, totalSeats?: number): string {
+  if (availableSeats == null) return '-'
   if (availableSeats === 0) return 'เต็ม'
   if (totalSeats && availableSeats === totalSeats) return `รับ ${totalSeats} ท่าน`
   return `เหลือ ${availableSeats} ที่`

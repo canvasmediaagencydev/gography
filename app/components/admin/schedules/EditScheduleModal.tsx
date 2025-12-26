@@ -202,7 +202,6 @@ export default function EditScheduleModal({ isOpen, onClose, onUpdate, schedule 
                 placeholder={`ค่าเริ่มต้น: ${totalSeats}`}
                 disabled={isSubmitting}
               />
-              <p className="text-xs text-gray-500 mt-1">ถ้าไม่ระบุ จะใช้ค่าเท่ากับจำนวนที่นั่งทั้งหมด</p>
             </div>
           </div>
 
