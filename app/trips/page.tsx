@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 import TripsPageClient from './TripsPageClient';
 
 export const metadata: Metadata = {
@@ -13,5 +14,9 @@ export const metadata: Metadata = {
 };
 
 export default function TripsPage() {
-  return <TripsPageClient />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <TripsPageClient />
+    </Suspense>
+  );
 }

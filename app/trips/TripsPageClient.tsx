@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import type { PublicTripDisplay } from '@/types/database.types';
@@ -18,6 +19,7 @@ interface FilterOptions {
 }
 
 export default function TripsPageClient() {
+  const searchParams = useSearchParams();
   const [selectedTripType, setSelectedTripType] = useState('ประเภททริปทั้งหมด');
   const [selectedDestination, setSelectedDestination] = useState('ทั่วหมด');
   const [selectedMonth, setSelectedMonth] = useState('ทุกเดือน');
@@ -28,6 +30,19 @@ export default function TripsPageClient() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 9;
+
+  // Load initial filters from URL parameters
+  useEffect(() => {
+    const country = searchParams.get('country');
+    const month = searchParams.get('month');
+
+    if (country) {
+      setSelectedDestination(country);
+    }
+    if (month) {
+      setSelectedMonth(month);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     loadFilterOptions();

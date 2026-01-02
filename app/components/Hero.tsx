@@ -1,11 +1,39 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
+interface FilterOption {
+  value: string;
+  label: string;
+  flag?: string;
+}
+
+interface FilterOptions {
+  countries: FilterOption[];
+  months: FilterOption[];
+}
 
 export default function Hero() {
+  const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [selectedCountry, setSelectedCountry] = useState('ประเทศที่จัดทริป');
-  const [selectedMonth, setSelectedMonth] = useState('กุมภาพันธ์ 2569');
+  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>({ countries: [], months: [] });
+
+  // Load filter options from API
+  useEffect(() => {
+    const loadFilterOptions = async () => {
+      try {
+        const res = await fetch('/api/trips/filters');
+        const data = await res.json();
+        setFilterOptions(data);
+      } catch (error) {
+        console.error('Error loading filter options:', error);
+      }
+    };
+    loadFilterOptions();
+  }, []);
 
   // Auto-advance carousel
   useEffect(() => {
@@ -33,6 +61,29 @@ export default function Hero() {
       alt: 'Northern lights'
     }
   ];
+
+  // Handle search and navigation with filters
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (selectedCountry) {
+      params.append('country', selectedCountry);
+    }
+    if (selectedMonth) {
+      params.append('month', selectedMonth);
+    }
+    router.push(`/trips${params.toString() ? `?${params.toString()}` : ''}`);
+  };
+
+  // Handle book trip - navigate to trips or open LINE
+  const handleBookTrip = () => {
+    handleSearch(); // Navigate to trips page with filters
+  };
+
+  // Handle contact via LINE
+  const handleContactLine = () => {
+    const message = encodeURIComponent('สวัสดีครับ สนใจสอบถามข้อมูลเกี่ยวกับทริป');
+    window.open(`https://line.me/ti/p/@Gography?text=${message}`, '_blank');
+  };
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
@@ -90,10 +141,12 @@ export default function Hero() {
                 onChange={(e) => setSelectedCountry(e.target.value)}
                 className="w-full bg-white/20 backdrop-blur-sm text-white border border-white/30 rounded-lg px-4 py-3 focus:outline-none focus:border-white/50 appearance-none cursor-pointer"
               >
-                <option value="ประเทศที่จัดทริป">ประเทศที่จัดทริป</option>
-                <option value="ไอซ์แลนด์">ไอซ์แลนด์</option>
-                <option value="นอร์เวย์">นอร์เวย์</option>
-                <option value="ญี่ปุ่น">ญี่ปุ่น</option>
+                <option value="">ประเทศที่จัดทริป</option>
+                {filterOptions.countries.map((country) => (
+                  <option key={country.value} value={country.value}>
+                    {country.flag} {country.label}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -104,14 +157,20 @@ export default function Hero() {
                 onChange={(e) => setSelectedMonth(e.target.value)}
                 className="w-full bg-white/20 backdrop-blur-sm text-white border border-white/30 rounded-lg px-4 py-3 focus:outline-none focus:border-white/50 appearance-none cursor-pointer"
               >
-                <option value="กุมภาพันธ์ 2569">กุมภาพันธ์ 2569</option>
-                <option value="มีนาคม 2569">มีนาคม 2569</option>
-                <option value="เมษายน 2569">เมษายน 2569</option>
+                <option value="">ทุกเดือน</option>
+                {filterOptions.months.map((month) => (
+                  <option key={month.value} value={month.value}>
+                    {month.label}
+                  </option>
+                ))}
               </select>
             </div>
 
             {/* Search Button */}
-            <button className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg hover:bg-white/10 transition-colors">
+            <button
+              onClick={handleSearch}
+              className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg hover:bg-white/10 transition-colors"
+            >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -125,11 +184,17 @@ export default function Hero() {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-8 py-3 rounded-full transition-colors">
+            <button
+              onClick={handleBookTrip}
+              className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-8 py-3 rounded-full transition-colors"
+            >
               จองทริป
             </button>
-            <button className="bg-gray-700 hover:bg-gray-800 text-white font-semibold px-8 py-3 rounded-full transition-colors">
-              ดูรสัมภาษณ์
+            <button
+              onClick={handleContactLine}
+              className="bg-gray-700 hover:bg-gray-800 text-white font-semibold px-8 py-3 rounded-full transition-colors"
+            >
+              สอบถามข้อมูล
             </button>
           </div>
         </div>
@@ -171,6 +236,7 @@ export default function Hero() {
 
       {/* Chat Button */}
       <button
+        onClick={handleContactLine}
         className="fixed bottom-8 right-8 z-50 bg-orange-600 hover:bg-orange-700 text-white p-4 rounded-full shadow-lg transition-colors"
         aria-label="Chat with us"
       >
