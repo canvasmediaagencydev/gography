@@ -6,6 +6,9 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import HighlightTrips from '../components/HighlightTrips';
 
+// Note: This is a client component, so metadata should be moved to a layout.tsx or use next/head
+// For now, we'll create a separate metadata export in the parent route
+
 interface Article {
   id: string;
   title: string;

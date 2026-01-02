@@ -56,8 +56,22 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // Add Google Search Console verification here when available
-    // google: 'your-verification-code',
+    // TODO: Add your Google Search Console verification code here
+    // Steps to get verification code:
+    // 1. Go to https://search.google.com/search-console
+    // 2. Add your property (https://gography.com)
+    // 3. Choose "HTML tag" verification method
+    // 4. Copy the content value from the meta tag
+    // 5. Paste it below:
+    // google: 'your-verification-code-here',
+  },
+  alternates: {
+    canonical: siteUrl,
+    languages: {
+      'th-TH': siteUrl,
+      'en-US': `${siteUrl}/en`,
+      'x-default': siteUrl,
+    },
   },
 };
 

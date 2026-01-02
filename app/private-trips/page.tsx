@@ -2,6 +2,33 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'ทัวร์ส่วนตัว - Private Tours',
+  description: 'ทัวร์ส่วนตัวที่ออกแบบเพื่อคุณเท่านั้น เที่ยวอย่างอิสระ ปลอดภัย สะดวกสบาย พร้อมบริการแบบพรีเมียม ปรับแผนได้ตามใจ มีไกด์มืออาชีพดูแลตลอดทริป เหมาะกับครอบครัว คู่รัก กลุ่มเพื่อน และทริปองค์กร',
+  keywords: ['ทัวร์ส่วนตัว', 'private tour', 'ทัวร์ครอบครัว', 'ทัวร์คู่รัก', 'ทัวร์กลุ่มเพื่อน', 'ทัวร์องค์กร', 'custom tour', 'tailored travel', 'private trip Thailand', 'ออกแบบทริป', 'ทริปพิเศษ', 'บริการท่องเที่ยวส่วนตัว'],
+  openGraph: {
+    title: 'ทัวร์ส่วนตัว - ออกแบบทริปในฝันของคุณ | Gography',
+    description: 'เที่ยวแบบส่วนตัวอย่างอิสระและสะดวกสบาย ปรับแผนได้ตามใจ มีไกด์มืออาชีพและช่างภาพคอยดูแลตลอดทริป เหมาะกับทุกกลุ่ม',
+    type: 'website',
+    locale: 'th_TH',
+    images: [
+      {
+        url: '/private/header.png',
+        width: 1200,
+        height: 630,
+        alt: 'Gography Private Tours - ทัวร์ส่วนตัว',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ทัวร์ส่วนตัว - ออกแบบทริปในฝันของคุณ | Gography',
+    description: 'เที่ยวแบบส่วนตัวอย่างอิสระและสะดวกสบาย ปรับแผนได้ตามใจ มีไกด์มืออาชีพและช่างภาพคอยดูแลตลอดทริป',
+    images: ['/private/header.png'],
+  },
+};
 
 const benefits = [
   {
