@@ -78,7 +78,7 @@ export default function AboutPage() {
               <p className="text-gray-700 text-lg md:text-xl max-w-5xl mx-auto leading-relaxed">
                 ก่อตั้งจากความตั้งใจที่จะอยากมอบประสบการณ์การเดินทางที่อบอุ่นและเหมาะกับความต้องการที่แตกต่างของลูกค้า
                 <br />
-                เราเชื่อว่าการมีที่จใบประสบการ่อบขวั้นสำหรับทุกดน เคนเรขึงให้เว้นพิ้เขตสัมผั่น
+                เราเชื่อว่าการเดินทางคือของขวัญที่มีค่าสำหรับทุกคน ดังนั้นเราจึงให้ความสำคัญกับทุกรายละเอียดเพื่อสร้างประสบการณ์ที่น่าจดจำ
               </p>
             </div>
 
@@ -135,8 +135,8 @@ export default function AboutPage() {
             {/* Description Text */}
             <div className="text-center max-w-5xl mx-auto">
               <p className="text-gray-700 text-base md:text-lg leading-relaxed">
-                เราเชื่อว่าการมีที่ดีในการจัดทริปดควรเเบรนยขึ้มระเท่านั่งเองมาควรบและและขจรมผลท่องเที่ยวซึ่งย้นยัม
-                พร้อมขึ้น <span className="text-orange-600 font-semibold">ช่างภาพมืออาชีพ</span> พร้อยบนท์กทุกของมต้วยมันทั้งการต้วน
+                เราเชื่อว่าไกด์ที่ดีในการจัดทริปควรมีความเชี่ยวชาญทั้งด้านการท่องเที่ยวและการถ่ายภาพ
+                พร้อมด้วย <span className="text-orange-600 font-semibold">ช่างภาพมืออาชีพ</span> ที่พร้อมบันทึกทุกช่วงเวลาพิเศษตลอดการเดินทาง
               </p>
             </div>
           </div>
@@ -145,39 +145,39 @@ export default function AboutPage() {
         {/* What We Do Section */}
         <section className="py-20 px-6 bg-gray-50">
           <div className="container mx-auto max-w-7xl">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-16">เราทำอีกไร?</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-16">เราทำอะไร?</h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* Left Side - Text Content */}
               <div className="space-y-8">
                 <div className="bg-white p-8 rounded-2xl shadow-md">
                   <p className="text-gray-700 text-lg leading-relaxed">
-                    เป็นผู้เชี่ยวชาญกับท่านทุก
-                    จัดทริปด้วยเนื้อหาน้อย และ คัดสรรส่งต้วนจน
+                    เป็นผู้เชี่ยวชาญด้านการจัดทริปถ่ายภาพ
+                    จัดทริปด้วยกลุ่มเล็ก และคัดสรรสถานที่ท่องเที่ยวอย่างพิถีพิถัน
                   </p>
                 </div>
 
                 <div className="bg-white p-8 rounded-2xl shadow-md">
                   <p className="text-gray-700 text-lg leading-relaxed">
-                    ข้อตจถยมอทข้า ทัพ ที่จตรรผล
-                    ข่องผลขเป้นเป้ได้เผบค่าก "กบแทนทั่จ
-                    ของทุกผู้สัมผ่ผสท"
+                    มุ่งมั่นที่จะมอบประสบการณ์การเดินทาง
+                    ที่เหนือความคาดหวัง "การันตีความประทับใจ
+                    ของทุกผู้ร่วมเดินทาง"
                   </p>
                 </div>
 
                 <div className="bg-white p-8 rounded-2xl shadow-md">
                   <p className="text-gray-700 text-lg leading-relaxed">
-                    แท่ลินใข่สเเผกสท้งคต่อตัจ
-                    ยากทาช 15 เงเสมทำที่ตถอไก
-                    ที่ก่ผใข่ดห่ เคฐ่บใช่ เคเทสเดเตถจย
+                    ทีมงานมีประสบการณ์การทำงานมากกว่า 15 ปี
+                    ในการนำเที่ยวและถ่ายภาพ ที่หลากหลายประเทศ
+                    ทั่วโลกทั้งในเอเชียและยุโรป
                   </p>
                 </div>
 
                 <div className="bg-white p-8 rounded-2xl shadow-md">
                   <p className="text-gray-700 text-lg leading-relaxed">
-                    ที่ปริจอขจรุยาทรสาเพื่อนึกรบน
-                    คบิ ซ่วผตแเพบจ็ดงขูตจกรบก ซเดัอวรบน
-                    ธมาทบยปบกทจเบสทนมทข
+                    ที่ปรึกษาการเดินทางส่วนตัว
+                    ช่วยวางแผนและจัดทริปให้ตรงกับ
+                    ความต้องการและงบประมาณของคุณ
                   </p>
                 </div>
               </div>
@@ -200,7 +200,7 @@ export default function AboutPage() {
         <section className="py-20 px-6 bg-white">
           <div className="container mx-auto max-w-7xl">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-16">
-              เมื่อหลังทีศูนย์ไปคยเห็น
+              ภาพจากการเดินทาง
             </h2>
 
             {/* Gallery Grid */}
@@ -223,7 +223,7 @@ export default function AboutPage() {
             <div className="text-center">
               <Link href="/gallery">
                 <button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg">
-                  ดูไอเนมเนิลทั้งหมด
+                  ดูภาพทั้งหมด
                 </button>
               </Link>
             </div>
@@ -234,18 +234,18 @@ export default function AboutPage() {
         <section className="py-20 px-6 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
           <div className="container mx-auto max-w-4xl text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              "อยากปล่อยให้<span className="text-orange-500">ความชื่น</span>
+              "อยากปล่อยให้<span className="text-orange-500">ความฝัน</span>
             </h2>
             <h3 className="text-3xl md:text-4xl font-bold mb-8">
-              ในการเดินทางของคุณรออยู่<span className="text-orange-500">แค่นิปนึง</span>"
+              ในการเดินทางของคุณ<span className="text-orange-500">เป็นจริง</span>"
             </h3>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-              ปล่อยให้ทีมประสบการณ์การเดินทางพาที่ เหล่าจะดีบนทุกที่ยืนอยู่มากมากกับการท่องเที่ยว
+              ปล่อยให้ทีมผู้เชี่ยวชาญของเราดูแลทุกรายละเอียด
               <br />
-              และจ่างหาทริปด้วยเพื่อพิชิตที่ทำการคุมรวมผลกันทั้งประจำ ของคุณรออยู่หรื่ของที่ผู้เริ่น
+              เพื่อให้คุณได้เพลิดเพลินกับการท่องเที่ยวและสร้างความทรงจำที่ไม่มีวันลืมไปกับเรา
             </p>
             <p className="text-2xl font-bold text-white mb-8">
-              เริ่มต้นการเดินทางของคุณเดินดี
+              เริ่มต้นการเดินทางของคุณวันนี้
             </p>
             <Link href="/#contact">
               <button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-12 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-lg">
