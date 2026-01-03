@@ -76,9 +76,9 @@ export default function UpcomingTrips() {
           UPCOMING TRIPS
         </h2>
         <p className="text-center text-gray-700 text-base md:text-lg mb-12 max-w-4xl mx-auto">
-          ลูกค้าทุกท่านจะไม่พลาด<span className="text-orange-600 font-semibold">ความทรงจำที่ดีและรับที่สุดขอมจากภาพของเรา</span>ในทุกการเดินทางอย่างแน่นอน!
+          ลูกค้าทุกท่านจะไม่พลาด<span className="text-orange-600 font-semibold">ความทรงจำที่ดีและภาพสวยสุดประทับใจ</span>จากการเดินทางกับเราอย่างแน่นอน!
           <br />
-          เราจะพากุกท่านไปอยู่ในใจเคยึ่งที่พิเศษไม่ช่วงเวลาพิเศษเสมอ
+          เราจะพาคุณไปสัมผัสสถานที่พิเศษในช่วงเวลาที่เหมาะสมที่สุดเสมอ
         </p>
 
         {/* Trips Grid */}
