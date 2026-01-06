@@ -203,9 +203,27 @@ export default function Navbar() {
                       <button
                         onClick={() => {
                           const deleteCookie = (name: string) => {
+                            const hostname = window.location.hostname;
+                            const domain = hostname.substring(
+                              hostname.lastIndexOf(
+                                ".",
+                                hostname.lastIndexOf(".") - 1
+                              ) + 1
+                            );
+
+                            // Delete on current domain
                             document.cookie =
                               name +
                               "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                            // Delete on root domain (e.g., .gography.net)
+                            document.cookie =
+                              name +
+                              "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." +
+                              domain;
+                            document.cookie =
+                              name +
+                              "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" +
+                              domain;
                           };
 
                           // Reset to Thai
@@ -231,6 +249,15 @@ export default function Navbar() {
                             const expires = new Date(
                               Date.now() + days * 864e5
                             ).toUTCString();
+                            const hostname = window.location.hostname;
+                            const domain = hostname.substring(
+                              hostname.lastIndexOf(
+                                ".",
+                                hostname.lastIndexOf(".") - 1
+                              ) + 1
+                            );
+
+                            // Set on both current and root domain to ensures it sticks
                             document.cookie =
                               name +
                               "=" +
@@ -238,6 +265,15 @@ export default function Navbar() {
                               "; expires=" +
                               expires +
                               "; path=/";
+
+                            document.cookie =
+                              name +
+                              "=" +
+                              encodeURIComponent(value) +
+                              "; expires=" +
+                              expires +
+                              "; path=/; domain=." +
+                              domain;
                           };
 
                           // Set to English
@@ -324,9 +360,27 @@ export default function Navbar() {
                       <button
                         onClick={() => {
                           const deleteCookie = (name: string) => {
+                            const hostname = window.location.hostname;
+                            const domain = hostname.substring(
+                              hostname.lastIndexOf(
+                                ".",
+                                hostname.lastIndexOf(".") - 1
+                              ) + 1
+                            );
+
+                            // Delete on current domain
                             document.cookie =
                               name +
                               "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                            // Delete on root domain (e.g., .gography.net)
+                            document.cookie =
+                              name +
+                              "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." +
+                              domain;
+                            document.cookie =
+                              name +
+                              "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" +
+                              domain;
                           };
                           deleteCookie("googtrans");
                           setLanguage("TH");
@@ -351,6 +405,15 @@ export default function Navbar() {
                             const expires = new Date(
                               Date.now() + days * 864e5
                             ).toUTCString();
+                            const hostname = window.location.hostname;
+                            const domain = hostname.substring(
+                              hostname.lastIndexOf(
+                                ".",
+                                hostname.lastIndexOf(".") - 1
+                              ) + 1
+                            );
+
+                            // Set on both current and root domain
                             document.cookie =
                               name +
                               "=" +
@@ -358,6 +421,15 @@ export default function Navbar() {
                               "; expires=" +
                               expires +
                               "; path=/";
+
+                            document.cookie =
+                              name +
+                              "=" +
+                              encodeURIComponent(value) +
+                              "; expires=" +
+                              expires +
+                              "; path=/; domain=." +
+                              domain;
                           };
                           setCookie("googtrans", "/th/en", 1);
                           setLanguage("EN");
