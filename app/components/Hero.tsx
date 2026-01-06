@@ -26,10 +26,18 @@ export default function Hero() {
     const loadFilterOptions = async () => {
       try {
         const res = await fetch('/api/trips/filters');
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
         const data = await res.json();
-        setFilterOptions(data);
-      } catch (error) {
-        console.error('Error loading filter options:', error);
+        if (data && typeof data === 'object') {
+          setFilterOptions({
+            countries: Array.isArray(data.countries) ? data.countries : [],
+            months: Array.isArray(data.months) ? data.months : [],
+          });
+        }
+      } catch {
+        setFilterOptions({ countries: [], months: [] });
       }
     };
     loadFilterOptions();
@@ -111,7 +119,7 @@ export default function Hero() {
       <div className="relative z-10 h-full flex flex-col items-center justify-center px-6 text-center">
         {/* Main Heading */}
         <p className="text-white/90 text-lg md:text-xl mb-2">
-          "ออกเดินทางไปกับ"
+          &quot;ออกเดินทางไปกับ&quot;
         </p>
         <h1
           className="text-white text-2xl md:text-4xl lg:text-6xl font-bold mb-6"
@@ -139,10 +147,11 @@ export default function Hero() {
               <select
                 value={selectedCountry}
                 onChange={(e) => setSelectedCountry(e.target.value)}
-                className="w-full bg-white/20 backdrop-blur-sm text-white border border-white/30 rounded-lg px-4 py-3 focus:outline-none focus:border-white/50 appearance-none cursor-pointer"
+                className="w-full bg-white/20 backdrop-blur-sm text-white border border-white/30 rounded-lg px-4 py-3 focus:outline-none focus:border-white/50 appearance-none cursor-pointer hero-select"
+                aria-label="เลือกประเทศที่จัดทริป"
               >
                 <option value="">ประเทศที่จัดทริป</option>
-                {filterOptions.countries.map((country) => (
+                {filterOptions.countries?.map((country) => (
                   <option key={country.value} value={country.value}>
                     {country.flag} {country.label}
                   </option>
@@ -155,10 +164,11 @@ export default function Hero() {
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
-                className="w-full bg-white/20 backdrop-blur-sm text-white border border-white/30 rounded-lg px-4 py-3 focus:outline-none focus:border-white/50 appearance-none cursor-pointer"
+                className="w-full bg-white/20 backdrop-blur-sm text-white border border-white/30 rounded-lg px-4 py-3 focus:outline-none focus:border-white/50 appearance-none cursor-pointer hero-select"
+                aria-label="เลือกเดือน"
               >
                 <option value="">ทุกเดือน</option>
-                {filterOptions.months.map((month) => (
+                {filterOptions.months?.map((month) => (
                   <option key={month.value} value={month.value}>
                     {month.label}
                   </option>

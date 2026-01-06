@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap");
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'Rosella';
-  src: url('/fonts/Rosella-Solid.ttf') format('truetype');
+  font-family: "Rosella";
+  src: url("/fonts/Rosella-Solid.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -12,7 +12,8 @@
   --background: #ffffff;
   --foreground: #171717;
   --font-base-sans: "Noto Sans Thai", Arial, Helvetica, sans-serif;
-  --font-base-mono: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-base-mono: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 }
 
 @theme inline {
@@ -37,4 +38,20 @@ body {
   font-style: normal;
   font-size: 15px;
   line-height: 1.5;
+}
+
+.hero-select option {
+  background-color: #ffffff;
+  color: #111827;
+}
+
+@media (prefers-color-scheme: dark) {
+  .hero-select option {
+    background-color: #1f2937;
+    color: #f9fafb;
+  }
+
+  .hero-select {
+    color: #ffffff;
+  }
 }
