@@ -5,11 +5,11 @@ export default function Footer() {
   return (
     <footer className="bg-slate-800 text-white">
       {/* Main Footer Content */}
-      <div className="container mx-auto max-w-7xl px-6 py-16">
-        <div className="flex justify-between items-center">
+      <div className="container mx-auto max-w-7xl px-6 py-12 md:py-16">
+        <div className="flex flex-col md:flex-row md:justify-between gap-8 md:gap-4">
           {/* Left Section - Logo and Address */}
-          <div>
-            <div className="flex items-center gap-3 mb-6">
+          <div className="text-center md:text-left">
+            <div className="flex items-center gap-3 mb-6 justify-center md:justify-start">
               <Image
                 src="/img/logo-white.svg"
                 alt="Gography Logo"
@@ -20,7 +20,7 @@ export default function Footer() {
             </div>
 
             <h3
-              className="text-3xl font-bold mb-6"
+              className="text-2xl md:text-3xl font-bold mb-4 md:mb-6"
               style={{ fontFamily: 'Rosella, sans-serif' }}
             >
               GOGRAPHY
@@ -33,8 +33,8 @@ export default function Footer() {
           </div>
 
           {/* Right Section - Contact Info */}
-          <div>
-            <h4 className="text-xl font-bold mb-6">Follow us</h4>
+          <div className="text-center md:text-left">
+            <h4 className="text-lg md:text-xl font-bold mb-4 md:mb-6">Follow us</h4>
 
             <div className="space-y-2 mb-6 text-sm">
               <p className="text-gray-300">
@@ -49,7 +49,7 @@ export default function Footer() {
             </div>
 
             {/* Social Media Icons */}
-            <div className="flex gap-3">
+            <div className="flex gap-3 justify-center md:justify-start">
               <Link
                 href="https://facebook.com"
                 target="_blank"
