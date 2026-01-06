@@ -43,7 +43,7 @@ export default function ContactPage() {
               <h1 className="text-2xl md:text-3xl font-semibold mb-4">ติดต่อทีมงาน</h1>
               <h2 className="text-4xl md:text-6xl font-bold mb-6">GOGRAPHY</h2>
               <p className="text-lg md:text-xl">
-                บริษัทราเทวีรุ่นต้นการเดินทุกของคุณอย่างอบอุ่นและมั่นใจ
+                พร้อมดูแลทุกการเดินทางของคุณอย่างอบอุ่นและมั่นใจ
               </p>
             </div>
           </div>
@@ -177,15 +177,15 @@ export default function ContactPage() {
           <div className="container mx-auto max-w-4xl">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                อยากเที่ยวแบบไหน เราจัดให้ได้ตามความต้องทาง ก
+                อยากเที่ยวแบบไหน เราจัดให้ได้ตามความต้องการ
               </h2>
               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-                รอกข้อมูลง่ายๆได้เลย
+                กรอกข้อมูลง่ายๆได้เลย
               </h3>
               <p className="text-gray-600 text-lg max-w-3xl mx-auto">
-                ให้ทุกโมดอกแบบการเดินทางไปเป็นของคุณ พวกเรา GoGraphy
+                ให้ทุกรูปแบบการเดินทางเป็นของคุณ พวกเรา Gography
                 <br />
-                จะช่วยเป็นตัวช่วยสามเหล่าความรู่ตวามต้วยทาทพสเพื่อเสนอม ให้ช่วงเทศที่ต่อยคุญ ย้ฃงของเดอดอลป
+                จะช่วยเป็นที่ปรึกษาและวางแผนทริปเพื่อมอบประสบการณ์ให้ตรงกับความต้องการของคุณ
               </p>
             </div>
 
@@ -269,17 +269,18 @@ export default function ContactPage() {
         <section className="py-20 px-6 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
           <div className="container mx-auto max-w-4xl text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              "อยากปล่อยให้<span className="text-orange-500">ความชื่น</span>
+              "อยากปล่อยให้<span className="text-orange-500">ความฝัน</span>
             </h2>
             <h3 className="text-3xl md:text-4xl font-bold mb-8">
-              ในการเดินทางของคุณรออยู่<span className="text-orange-500">แค่นิปนึง</span>"
+              ในการเดินทางของคุณ<span className="text-orange-500">เป็นจริง</span>"
             </h3>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-              ปล่อยให้ทีมประสบการณ์การเดินทางพาที่ เหล่าจะดีบนทุกที่ยืนอยู่มากมากกับการท่องเที่ยว
-              และจ่างหาทริปด้วยเพื่อพิชิตที่ทำการคุมรวมผลกันทั้งประจำ ของคุณรออยู่หรื่ของที่ผู้เริ่น
+              ปล่อยให้ทีมผู้เชี่ยวชาญของเราดูแลทุกรายละเอียด
+              <br />
+              เพื่อให้คุณได้เพลิดเพลินกับการท่องเที่ยวและสร้างความทรงจำที่ไม่มีวันลืมไปกับเรา
             </p>
             <p className="text-2xl font-bold text-white mb-8">
-              เริ่มต้นการเดินทางของคุณเดินดี
+              เริ่มต้นการเดินทางของคุณวันนี้
             </p>
             <a href="tel:097-919-9293">
               <button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-12 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-lg">

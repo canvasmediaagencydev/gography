@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Initialize language from cookie
   const getInitialLanguage = () => {
@@ -43,11 +44,21 @@ export default function Navbar() {
   ];
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md' : 'bg-transparent'
-      }`}
-    >
+    <>
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled ? 'bg-white shadow-md' : 'bg-transparent'
+        }`}
+      >
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -156,16 +167,91 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className={`lg:hidden transition-colors ${
               isScrolled ? 'text-gray-900' : 'text-white'
             }`}
+            aria-label="Toggle menu"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+            {isMobileMenuOpen ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
           </button>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden mt-4 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className="pb-6 px-2 bg-white rounded-lg shadow-lg">
+            <div className="flex flex-col space-y-1">
+              {menuItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="transition-all duration-200 text-sm py-3 px-4 rounded-md text-gray-900 hover:bg-orange-50 hover:text-orange-600"
+                >
+                  {item.label}
+                </Link>
+              ))}
+
+              {/* Mobile Language Selector */}
+              <div className="mt-4 pt-4 px-4 border-t border-gray-200">
+                <p className="text-xs font-semibold mb-3 text-gray-600">
+                  ภาษา / Language
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      const deleteCookie = (name: string) => {
+                        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                      };
+                      deleteCookie('googtrans');
+                      setLanguage('TH');
+                      setIsMobileMenuOpen(false);
+                      window.location.reload();
+                    }}
+                    className={`flex-1 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                      language === 'TH'
+                        ? 'bg-orange-600 text-white shadow-md'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    🇹🇭 ไทย
+                  </button>
+                  <button
+                    onClick={() => {
+                      const setCookie = (name: string, value: string, days: number) => {
+                        const expires = new Date(Date.now() + days * 864e5).toUTCString();
+                        document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=/';
+                      };
+                      setCookie('googtrans', '/th/en', 1);
+                      setLanguage('EN');
+                      setIsMobileMenuOpen(false);
+                      window.location.reload();
+                    }}
+                    className={`flex-1 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                      language === 'EN'
+                        ? 'bg-orange-600 text-white shadow-md'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    🇬🇧 English
+                  </button>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
+    </>
   );
 }

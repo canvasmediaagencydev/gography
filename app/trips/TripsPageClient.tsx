@@ -114,7 +114,7 @@ export default function TripsPageClient() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative h-[60vh] min-h-[500px] w-full overflow-hidden">
+      <section className="relative h-[50vh] md:h-[60vh] min-h-[350px] md:min-h-[500px] w-full overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
@@ -127,23 +127,23 @@ export default function TripsPageClient() {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 h-full flex flex-col items-center justify-center px-6">
-          <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-8 text-center">
-            ทรีปทั้งหมด
+        <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 md:px-6">
+          <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-bold text-center">
+            ทริปทั้งหมด
           </h1>
         </div>
       </section>
 
       {/* Filters and Trips Section */}
-      <section className="bg-white py-12 px-6">
+      <section className="bg-white py-8 md:py-12 px-4 md:px-6">
         <div className="container mx-auto max-w-7xl">
           {/* Filter Dropdowns */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <div className="relative">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center mb-8 md:mb-12">
+            <div className="relative w-full sm:w-auto">
               <select
                 value={selectedDestination}
                 onChange={(e) => setSelectedDestination(e.target.value)}
-                className="bg-white border-2 border-gray-300 text-gray-700 rounded-lg px-6 py-3 pr-10 focus:outline-none focus:border-orange-600 appearance-none cursor-pointer min-w-[200px]"
+                className="w-full bg-white border-2 border-gray-300 text-gray-700 rounded-lg px-4 md:px-6 py-3 pr-10 focus:outline-none focus:border-orange-600 appearance-none cursor-pointer sm:min-w-[200px]"
               >
                 <option value="ทั่วหมด">🌍 ทุกประเทศ</option>
                 {filterOptions.countries.map((country) => (
@@ -159,11 +159,11 @@ export default function TripsPageClient() {
               </div>
             </div>
 
-            <div className="relative">
+            <div className="relative w-full sm:w-auto">
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
-                className="bg-white border-2 border-gray-300 text-gray-700 rounded-lg px-6 py-3 pr-10 focus:outline-none focus:border-orange-600 appearance-none cursor-pointer min-w-[200px]"
+                className="w-full bg-white border-2 border-gray-300 text-gray-700 rounded-lg px-4 md:px-6 py-3 pr-10 focus:outline-none focus:border-orange-600 appearance-none cursor-pointer sm:min-w-[200px]"
               >
                 <option value="ทุกเดือน">ทุกเดือน</option>
                 {filterOptions.months.map((month) => (
@@ -190,7 +190,7 @@ export default function TripsPageClient() {
               <p className="text-gray-500">ไม่พบทริปที่ตรงกับการค้นหา</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {allTrips.map((trip) => (
                 <TripCard
                   key={trip.id}
@@ -204,48 +204,72 @@ export default function TripsPageClient() {
 
           {/* Pagination */}
           {!isLoading && totalPages > 1 && (
-            <div className="flex justify-center items-center gap-2 mt-12">
+            <div className="flex justify-center items-center gap-1 md:gap-2 mt-8 md:mt-12 flex-wrap">
               {/* Previous Button */}
               <button
                 onClick={() => loadTrips(currentPage - 1)}
                 disabled={currentPage === 1}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                className={`px-3 md:px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-colors ${
                   currentPage === 1
                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                     : 'bg-white border-2 border-gray-300 text-gray-700 hover:border-slate-800 hover:text-slate-800'
                 }`}
               >
-                ← ก่อนหน้า
+                <span className="hidden sm:inline">← ก่อนหน้า</span>
+                <span className="sm:hidden">←</span>
               </button>
 
               {/* Page Numbers */}
-              <div className="flex gap-2">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => loadTrips(page)}
-                    className={`w-10 h-10 rounded-lg font-medium transition-colors ${
-                      currentPage === page
-                        ? 'bg-slate-800 text-white'
-                        : 'bg-white border-2 border-gray-300 text-gray-700 hover:border-slate-800 hover:text-slate-800'
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ))}
+              <div className="flex gap-1 md:gap-2 flex-wrap justify-center">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                  // On mobile, show only current page, first, last, and adjacent pages
+                  const showOnMobile =
+                    page === 1 ||
+                    page === totalPages ||
+                    page === currentPage ||
+                    page === currentPage - 1 ||
+                    page === currentPage + 1;
+
+                  // Show ellipsis on mobile
+                  if (!showOnMobile && totalPages > 5) {
+                    // Show ellipsis only once between ranges
+                    if (page === 2 && currentPage > 3) {
+                      return <span key={page} className="md:hidden px-2 text-gray-400">...</span>;
+                    }
+                    if (page === totalPages - 1 && currentPage < totalPages - 2) {
+                      return <span key={page} className="md:hidden px-2 text-gray-400">...</span>;
+                    }
+                    return <button key={page} className="hidden md:inline-flex w-8 md:w-10 h-8 md:h-10 rounded-lg font-medium text-sm md:text-base items-center justify-center transition-colors bg-white border-2 border-gray-300 text-gray-700 hover:border-slate-800 hover:text-slate-800" onClick={() => loadTrips(page)}>{page}</button>;
+                  }
+
+                  return (
+                    <button
+                      key={page}
+                      onClick={() => loadTrips(page)}
+                      className={`w-8 md:w-10 h-8 md:h-10 rounded-lg font-medium text-sm md:text-base transition-colors ${
+                        currentPage === page
+                          ? 'bg-slate-800 text-white'
+                          : 'bg-white border-2 border-gray-300 text-gray-700 hover:border-slate-800 hover:text-slate-800'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  );
+                })}
               </div>
 
               {/* Next Button */}
               <button
                 onClick={() => loadTrips(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                className={`px-3 md:px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-colors ${
                   currentPage === totalPages
                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                     : 'bg-white border-2 border-gray-300 text-gray-700 hover:border-slate-800 hover:text-slate-800'
                 }`}
               >
-                ถัดไป →
+                <span className="hidden sm:inline">ถัดไป →</span>
+                <span className="sm:hidden">→</span>
               </button>
             </div>
           )}
