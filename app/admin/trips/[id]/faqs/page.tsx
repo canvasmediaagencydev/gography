@@ -207,7 +207,7 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
         <div className="flex gap-3">
           <button
             onClick={() => setShowAddModal(true)}
-            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+            className="cursor-pointer px-4 py-2 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
           >
             <span>+</span>
             <span>เพิ่ม FAQ</span>
@@ -227,7 +227,7 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
           <p className="text-gray-500 dark:text-gray-400">ยังไม่มี FAQ</p>
           <button
             onClick={() => setShowAddModal(true)}
-            className="mt-4 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-semibold"
+            className="cursor-pointer mt-4 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-semibold"
           >
             เริ่มเพิ่ม FAQ แรก
           </button>
@@ -265,7 +265,7 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
                       e.stopPropagation()
                       handleOpenEditModal(faq)
                     }}
-                    className="px-3 py-1.5 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/30 font-semibold text-sm rounded-lg transition-colors"
+                    className="cursor-pointer px-3 py-1.5 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/30 font-semibold text-sm rounded-lg transition-colors"
                   >
                     แก้ไข
                   </button>
@@ -274,7 +274,7 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
                       e.stopPropagation()
                       handleDeleteFaq(faq.id)
                     }}
-                    className="px-3 py-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 font-semibold text-sm rounded-lg transition-colors"
+                    className="cursor-pointer px-3 py-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 font-semibold text-sm rounded-lg transition-colors"
                   >
                     ลบ
                   </button>
@@ -341,7 +341,7 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
                               )}
                               <button
                                 onClick={() => handleDeleteImage(img.id)}
-                                className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                className="cursor-pointer absolute top-2 right-2 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
                               >
                                 ลบ
                               </button>

@@ -70,7 +70,7 @@ export default function ContactPage() {
 
                 {/* Facebook */}
                 <a
-                  href="https://facebook.com/Gography"
+                  href="https://www.facebook.com/gographyofficial"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex flex-col items-center gap-3 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
@@ -85,7 +85,7 @@ export default function ContactPage() {
 
                 {/* Messenger */}
                 <a
-                  href="https://m.me/Gography"
+                  href="https://m.me/gographyofficial"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex flex-col items-center gap-3 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
@@ -100,7 +100,7 @@ export default function ContactPage() {
 
                 {/* Instagram */}
                 <a
-                  href="https://instagram.com/Gography"
+                  href="https://www.instagram.com/gographyth"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex flex-col items-center gap-3 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
@@ -115,7 +115,7 @@ export default function ContactPage() {
 
                 {/* TikTok */}
                 <a
-                  href="https://tiktok.com/@Gography"
+                  href="https://www.tiktok.com/@gography.trip"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex flex-col items-center gap-3 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
@@ -255,7 +255,7 @@ export default function ContactPage() {
 
                 <button
                   type="submit"
-                  className="w-full bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-bold py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-lg"
+                  className="cursor-pointer w-full bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-bold py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-lg"
                 >
                   ส่งข้อมูลให้เราติดต่อกลับ
                 </button>
@@ -282,7 +282,7 @@ export default function ContactPage() {
               เริ่มต้นการเดินทางของคุณวันนี้
             </p>
             <a href="tel:097-919-9293">
-              <button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-12 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-lg">
+              <button className="cursor-pointer bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-12 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-lg">
                 สอบถามหรือจองทริป
               </button>
             </a>

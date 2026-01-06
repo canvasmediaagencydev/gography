@@ -81,8 +81,8 @@ export default function HighlightTrips() {
 
         {/* View All Trips Button */}
         <div className="text-center mt-12">
-          <Link href="/trips">
-            <button className="bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105">
+          <Link href="/contact">
+            <button className="cursor-pointer bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105">
               สอบถามหรือจองทริป
             </button>
           </Link>

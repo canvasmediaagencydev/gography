@@ -112,7 +112,7 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowUploadForm(!showUploadForm)}
-            className="px-4 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+            className="cursor-pointer px-4 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
           >
             <span>{showUploadForm ? '✕' : '➕'}</span>
             <span>{showUploadForm ? 'ปิดฟอร์ม' : 'อัพโหลดรูปภาพ'}</span>
@@ -210,7 +210,7 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
                     </Link>
                     <button
                       onClick={() => handleToggleActive(image.id, image.is_active ?? true)}
-                      className={`flex-1 px-3 py-1.5 text-sm font-medium rounded transition-colors ${
+                      className={`cursor-pointer flex-1 px-3 py-1.5 text-sm font-medium rounded transition-colors ${
                         image.is_active
                           ? 'bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 text-white'
                           : 'bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white'
@@ -220,7 +220,7 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
                     </button>
                     <button
                       onClick={() => handleToggleHighlight(image.id, image.is_highlight ?? false)}
-                      className={`flex-1 px-3 py-1.5 text-sm font-medium rounded transition-colors ${
+                      className={`cursor-pointer flex-1 px-3 py-1.5 text-sm font-medium rounded transition-colors ${
                         image.is_highlight
                           ? 'bg-yellow-600 hover:bg-yellow-700 dark:bg-yellow-500 dark:hover:bg-yellow-600 text-white'
                           : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-300'
@@ -230,7 +230,7 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
                     </button>
                     <button
                       onClick={() => handleDeleteImage(image.id)}
-                      className="px-3 py-1.5 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white text-sm font-medium rounded transition-colors"
+                      className="cursor-pointer px-3 py-1.5 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white text-sm font-medium rounded transition-colors"
                     >
                       🗑️
                     </button>

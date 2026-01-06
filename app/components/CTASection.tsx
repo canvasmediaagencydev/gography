@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function CTASection() {
   return (
@@ -36,9 +37,11 @@ export default function CTASection() {
           เริ่มต้นการเดินทางของคุณตอนนี้
         </p>
 
-        <button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-12 py-4 rounded-full transition-colors duration-300 text-lg shadow-lg">
-          สอบถามหรือจองทริป
-        </button>
+        <Link href="/contact">
+          <button className="cursor-pointer bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-12 py-4 rounded-full transition-colors duration-300 text-lg shadow-lg">
+            สอบถามหรือจองทริป
+          </button>
+        </Link>
       </div>
     </section>
   );

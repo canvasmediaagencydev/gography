@@ -53,7 +53,7 @@ export default function FloatingContactButton() {
         <button
           ref={buttonRef}
           onClick={() => setIsOpen(!isOpen)}
-          className={`relative bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white w-14 h-14 md:w-16 md:h-16 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 ${
+          className={`cursor-pointer relative bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white w-14 h-14 md:w-16 md:h-16 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 ${
             !isOpen ? 'animate-pulse-slow' : ''
           }`}
           aria-label="Contact us"
@@ -100,7 +100,7 @@ export default function FloatingContactButton() {
               {/* Phone */}
               <a
                 href="tel:097-919-9293"
-                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
+                className="cursor-pointer flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
               >
                 <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -118,7 +118,7 @@ export default function FloatingContactButton() {
                 href={`https://line.me/ti/p/@Gography?text=${encodeURIComponent('สวัสดีครับ สนใจสอบถามข้อมูลเกี่ยวกับทริป')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
+                className="cursor-pointer flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
               >
                 <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -133,10 +133,10 @@ export default function FloatingContactButton() {
 
               {/* Facebook Messenger */}
               <a
-                href="https://m.me/Gography"
+                href="https://m.me/gographyofficial"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
+                className="cursor-pointer flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
               >
                 <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -152,7 +152,7 @@ export default function FloatingContactButton() {
               {/* Contact Page */}
               <Link
                 href="/contact"
-                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
+                className="cursor-pointer flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
               >
                 <div className="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">

@@ -419,7 +419,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                 <div className="shrink-0">
                   <button
                     onClick={() => removeFile(index)}
-                    className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 p-2"
+                    className="cursor-pointer text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 p-2"
                     title={THAI_LABELS.remove}
                   >
                     <svg
@@ -449,7 +449,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
           <button
             onClick={handleUpload}
             disabled={isUploading}
-            className="px-6 py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="cursor-pointer px-6 py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isUploading
               ? `${THAI_LABELS.uploading}...`
@@ -458,7 +458,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
           <button
             onClick={() => router.back()}
             disabled={isUploading}
-            className="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors disabled:opacity-50"
+            className="cursor-pointer px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {THAI_LABELS.cancel}
           </button>

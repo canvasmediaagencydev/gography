@@ -149,7 +149,7 @@ export default function AddFaqModal({ isOpen, onClose, onAdd, tripId }: AddFaqMo
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">เพิ่ม FAQ</h2>
           <button
             onClick={handleClose}
-            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+            className="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
             disabled={isSubmitting}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -241,7 +241,7 @@ export default function AddFaqModal({ isOpen, onClose, onAdd, tripId }: AddFaqMo
                     <button
                       type="button"
                       onClick={() => removeImage(idx)}
-                      className="absolute top-2 right-2 p-1 bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white rounded-full shadow-lg"
+                      className="cursor-pointer absolute top-2 right-2 p-1 bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white rounded-full shadow-lg"
                       disabled={isSubmitting}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -281,7 +281,7 @@ export default function AddFaqModal({ isOpen, onClose, onAdd, tripId }: AddFaqMo
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-2 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+              className="cursor-pointer px-6 py-2 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? 'กำลังเพิ่ม...' : 'เพิ่ม FAQ'}
             </button>
@@ -289,7 +289,7 @@ export default function AddFaqModal({ isOpen, onClose, onAdd, tripId }: AddFaqMo
               type="button"
               onClick={handleClose}
               disabled={isSubmitting}
-              className="px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors"
+              className="cursor-pointer px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors disabled:cursor-not-allowed"
             >
               ยกเลิก
             </button>

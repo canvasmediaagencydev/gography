@@ -239,7 +239,7 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
         <div className="flex gap-3">
           <button
             onClick={() => setShowAddModal(true)}
-            className="px-4 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+            className="cursor-pointer px-4 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
           >
             <span>+</span>
             <span>เพิ่มวันเดินทาง</span>
@@ -259,7 +259,7 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
           <p className="text-gray-500 dark:text-gray-400">ยังไม่มีกำหนดการเดินทาง</p>
           <button
             onClick={() => setShowAddModal(true)}
-            className="mt-4 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 font-semibold"
+            className="cursor-pointer mt-4 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 font-semibold"
           >
             เริ่มเพิ่มวันเดินทาง
           </button>
@@ -310,7 +310,7 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                       e.stopPropagation()
                       handleOpenEditDayModal(day)
                     }}
-                    className="px-3 py-1.5 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/30 font-semibold text-sm rounded-lg transition-colors"
+                    className="cursor-pointer px-3 py-1.5 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/30 font-semibold text-sm rounded-lg transition-colors"
                   >
                     แก้ไข
                   </button>
@@ -319,7 +319,7 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                       e.stopPropagation()
                       handleDeleteDay(day.id)
                     }}
-                    className="px-3 py-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 font-semibold text-sm rounded-lg transition-colors"
+                    className="cursor-pointer px-3 py-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 font-semibold text-sm rounded-lg transition-colors"
                   >
                     ลบ
                   </button>
@@ -359,7 +359,7 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                         </h4>
                         <button
                           onClick={() => handleOpenAddActivityModal(day.id, day.day_title)}
-                          className="flex items-center gap-1 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors"
+                          className="cursor-pointer flex items-center gap-1 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -380,13 +380,13 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                               <div className="flex gap-2 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <button
                                   onClick={() => handleOpenEditActivityModal(activity, day.day_title)}
-                                  className="px-3 py-1 text-xs bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-md"
+                                  className="cursor-pointer px-3 py-1 text-xs bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-md"
                                 >
                                   แก้ไข
                                 </button>
                                 <button
                                   onClick={() => handleDeleteActivity(activity.id)}
-                                  className="px-3 py-1 text-xs bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold rounded-md"
+                                  className="cursor-pointer px-3 py-1 text-xs bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold rounded-md"
                                 >
                                   ลบ
                                 </button>
@@ -402,7 +402,7 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                           <p className="text-sm text-gray-500 dark:text-gray-400">ยังไม่มีกิจกรรม</p>
                           <button
                             onClick={() => handleOpenAddActivityModal(day.id, day.day_title)}
-                            className="mt-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold"
+                            className="cursor-pointer mt-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold"
                           >
                             + เพิ่มกิจกรรมแรก
                           </button>
@@ -461,7 +461,7 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                               )}
                               <button
                                 onClick={() => handleDeleteImage(img.id)}
-                                className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                className="cursor-pointer absolute top-2 right-2 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
                               >
                                 ลบ
                               </button>

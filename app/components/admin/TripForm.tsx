@@ -278,7 +278,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
                     setCoverImagePreview(trip?.cover_image_url || '')
                   }
                 }}
-                className="absolute top-2 right-2 p-2 bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white rounded-full shadow-lg"
+                className="cursor-pointer absolute top-2 right-2 p-2 bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white rounded-full shadow-lg"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -322,7 +322,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
         <button
           type="submit"
           disabled={isLoading || isUploading}
-          className="px-6 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+          className="cursor-pointer px-6 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isUploading
             ? 'กำลังอัปโหลดรูปภาพ...'
@@ -333,7 +333,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors"
+          className="cursor-pointer px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors"
         >
           {THAI_LABELS.cancel}
         </button>

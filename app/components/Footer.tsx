@@ -51,9 +51,9 @@ export default function Footer() {
             {/* Social Media Icons */}
             <div className="flex gap-3 justify-center md:justify-start">
               <Link
-                href="https://facebook.com"
+                href="https://www.facebook.com/gographyofficial"
                 target="_blank"
-                className="bg-white/10 dark:bg-white/10 hover:bg-white/20 dark:hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
+                className="cursor-pointer bg-white/10 dark:bg-white/10 hover:bg-white/20 dark:hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
                 aria-label="Facebook"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -62,9 +62,9 @@ export default function Footer() {
               </Link>
 
               <Link
-                href="https://instagram.com"
+                href="https://www.instagram.com/gographyth"
                 target="_blank"
-                className="bg-white/10 dark:bg-white/10 hover:bg-white/20 dark:hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
+                className="cursor-pointer bg-white/10 dark:bg-white/10 hover:bg-white/20 dark:hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
                 aria-label="Instagram"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -73,9 +73,9 @@ export default function Footer() {
               </Link>
 
               <Link
-                href="https://line.me"
+                href="https://line.me/ti/p/@Gography"
                 target="_blank"
-                className="bg-white/10 dark:bg-white/10 hover:bg-white/20 dark:hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
+                className="cursor-pointer bg-white/10 dark:bg-white/10 hover:bg-white/20 dark:hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
                 aria-label="Line"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

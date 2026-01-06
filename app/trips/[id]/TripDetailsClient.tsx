@@ -333,12 +333,12 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
       "priceCurrency": "THB",
       "availability": selectedSchedule.available_seats > 0 ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
       "validFrom": selectedSchedule.departure_date,
-      "url": typeof window !== 'undefined' ? window.location.href : `https://gography.com/trips/${id}`,
+      "url": typeof window !== 'undefined' ? window.location.href : `https://gography.net/trips/${id}`,
     } : undefined,
     "provider": {
       "@type": "Organization",
       "name": "Gography",
-      "url": "https://gography.com"
+      "url": "https://gography.net"
     }
   }
 
@@ -604,7 +604,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
                           <button
                             key={schedule.id}
                             onClick={() => setSelectedScheduleId(schedule.id)}
-                            className={`w-full p-4 rounded-xl border-2 text-left transition-all shadow-sm hover:shadow-md ${
+                            className={`cursor-pointer w-full p-4 rounded-xl border-2 text-left transition-all shadow-sm hover:shadow-md ${
                               selectedScheduleId === schedule.id
                                 ? 'border-orange-600 dark:border-orange-500 bg-orange-50 dark:bg-orange-900/30 shadow-md'
                                 : 'border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-500 bg-white dark:bg-gray-700'
@@ -653,13 +653,13 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
                     <div className="mt-6 space-y-3">
                       <button
                         onClick={handleBooking}
-                        className="w-full bg-linear-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 dark:from-orange-500 dark:to-orange-600 dark:hover:from-orange-600 dark:hover:to-orange-700 text-white py-4 rounded-xl font-bold text-base transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                        className="cursor-pointer w-full bg-linear-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 dark:from-orange-500 dark:to-orange-600 dark:hover:from-orange-600 dark:hover:to-orange-700 text-white py-4 rounded-xl font-bold text-base transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
                       >
                         สอบถาม/จองทริป
                       </button>
                       <button
                         onClick={handleShare}
-                        className="w-full border-2 border-gray-400 dark:border-gray-600 hover:border-orange-600 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 text-gray-900 dark:text-white py-3 rounded-xl font-bold text-base transition-all"
+                        className="cursor-pointer w-full border-2 border-gray-400 dark:border-gray-600 hover:border-orange-600 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 text-gray-900 dark:text-white py-3 rounded-xl font-bold text-base transition-all"
                       >
                         แชร์ทริปนี้
                       </button>
@@ -670,7 +670,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
                     <p className="text-gray-500 dark:text-gray-400 mb-4">ขณะนี้ยังไม่มีรอบเดินทางที่เปิดรับ</p>
                     <button
                       onClick={() => window.open('https://line.me/ti/p/@Gography', '_blank')}
-                      className="w-full bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white py-3 rounded-full font-semibold transition-colors"
+                      className="cursor-pointer w-full bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white py-3 rounded-full font-semibold transition-colors"
                     >
                       ติดต่อสอบถาม
                     </button>
@@ -687,21 +687,21 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
         <div className="fixed inset-0 z-9999 bg-black/90 flex items-center justify-center">
           <button
             onClick={closeGallery}
-            className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
+            className="cursor-pointer absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
           >
             ×
           </button>
 
           <button
             onClick={prevImage}
-            className="absolute left-4 text-white text-4xl hover:text-gray-300 z-10"
+            className="cursor-pointer absolute left-4 text-white text-4xl hover:text-gray-300 z-10"
           >
             ‹
           </button>
 
           <button
             onClick={nextImage}
-            className="absolute right-4 text-white text-4xl hover:text-gray-300 z-10"
+            className="cursor-pointer absolute right-4 text-white text-4xl hover:text-gray-300 z-10"
           >
             ›
           </button>
@@ -730,7 +730,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
         <div className="fixed inset-0 z-9999 bg-black/90 flex items-center justify-center">
           <button
             onClick={closeItineraryImage}
-            className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
+            className="cursor-pointer absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
           >
             ×
           </button>
@@ -739,14 +739,14 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
             <>
               <button
                 onClick={prevItineraryImage}
-                className="absolute left-4 text-white text-4xl hover:text-gray-300 z-10"
+                className="cursor-pointer absolute left-4 text-white text-4xl hover:text-gray-300 z-10"
               >
                 ‹
               </button>
 
               <button
                 onClick={nextItineraryImage}
-                className="absolute right-4 text-white text-4xl hover:text-gray-300 z-10"
+                className="cursor-pointer absolute right-4 text-white text-4xl hover:text-gray-300 z-10"
               >
                 ›
               </button>
@@ -778,7 +778,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
         <div className="fixed inset-0 z-9999 bg-black/90 flex items-center justify-center">
           <button
             onClick={closeFaqImage}
-            className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
+            className="cursor-pointer absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
           >
             ×
           </button>
@@ -787,14 +787,14 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
             <>
               <button
                 onClick={prevFaqImage}
-                className="absolute left-4 text-white text-4xl hover:text-gray-300 z-10"
+                className="cursor-pointer absolute left-4 text-white text-4xl hover:text-gray-300 z-10"
               >
                 ‹
               </button>
 
               <button
                 onClick={nextFaqImage}
-                className="absolute right-4 text-white text-4xl hover:text-gray-300 z-10"
+                className="cursor-pointer absolute right-4 text-white text-4xl hover:text-gray-300 z-10"
               >
                 ›
               </button>
@@ -844,7 +844,7 @@ function FAQAccordionItem({ faq, index, onOpenImage }: {
       {/* Question Header */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full p-5 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left"
+        className="cursor-pointer w-full p-5 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left"
       >
         <div className="shrink-0 w-10 h-10 bg-linear-to-br from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 text-white rounded-full flex items-center justify-center font-bold text-base shadow-md">
           {index + 1}

@@ -103,7 +103,7 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className={`transition-colors text-sm border px-3 py-1 rounded flex items-center gap-1 ${
+                className={`cursor-pointer transition-colors text-sm border px-3 py-1 rounded flex items-center gap-1 ${
                   isScrolled
                     ? 'text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'
                     : 'text-white border-white/30 dark:border-white/20 hover:bg-white/10 dark:hover:bg-white/5'
@@ -132,7 +132,7 @@ export default function Navbar() {
                         setLanguage('TH');
                         window.location.reload();
                       }}
-                      className={`w-full text-left px-4 py-2 text-sm transition-colors ${
+                      className={`cursor-pointer w-full text-left px-4 py-2 text-sm transition-colors ${
                         isScrolled
                           ? 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
                           : 'text-white hover:bg-gray-700'
@@ -152,7 +152,7 @@ export default function Navbar() {
                         setLanguage('EN');
                         window.location.reload();
                       }}
-                      className={`w-full text-left px-4 py-2 text-sm transition-colors ${
+                      className={`cursor-pointer w-full text-left px-4 py-2 text-sm transition-colors ${
                         isScrolled
                           ? 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
                           : 'text-white hover:bg-gray-700'
@@ -170,7 +170,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`lg:hidden transition-colors ${
+            className={`cursor-pointer lg:hidden transition-colors ${
               isScrolled ? 'text-gray-900 dark:text-white' : 'text-white'
             }`}
             aria-label="Toggle menu"
@@ -190,7 +190,7 @@ export default function Navbar() {
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="lg:hidden mt-4 animate-in fade-in slide-in-from-top-2 duration-300">
-            <div className="pb-6 px-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+            <div className="pb-6 pt-2 px-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
             <div className="flex flex-col space-y-1">
               {menuItems.map((item) => (
                 <Link
@@ -219,7 +219,7 @@ export default function Navbar() {
                       setIsMobileMenuOpen(false);
                       window.location.reload();
                     }}
-                    className={`flex-1 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                    className={`cursor-pointer flex-1 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
                       language === 'TH'
                         ? 'bg-orange-600 dark:bg-orange-500 text-white shadow-md'
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
@@ -238,7 +238,7 @@ export default function Navbar() {
                       setIsMobileMenuOpen(false);
                       window.location.reload();
                     }}
-                    className={`flex-1 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                    className={`cursor-pointer flex-1 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
                       language === 'EN'
                         ? 'bg-orange-600 dark:bg-orange-500 text-white shadow-md'
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'

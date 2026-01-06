@@ -16,8 +16,8 @@ export default function Home() {
     '@type': 'TravelAgency',
     name: 'Gography',
     alternateName: 'Gography Thailand',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://gography.com',
-    logo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://gography.com'}/logo.png`,
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://gography.net',
+    logo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://gography.net'}/img/logo-white.svg`,
     description: 'ทัวร์ถ่ายภาพและท่องเที่ยว Photography & Travel Tours in Thailand',
     telephone: '+66-97-919-9293',
     email: 'info@gography.com',
@@ -27,9 +27,9 @@ export default function Home() {
       addressLocality: 'Thailand',
     },
     sameAs: [
-      'https://www.facebook.com/gography.official',
-      'https://www.instagram.com/gography.official',
-      'https://line.me/ti/p/@gography',
+      'https://www.facebook.com/gographyofficial',
+      'https://www.instagram.com/gographyth',
+      'https://line.me/ti/p/@Gography',
     ],
     areaServed: [
       {

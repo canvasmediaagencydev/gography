@@ -212,7 +212,7 @@ export default function TripsPageClient() {
                 className={`px-3 md:px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-colors ${
                   currentPage === 1
                     ? 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
-                    : 'bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400'
+                    : 'cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400'
                 }`}
               >
                 <span className="hidden sm:inline">← ก่อนหน้า</span>
@@ -239,14 +239,14 @@ export default function TripsPageClient() {
                     if (page === totalPages - 1 && currentPage < totalPages - 2) {
                       return <span key={page} className="md:hidden px-2 text-gray-400 dark:text-gray-500">...</span>;
                     }
-                    return <button key={page} className="hidden md:inline-flex w-8 md:w-10 h-8 md:h-10 rounded-lg font-medium text-sm md:text-base items-center justify-center transition-colors bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400" onClick={() => loadTrips(page)}>{page}</button>;
+                    return <button key={page} className="cursor-pointer hidden md:inline-flex w-8 md:w-10 h-8 md:h-10 rounded-lg font-medium text-sm md:text-base items-center justify-center transition-colors bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400" onClick={() => loadTrips(page)}>{page}</button>;
                   }
 
                   return (
                     <button
                       key={page}
                       onClick={() => loadTrips(page)}
-                      className={`w-8 md:w-10 h-8 md:h-10 rounded-lg font-medium text-sm md:text-base transition-colors ${
+                      className={`cursor-pointer w-8 md:w-10 h-8 md:h-10 rounded-lg font-medium text-sm md:text-base transition-colors ${
                         currentPage === page
                           ? 'bg-slate-800 dark:bg-orange-600 text-white'
                           : 'bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400'
@@ -265,7 +265,7 @@ export default function TripsPageClient() {
                 className={`px-3 md:px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-colors ${
                   currentPage === totalPages
                     ? 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
-                    : 'bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400'
+                    : 'cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400'
                 }`}
               >
                 <span className="hidden sm:inline">ถัดไป →</span>
