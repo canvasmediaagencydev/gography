@@ -16,6 +16,15 @@ export const metadata: Metadata = {
   authors: [{ name: "Gography" }],
   creator: "Gography",
   publisher: "Gography",
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '192x192' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
+  manifest: '/manifest.json',
   formatDetection: {
     email: false,
     address: false,
