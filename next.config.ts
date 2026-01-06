@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.youtube.com https://www.googletagmanager.com https://www.google-analytics.com; frame-src https://translate.google.com https://translate.googleapis.com https://www.youtube.com https://www.youtube-nocookie.com; style-src 'self' 'unsafe-inline' https://translate.googleapis.com https://www.gstatic.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://www.google-analytics.com https://*.supabase.co;",
+            value: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.youtube.com https://www.googletagmanager.com https://www.google-analytics.com; frame-src 'self' http://localhost:* https://translate.google.com https://translate.googleapis.com https://www.youtube.com https://www.youtube-nocookie.com; style-src 'self' 'unsafe-inline' https://translate.googleapis.com https://www.gstatic.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: http://translate.google.com blob:; connect-src 'self' https://translate.googleapis.com https://translate-pa.googleapis.com https://www.google-analytics.com https://*.supabase.co;",
           },
           {
             key: 'X-DNS-Prefetch-Control',

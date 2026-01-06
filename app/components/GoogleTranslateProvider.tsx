@@ -1,10 +1,27 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 declare global {
   interface Window {
-    google?: any;
+    google?: {
+      translate: {
+        TranslateElement: {
+          new (
+            options: {
+              pageLanguage: string;
+              includedLanguages: string;
+              layout: number;
+              autoDisplay: boolean;
+            },
+            elementId: string
+          ): void;
+          InlineLayout: {
+            SIMPLE: number;
+          };
+        };
+      };
+    };
     googleTranslateElementInit?: () => void;
   }
 }
@@ -12,7 +29,7 @@ declare global {
 export default function GoogleTranslateProvider() {
   useEffect(() => {
     // Add custom styles to hide Google Translate branding
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       .goog-te-banner-frame {
         display: none !important;
@@ -44,32 +61,34 @@ export default function GoogleTranslateProvider() {
     document.head.appendChild(style);
 
     // Create the Google Translate element container
-    if (!document.getElementById('google_translate_element')) {
-      const div = document.createElement('div');
-      div.id = 'google_translate_element';
+    if (!document.getElementById("google_translate_element")) {
+      const div = document.createElement("div");
+      div.id = "google_translate_element";
       document.body.appendChild(div);
     }
 
     // Initialize Google Translate
-    window.googleTranslateElementInit = function() {
+    window.googleTranslateElementInit = function () {
       if (window.google && window.google.translate) {
         new window.google.translate.TranslateElement(
           {
-            pageLanguage: 'th',
-            includedLanguages: 'en,th',
-            layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+            pageLanguage: "th",
+            includedLanguages: "en,th",
+            layout:
+              window.google.translate.TranslateElement.InlineLayout.SIMPLE,
             autoDisplay: false,
           },
-          'google_translate_element'
+          "google_translate_element"
         );
       }
     };
 
     // Load Google Translate script
-    if (!document.getElementById('google-translate-script')) {
-      const script = document.createElement('script');
-      script.id = 'google-translate-script';
-      script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    if (!document.getElementById("google-translate-script")) {
+      const script = document.createElement("script");
+      script.id = "google-translate-script";
+      script.src =
+        "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
       script.async = true;
       document.body.appendChild(script);
     }

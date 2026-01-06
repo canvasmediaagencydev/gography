@@ -1,109 +1,124 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { THAI_LABELS } from '@/lib/thai-labels'
-import GalleryTable from '@/app/components/admin/GalleryTable'
+import { useEffect, useState, useCallback } from "react";
+
+import Link from "next/link";
+import { THAI_LABELS } from "@/lib/thai-labels";
+import GalleryTable from "@/app/components/admin/GalleryTable";
 import type {
   GalleryImageWithRelations,
   Country,
   Trip,
-} from '@/types/database.types'
+} from "@/types/database.types";
 
 export default function GalleryPage() {
-  const router = useRouter()
-  const [images, setImages] = useState<GalleryImageWithRelations[]>([])
-  const [countries, setCountries] = useState<Country[]>([])
-  const [trips, setTrips] = useState<Trip[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [images, setImages] = useState<GalleryImageWithRelations[]>([]);
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [trips, setTrips] = useState<Trip[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchInput, setSearchInput] = useState("");
   const [filters, setFilters] = useState({
-    search: '',
-    country_id: '',
-    trip_id: '',
-    is_highlight: '',
-    is_active: '',
-  })
+    search: "",
+    country_id: "",
+    trip_id: "",
+    is_highlight: "",
+    is_active: "",
+  });
 
+  // Load countries and trips only once on mount
   useEffect(() => {
-    loadData()
-  }, [filters])
+    const loadInitialData = async () => {
+      try {
+        const countriesRes = await fetch("/api/countries");
+        const countriesData = await countriesRes.json();
+        setCountries(countriesData.countries || []);
 
-  const loadData = async () => {
-    setIsLoading(true)
+        const tripsRes = await fetch("/api/trips?pageSize=1000");
+        const tripsData = await tripsRes.json();
+        setTrips(tripsData.trips || []);
+      } catch (error) {
+        console.error("Error loading initial data:", error);
+      }
+    };
+    loadInitialData();
+  }, []);
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFilters((prev) => ({ ...prev, search: searchInput }));
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
+
+  const loadImages = useCallback(async () => {
+    setIsLoading(true);
     try {
-      // Load countries
-      const countriesRes = await fetch('/api/countries')
-      const countriesData = await countriesRes.json()
-      setCountries(countriesData.countries || [])
+      const params = new URLSearchParams();
+      if (filters.search) params.append("search", filters.search);
+      if (filters.country_id) params.append("country_id", filters.country_id);
+      if (filters.trip_id) params.append("trip_id", filters.trip_id);
+      if (filters.is_highlight !== "")
+        params.append("is_highlight", filters.is_highlight);
+      if (filters.is_active !== "")
+        params.append("is_active", filters.is_active);
+      params.append("pageSize", "100");
 
-      // Load trips
-      const tripsRes = await fetch('/api/trips?pageSize=1000')
-      const tripsData = await tripsRes.json()
-      setTrips(tripsData.trips || [])
-
-      // Build query params
-      const params = new URLSearchParams()
-      if (filters.search) params.append('search', filters.search)
-      if (filters.country_id) params.append('country_id', filters.country_id)
-      if (filters.trip_id) params.append('trip_id', filters.trip_id)
-      if (filters.is_highlight !== '')
-        params.append('is_highlight', filters.is_highlight)
-      if (filters.is_active !== '')
-        params.append('is_active', filters.is_active)
-      params.append('pageSize', '100')
-
-      // Load images
-      const imagesRes = await fetch(`/api/gallery?${params.toString()}`)
-      const imagesData = await imagesRes.json()
-      setImages(imagesData.images || [])
+      const imagesRes = await fetch(`/api/gallery?${params.toString()}`);
+      const imagesData = await imagesRes.json();
+      setImages(imagesData.images || []);
     } catch (error) {
-      console.error('Error loading data:', error)
+      console.error("Error loading images:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  }, [filters]);
+
+  // Load images when filters change
+  useEffect(() => {
+    loadImages();
+  }, [loadImages]);
 
   const handleDelete = async (id: string) => {
     try {
-      const res = await fetch(`/api/gallery/${id}`, { method: 'DELETE' })
+      const res = await fetch(`/api/gallery/${id}`, { method: "DELETE" });
       if (res.ok) {
-        loadData()
+        loadImages();
       }
     } catch (error) {
-      console.error('Error deleting image:', error)
+      console.error("Error deleting image:", error);
     }
-  }
+  };
 
   const handleToggleActive = async (id: string, currentStatus: boolean) => {
     try {
       const res = await fetch(`/api/gallery/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ is_active: !currentStatus }),
-      })
+      });
       if (res.ok) {
-        loadData()
+        loadImages();
       }
     } catch (error) {
-      console.error('Error toggling active status:', error)
+      console.error("Error toggling active status:", error);
     }
-  }
+  };
 
   const handleToggleHighlight = async (id: string, currentStatus: boolean) => {
     try {
       const res = await fetch(`/api/gallery/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ is_highlight: !currentStatus }),
-      })
+      });
       if (res.ok) {
-        loadData()
+        loadImages();
       }
     } catch (error) {
-      console.error('Error toggling highlight status:', error)
+      console.error("Error toggling highlight status:", error);
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -113,7 +128,9 @@ export default function GalleryPage() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             {THAI_LABELS.manageGallery}
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">จัดการรูปภาพแกลเลอรีทั้งหมด</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            จัดการรูปภาพแกลเลอรีทั้งหมด
+          </p>
         </div>
         <Link
           href="/admin/gallery/upload"
@@ -134,10 +151,8 @@ export default function GalleryPage() {
             </label>
             <input
               type="text"
-              value={filters.search}
-              onChange={(e) =>
-                setFilters({ ...filters, search: e.target.value })
-              }
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
               placeholder="ค้นหารูปภาพ..."
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
             />
@@ -227,7 +242,9 @@ export default function GalleryPage() {
       {/* Table */}
       {isLoading ? (
         <div className="flex items-center justify-center h-64 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-          <p className="text-gray-500 dark:text-gray-400">{THAI_LABELS.loading}</p>
+          <p className="text-gray-500 dark:text-gray-400">
+            {THAI_LABELS.loading}
+          </p>
         </div>
       ) : (
         <GalleryTable
@@ -235,9 +252,9 @@ export default function GalleryPage() {
           onDelete={handleDelete}
           onToggleActive={handleToggleActive}
           onToggleHighlight={handleToggleHighlight}
-          onReorder={loadData}
+          onReorder={loadImages}
         />
       )}
     </div>
-  )
+  );
 }
