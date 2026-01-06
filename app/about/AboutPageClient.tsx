@@ -1,12 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 export default function AboutPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  const [galleryImages, setGalleryImages] = useState<Array<{ id: string; storage_url: string; title: string; alt_text: string | null }>>([]);
+  const [isLoadingGallery, setIsLoadingGallery] = useState(true);
 
   const carouselImages = [
     {
@@ -23,20 +26,25 @@ export default function AboutPage() {
     }
   ];
 
-  const galleryImages = [
-    'https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&q=80',
-    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80',
-    'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=400&q=80',
-    'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&q=80',
-    'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=400&q=80',
-    'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=80',
-    'https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?w=400&q=80',
-    'https://images.unsplash.com/photo-1504829857797-ddff29c27927?w=400&q=80',
-    'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&q=80',
-    'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400&q=80',
-    'https://images.unsplash.com/photo-1544552866-d3ed42536cfd?w=400&q=80',
-    'https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=400&q=80'
-  ];
+  // Fetch gallery images from database
+  useEffect(() => {
+    const fetchGalleryImages = async () => {
+      try {
+        setIsLoadingGallery(true);
+        const response = await fetch('/api/gallery?is_active=true&pageSize=12');
+        const data = await response.json();
+        if (data.images && data.images.length > 0) {
+          setGalleryImages(data.images);
+        }
+      } catch (error) {
+        console.error('Error fetching gallery images:', error);
+      } finally {
+        setIsLoadingGallery(false);
+      }
+    };
+
+    fetchGalleryImages();
+  }, []);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
@@ -204,20 +212,30 @@ export default function AboutPage() {
             </h2>
 
             {/* Gallery Grid */}
-            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-12">
-              {galleryImages.map((image, index) => (
-                <div
-                  key={index}
-                  className="aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer"
-                >
-                  <img
-                    src={image}
-                    alt={`Gallery ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
+            {isLoadingGallery ? (
+              <div className="flex items-center justify-center py-12 mb-12">
+                <p className="text-gray-500">กำลังโหลดรูปภาพ...</p>
+              </div>
+            ) : galleryImages.length === 0 ? (
+              <div className="text-center py-12 mb-12">
+                <p className="text-gray-500">ยังไม่มีรูปภาพในแกลเลอรี</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-12">
+                {galleryImages.map((image) => (
+                  <div
+                    key={image.id}
+                    className="aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer"
+                  >
+                    <img
+                      src={image.storage_url}
+                      alt={image.alt_text || image.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* View All Button */}
             <div className="text-center">
