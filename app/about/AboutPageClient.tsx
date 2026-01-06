@@ -96,7 +96,7 @@ export default function AboutPage() {
                 {/* Previous Button */}
                 <button
                   onClick={prevSlide}
-                  className="shrink-0 w-12 h-12 rounded-full bg-gray-900 dark:bg-gray-700 text-white flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors z-10"
+                  className="cursor-pointer shrink-0 w-12 h-12 rounded-full bg-gray-900 dark:bg-gray-700 text-white flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors z-10"
                   aria-label="Previous"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,7 +130,7 @@ export default function AboutPage() {
                 {/* Next Button */}
                 <button
                   onClick={nextSlide}
-                  className="shrink-0 w-12 h-12 rounded-full bg-gray-900 dark:bg-gray-700 text-white flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors z-10"
+                  className="cursor-pointer shrink-0 w-12 h-12 rounded-full bg-gray-900 dark:bg-gray-700 text-white flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors z-10"
                   aria-label="Next"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -240,7 +240,7 @@ export default function AboutPage() {
             {/* View All Button */}
             <div className="text-center">
               <Link href="/gallery">
-                <button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg">
+                <button className="cursor-pointer bg-orange-600 hover:bg-orange-700 text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg">
                   ดูภาพทั้งหมด
                 </button>
               </Link>
@@ -265,8 +265,8 @@ export default function AboutPage() {
             <p className="text-2xl font-bold text-white mb-8">
               เริ่มต้นการเดินทางของคุณวันนี้
             </p>
-            <Link href="/#contact">
-              <button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-12 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-lg">
+            <Link href="/contact">
+              <button className="cursor-pointer bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-12 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-lg">
                 สอบถามหรือจองทริป
               </button>
             </Link>

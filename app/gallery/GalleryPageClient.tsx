@@ -125,7 +125,7 @@ export default function GalleryPage() {
               {/* Navigation Arrows */}
               <button
                 onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110"
+                className="cursor-pointer absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110"
                 aria-label="Previous"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,7 +134,7 @@ export default function GalleryPage() {
               </button>
               <button
                 onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110"
+                className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110"
                 aria-label="Next"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,7 +149,7 @@ export default function GalleryPage() {
                 <button
                   key={image.id}
                   onClick={() => setCurrentSlide(index)}
-                  className={`shrink-0 w-24 h-20 rounded-lg overflow-hidden transition-all duration-300 ${
+                  className={`cursor-pointer shrink-0 w-24 h-20 rounded-lg overflow-hidden transition-all duration-300 ${
                     currentSlide === index
                       ? 'ring-4 ring-orange-600 dark:ring-orange-500 scale-105'
                       : 'ring-2 ring-gray-300 dark:ring-gray-600 hover:ring-orange-400 dark:hover:ring-orange-500 opacity-60 hover:opacity-100'
@@ -180,7 +180,7 @@ export default function GalleryPage() {
               <div className="flex flex-wrap gap-3 justify-center">
                 <button
                   onClick={() => setSelectedCountry('all')}
-                  className={`px-8 py-3 rounded-full font-semibold transition-all duration-300 text-sm md:text-base ${
+                  className={`cursor-pointer px-8 py-3 rounded-full font-semibold transition-all duration-300 text-sm md:text-base ${
                     selectedCountry === 'all'
                       ? 'bg-orange-600 dark:bg-orange-500 text-white shadow-lg scale-105'
                       : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-500'
@@ -192,7 +192,7 @@ export default function GalleryPage() {
                   <button
                     key={country}
                     onClick={() => setSelectedCountry(country)}
-                    className={`px-8 py-3 rounded-full font-semibold transition-all duration-300 text-sm md:text-base ${
+                    className={`cursor-pointer px-8 py-3 rounded-full font-semibold transition-all duration-300 text-sm md:text-base ${
                       selectedCountry === country
                         ? 'bg-orange-600 dark:bg-orange-500 text-white shadow-lg scale-105'
                         : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-500'
@@ -294,13 +294,13 @@ export default function GalleryPage() {
                 ให้เราช่วยออกแบบการเดินทางในฝันของคุณ และบันทึกทุกช่วงเวลาพิเศษด้วยช่างภาพมืออาชีพ
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/#contact">
-                  <button className="bg-white text-orange-600 hover:bg-gray-100 font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg">
+                <Link href="/contact">
+                  <button className="cursor-pointer bg-white text-orange-600 hover:bg-gray-100 font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg">
                     สอบถามหรือจองทริป
                   </button>
                 </Link>
                 <Link href="/">
-                  <button className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-orange-600 font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105">
+                  <button className="cursor-pointer bg-transparent border-2 border-white text-white hover:bg-white hover:text-orange-600 font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105">
                     กลับหน้าหลัก
                   </button>
                 </Link>
@@ -316,7 +316,7 @@ export default function GalleryPage() {
             onClick={() => setSelectedImage(null)}
           >
             <button
-              className="absolute top-4 right-4 text-white hover:text-orange-500 dark:hover:text-orange-400 transition-colors z-10 bg-black/50 dark:bg-black/70 rounded-full p-2 hover:bg-black/70 dark:hover:bg-black/80"
+              className="cursor-pointer absolute top-4 right-4 text-white hover:text-orange-500 dark:hover:text-orange-400 transition-colors z-10 bg-black/50 dark:bg-black/70 rounded-full p-2 hover:bg-black/70 dark:hover:bg-black/80"
               onClick={() => setSelectedImage(null)}
             >
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">

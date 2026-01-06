@@ -60,7 +60,7 @@ export default function AddActivityModal({ isOpen, onClose, onAdd, dayTitle }: A
           </div>
           <button
             onClick={handleClose}
-            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+            className="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
             disabled={isSubmitting}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,14 +116,14 @@ export default function AddActivityModal({ isOpen, onClose, onAdd, dayTitle }: A
             <button
               type="button"
               onClick={handleClose}
-              className="px-5 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-semibold transition-colors"
+              className="cursor-pointer px-5 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-semibold transition-colors"
               disabled={isSubmitting}
             >
               ยกเลิก
             </button>
             <button
               type="submit"
-              className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-lg disabled:opacity-50 transition-colors shadow-md hover:shadow-lg"
+              className="cursor-pointer px-5 py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-md hover:shadow-lg"
               disabled={isSubmitting}
             >
               {isSubmitting ? 'กำลังเพิ่ม...' : 'เพิ่มกิจกรรม'}

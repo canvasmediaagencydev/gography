@@ -149,7 +149,7 @@ export default function ViewTripPage({ params }: { params: Promise<{ id: string 
           </Link>
           <button
             onClick={() => router.back()}
-            className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors"
+            className="cursor-pointer px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors"
           >
             {THAI_LABELS.cancel}
           </button>
@@ -250,13 +250,13 @@ export default function ViewTripPage({ params }: { params: Promise<{ id: string 
                         <div className="flex items-center justify-end gap-3">
                           <button
                             onClick={() => handleOpenEditScheduleModal(schedule)}
-                            className="text-orange-600 dark:text-orange-400 hover:text-orange-900 dark:hover:text-orange-300 font-semibold"
+                            className="cursor-pointer text-orange-600 dark:text-orange-400 hover:text-orange-900 dark:hover:text-orange-300 font-semibold"
                           >
                             {THAI_LABELS.edit}
                           </button>
                           <button
                             onClick={() => handleDeleteSchedule(schedule.id)}
-                            className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 font-semibold"
+                            className="cursor-pointer text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 font-semibold"
                           >
                             {THAI_LABELS.delete}
                           </button>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function TripsReviews() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -93,7 +94,7 @@ export default function TripsReviews() {
           {/* Right Arrow */}
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-6 z-10 bg-black dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl"
+            className="cursor-pointer absolute right-0 top-1/2 -translate-y-1/2 translate-x-6 z-10 bg-black dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl"
             aria-label="Next review"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -104,12 +105,20 @@ export default function TripsReviews() {
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300">
-            สอบถามและจองทริป
-          </button>
-          <button className="bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 dark:hover:bg-gray-600 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300">
-            ดูรีวิวทั้งหมด
-          </button>
+          <Link href="/contact">
+            <button className="cursor-pointer bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300">
+              สอบถามและจองทริป
+            </button>
+          </Link>
+          <a
+            href="https://www.facebook.com/gographyofficial/reviews?mcp_token=eyJwaWQiOjIzOTY0MTY0OTUyNTI1Niwic2lkIjowLCJheCI6ImQ1MjMwMTFlZDgxOTIxNzlhOWM3NTEwM2YyM2VjN2Q4IiwidHMiOjE3Njc3MzE0MDUsImV4cCI6MTc3MDE1MDYwNX0.i9JxtLksxQcdYo_4EMHThSk4CsFiyehTeJvss2-ys8M"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="cursor-pointer bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 dark:hover:bg-gray-600 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300">
+              ดูรีวิวทั้งหมด
+            </button>
+          </a>
         </div>
       </div>
     </section>

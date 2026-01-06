@@ -153,7 +153,7 @@ export default function ArticlesPage() {
                       setSelectedCategory(category);
                       setCurrentPage(1);
                     }}
-                    className={`px-6 py-2 rounded-full font-medium whitespace-nowrap transition-all duration-300 ${
+                    className={`cursor-pointer px-6 py-2 rounded-full font-medium whitespace-nowrap transition-all duration-300 ${
                       selectedCategory === category
                         ? 'bg-gray-900 dark:bg-orange-600 text-white'
                         : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
@@ -205,7 +205,7 @@ export default function ArticlesPage() {
                     </p>
 
                     <Link href={`/articles/${article.id}`}>
-                      <button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 text-sm">
+                      <button className="cursor-pointer bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 text-sm">
                         อ่านต่อ →
                       </button>
                     </Link>
@@ -220,7 +220,7 @@ export default function ArticlesPage() {
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
-                  className="w-10 h-10 rounded-lg flex items-center justify-center border-2 border-gray-200 dark:border-gray-600 dark:text-gray-300 hover:border-orange-600 dark:hover:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="cursor-pointer w-10 h-10 rounded-lg flex items-center justify-center border-2 border-gray-200 dark:border-gray-600 dark:text-gray-300 hover:border-orange-600 dark:hover:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   ‹
                 </button>
@@ -229,7 +229,7 @@ export default function ArticlesPage() {
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page)}
-                    className={`w-10 h-10 rounded-lg flex items-center justify-center font-semibold transition-all duration-300 ${
+                    className={`cursor-pointer w-10 h-10 rounded-lg flex items-center justify-center font-semibold transition-all duration-300 ${
                       currentPage === page
                         ? 'bg-gray-900 dark:bg-orange-600 text-white'
                         : 'border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-600 dark:hover:border-orange-500'
@@ -242,7 +242,7 @@ export default function ArticlesPage() {
                 <button
                   onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                   disabled={currentPage === totalPages}
-                  className="w-10 h-10 rounded-lg flex items-center justify-center border-2 border-gray-200 dark:border-gray-600 dark:text-gray-300 hover:border-orange-600 dark:hover:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="cursor-pointer w-10 h-10 rounded-lg flex items-center justify-center border-2 border-gray-200 dark:border-gray-600 dark:text-gray-300 hover:border-orange-600 dark:hover:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   ›
                 </button>
@@ -267,8 +267,8 @@ export default function ArticlesPage() {
             <p className="text-2xl font-bold text-white mb-8">
               เริ่มต้นการเดินทางของคุณเดินดี
             </p>
-            <Link href="/#contact">
-              <button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg">
+            <Link href="/contact">
+              <button className="cursor-pointer bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg">
                 สอบถามหรือจองทริป
               </button>
             </Link>

@@ -57,7 +57,7 @@ export default function AddDayModal({ isOpen, onClose, onAdd, existingDayNumbers
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">เพิ่มวันเดินทาง</h2>
           <button
             onClick={handleClose}
-            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+            className="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
             disabled={isSubmitting}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,14 +124,14 @@ export default function AddDayModal({ isOpen, onClose, onAdd, existingDayNumbers
             <button
               type="button"
               onClick={handleClose}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-semibold"
+              className="cursor-pointer px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-semibold"
               disabled={isSubmitting}
             >
               ยกเลิก
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg disabled:opacity-50"
+              className="cursor-pointer px-4 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isSubmitting}
             >
               {isSubmitting ? 'กำลังเพิ่ม...' : 'เพิ่มวัน'}

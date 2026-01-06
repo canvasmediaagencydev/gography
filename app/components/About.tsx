@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function About() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -101,12 +102,16 @@ export default function About() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-full transition-colors shadow-lg">
-                เรื่องราวของเรา
-              </button>
-              <button className="border-2 border-orange-600 dark:border-orange-500 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20 font-semibold px-8 py-3 rounded-full transition-colors">
-                ติดต่อเรา
-              </button>
+              <Link href="/about">
+                <button className="cursor-pointer bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-full transition-colors shadow-lg">
+                  เรื่องราวของเรา
+                </button>
+              </Link>
+              <Link href="/contact">
+                <button className="cursor-pointer border-2 border-orange-600 dark:border-orange-500 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20 font-semibold px-8 py-3 rounded-full transition-colors">
+                  ติดต่อเรา
+                </button>
+              </Link>
             </div>
           </div>
         </div>

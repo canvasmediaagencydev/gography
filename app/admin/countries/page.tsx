@@ -104,7 +104,7 @@ export default function CountriesPage() {
         </div>
         <button
           onClick={handleAddClick}
-          className="px-6 py-3 bg-linear-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 dark:from-orange-500 dark:to-orange-400 dark:hover:from-orange-600 dark:hover:to-orange-500 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg"
+          className="cursor-pointer px-6 py-3 bg-linear-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 dark:from-orange-500 dark:to-orange-400 dark:hover:from-orange-600 dark:hover:to-orange-500 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg"
         >
           + เพิ่มประเทศ
         </button>
@@ -172,13 +172,13 @@ export default function CountriesPage() {
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => handleEditClick(country)}
-                          className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-400 rounded-lg transition-colors"
+                          className="cursor-pointer px-3 py-1 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-400 rounded-lg transition-colors"
                         >
                           แก้ไข
                         </button>
                         <button
                           onClick={() => handleDeleteClick(country)}
-                          className="px-3 py-1 bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 rounded-lg transition-colors"
+                          className="cursor-pointer px-3 py-1 bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 rounded-lg transition-colors"
                         >
                           ลบ
                         </button>

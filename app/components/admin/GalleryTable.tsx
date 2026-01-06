@@ -91,7 +91,7 @@ export default function GalleryTable({
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
                     onClick={() => onToggleHighlight(image.id, image.is_highlight ?? false)}
-                    className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    className={`cursor-pointer px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       image.is_highlight
                         ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400'
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
@@ -105,7 +105,7 @@ export default function GalleryTable({
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
                     onClick={() => onToggleActive(image.id, image.is_active ?? true)}
-                    className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    className={`cursor-pointer px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       image.is_active
                         ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400'
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
@@ -129,7 +129,7 @@ export default function GalleryTable({
                           onDelete(image.id)
                         }
                       }}
-                      className="p-2 text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+                      className="cursor-pointer p-2 text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
                       title={THAI_LABELS.delete}
                     >
                       <FiTrash2 className="w-5 h-5" />

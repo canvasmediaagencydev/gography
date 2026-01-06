@@ -179,7 +179,7 @@ export default function Hero() {
             {/* Search Button */}
             <button
               onClick={handleSearch}
-              className="bg-transparent border-2 border-white dark:border-gray-300 text-white dark:text-gray-100 px-6 py-3 rounded-lg hover:bg-white/10 dark:hover:bg-gray-800/30 transition-colors"
+              className="cursor-pointer bg-transparent border-2 border-white dark:border-gray-300 text-white dark:text-gray-100 px-6 py-3 rounded-lg hover:bg-white/10 dark:hover:bg-gray-800/30 transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -196,13 +196,13 @@ export default function Hero() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={handleBookTrip}
-              className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-full transition-colors"
+              className="cursor-pointer bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-full transition-colors"
             >
               จองทริป
             </button>
             <button
               onClick={handleContactLine}
-              className="bg-gray-700 hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-700 text-white font-semibold px-8 py-3 rounded-full transition-colors"
+              className="cursor-pointer bg-gray-700 hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-700 text-white font-semibold px-8 py-3 rounded-full transition-colors"
             >
               สอบถามข้อมูล
             </button>
@@ -215,7 +215,7 @@ export default function Hero() {
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-                className={`w-2 h-2 rounded-full transition-all ${
+                className={`cursor-pointer w-2 h-2 rounded-full transition-all ${
                 index === currentSlide ? 'bg-white dark:bg-white w-8' : 'bg-white/50 dark:bg-white/60'
               }`}
               aria-label={`Go to slide ${index + 1}`}
@@ -227,7 +227,7 @@ export default function Hero() {
       {/* Navigation Arrows */}
       <button
         onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
-        className="hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 dark:bg-gray-800/30 hover:bg-white/30 dark:hover:bg-gray-800/40 backdrop-blur-sm text-white p-3 rounded-full transition-colors"
+        className="cursor-pointer hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 dark:bg-gray-800/30 hover:bg-white/30 dark:hover:bg-gray-800/40 backdrop-blur-sm text-white p-3 rounded-full transition-colors"
         aria-label="Previous slide"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -236,7 +236,7 @@ export default function Hero() {
       </button>
       <button
         onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
-        className="hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 dark:bg-gray-800/30 hover:bg-white/30 dark:hover:bg-gray-800/40 backdrop-blur-sm text-white p-3 rounded-full transition-colors"
+        className="cursor-pointer hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 dark:bg-gray-800/30 hover:bg-white/30 dark:hover:bg-gray-800/40 backdrop-blur-sm text-white p-3 rounded-full transition-colors"
         aria-label="Next slide"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

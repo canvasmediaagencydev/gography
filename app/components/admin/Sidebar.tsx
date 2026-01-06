@@ -120,7 +120,7 @@ export default function Sidebar() {
           type="button"
           onClick={handleLogout}
           disabled={isLoggingOut}
-          className="w-full rounded-2xl border border-white/10 dark:border-gray-700 bg-white/5 dark:bg-gray-800/30 px-4 py-3 text-left text-sm font-medium text-white transition hover:bg-white/10 dark:hover:bg-gray-800/50 disabled:cursor-not-allowed disabled:opacity-60"
+          className="cursor-pointer w-full rounded-2xl border border-white/10 dark:border-gray-700 bg-white/5 dark:bg-gray-800/30 px-4 py-3 text-left text-sm font-medium text-white transition hover:bg-white/10 dark:hover:bg-gray-800/50 disabled:cursor-not-allowed disabled:opacity-60"
         >
           <span className="flex items-center gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 dark:border-gray-700 bg-white/5 dark:bg-gray-800/30 text-lg">
