@@ -46,10 +46,10 @@ export default function HighlightTrips() {
 
   if (isLoading) {
     return (
-      <section className="py-20 px-6 bg-gray-50">
+      <section className="py-20 px-6 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto max-w-7xl">
           <div className="flex items-center justify-center h-64">
-            <p className="text-gray-500">กำลังโหลด...</p>
+            <p className="text-gray-500 dark:text-gray-400">กำลังโหลด...</p>
           </div>
         </div>
       </section>
@@ -61,11 +61,11 @@ export default function HighlightTrips() {
   }
 
   return (
-    <section className="py-20 px-6 bg-gray-50">
+    <section className="py-20 px-6 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">ทริปไฮไลท์</h2>
-          <p className="text-gray-600 text-lg">ทริปยอดนิยมที่คัดสรรมาเพื่อคุณ</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">ทริปไฮไลท์</h2>
+          <p className="text-gray-600 dark:text-gray-300 text-lg">ทริปยอดนิยมที่คัดสรรมาเพื่อคุณ</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -82,7 +82,7 @@ export default function HighlightTrips() {
         {/* View All Trips Button */}
         <div className="text-center mt-12">
           <Link href="/trips">
-            <button className="bg-gray-900 hover:bg-gray-800 text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105">
+            <button className="bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105">
               สอบถามหรือจองทริป
             </button>
           </Link>

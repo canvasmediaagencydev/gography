@@ -126,7 +126,7 @@ export default function PrivateTripsPage() {
   return (
     <>
       <Navbar />
-      <main className="bg-white">
+      <main className="bg-white dark:bg-gray-900">
         {/* Hero Section */}
         <section className="relative min-h-[70vh] flex items-center">
           <Image
@@ -136,7 +136,7 @@ export default function PrivateTripsPage() {
             priority
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
+          <div className="absolute inset-0 bg-black/40 dark:bg-black/50" aria-hidden="true" />
           <div className="relative z-10 w-full">
             <div className="container mx-auto px-6 py-24 text-center text-white max-w-4xl">
               <p className="text-lg md:text-xl mb-4">ทัวร์ส่วนตัว ที่ออกแบบเพื่อคุณเท่านั้น</p>
@@ -148,7 +148,7 @@ export default function PrivateTripsPage() {
               </p>
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center rounded-full bg-orange-500 px-8 py-3 text-white font-semibold text-base md:text-lg shadow-lg hover:bg-orange-600 transition"
+                className="inline-flex items-center justify-center rounded-full bg-orange-500 dark:bg-orange-600 px-8 py-3 text-white font-semibold text-base md:text-lg shadow-lg hover:bg-orange-600 dark:hover:bg-orange-700 transition"
               >
                 ปรึกษาและออกแบบทริป
               </Link>
@@ -157,15 +157,15 @@ export default function PrivateTripsPage() {
         </section>
 
         {/* Audience Section */}
-        <section className="py-20 px-6 bg-white">
+        <section className="py-20 px-6 bg-white dark:bg-gray-800">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-12">
-              <p className="text-xl text-orange-500">Private Tour</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900">เหมาะกับใคร?</h2>
+              <p className="text-xl text-orange-500 dark:text-orange-400">Private Tour</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">เหมาะกับใคร?</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {audiences.map((audience) => (
-                <div key={audience.title} className="rounded-3xl overflow-hidden bg-gray-50 shadow-sm">
+                <div key={audience.title} className="rounded-3xl overflow-hidden bg-gray-50 dark:bg-gray-700 shadow-sm">
                   <Image
                     src={audience.image}
                     alt={audience.title}
@@ -174,8 +174,8 @@ export default function PrivateTripsPage() {
                     className="h-64 w-full object-cover"
                   />
                   <div className="p-6 text-center">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{audience.title}</h3>
-                    <p className="text-gray-600 text-sm md:text-base">{audience.description}</p>
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{audience.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">{audience.description}</p>
                   </div>
                 </div>
               ))}
@@ -184,22 +184,22 @@ export default function PrivateTripsPage() {
         </section>
 
         {/* Why Choose */}
-        <section className="py-20 px-6 bg-white">
+        <section className="py-20 px-6 bg-white dark:bg-gray-900">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-12">
-              <p className="text-lg text-gray-500">ทำไมต้องเลือก Private Tour กับ Gography?</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+              <p className="text-lg text-gray-500 dark:text-gray-400">ทำไมต้องเลือก Private Tour กับ Gography?</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
                 เพราะทุกการเดินทางควรพิเศษแบบคุณเท่านั้น
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {benefits.map((benefit) => (
-                <div key={benefit.title} className="rounded-3xl border border-gray-100 shadow-sm p-8 text-center bg-gray-50">
+                <div key={benefit.title} className="rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm p-8 text-center bg-gray-50 dark:bg-gray-800">
                   <div className="flex items-center justify-center mb-6">
                     <Image src={benefit.icon} alt={benefit.title} width={72} height={72} />
                   </div>
-                  <h3 className="text-xl font-semibold text-orange-600 mb-3">{benefit.title}</h3>
-                  <p className="text-gray-600 text-sm md:text-base">{benefit.description}</p>
+                  <h3 className="text-xl font-semibold text-orange-600 dark:text-orange-400 mb-3">{benefit.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">{benefit.description}</p>
                 </div>
               ))}
             </div>
@@ -207,47 +207,47 @@ export default function PrivateTripsPage() {
         </section>
 
         {/* Steps */}
-        <section className="py-20 px-6 bg-gray-50">
+        <section className="py-20 px-6 bg-gray-50 dark:bg-gray-800">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-16">
-              <p className="text-lg text-gray-500">ขั้นตอนการจอง</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Private Tour</h2>
+              <p className="text-lg text-gray-500 dark:text-gray-400">ขั้นตอนการจอง</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">Private Tour</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
               {steps.map((step, index) => (
                 <div
                   key={step.title}
-                  className={`bg-white rounded-2xl p-6 text-center shadow-sm ${
+                  className={`bg-white dark:bg-gray-700 rounded-2xl p-6 text-center shadow-sm ${
                     index < 3 ? 'md:col-span-4' : 'md:col-span-6'
                   }`}
                 >
                   <div className="flex justify-center mb-5">
                     <Image src={step.icon} alt={step.title} width={68} height={68} />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{step.title}</h3>
-                  <p className="text-gray-600 text-sm">{step.description}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{step.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">{step.description}</p>
                 </div>
               ))}
             </div>
             <div className="flex flex-col md:flex-row gap-4 justify-center mt-10">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center rounded-full bg-orange-500 px-8 py-3 text-white font-semibold text-base shadow-md hover:bg-orange-600 transition"
+                className="inline-flex items-center justify-center rounded-full bg-orange-500 dark:bg-orange-600 px-8 py-3 text-white font-semibold text-base shadow-md hover:bg-orange-600 dark:hover:bg-orange-700 transition"
               >
                 แชทปรึกษาทีมงานตอนนี้!
               </Link>
               <Link
                 href="tel:097-919-9293"
-                className="inline-flex items-center justify-center rounded-full border border-orange-200 px-8 py-3 text-orange-500 font-semibold text-base hover:bg-white"
+                className="inline-flex items-center justify-center rounded-full border border-orange-200 dark:border-orange-500 px-8 py-3 text-orange-500 dark:text-orange-400 font-semibold text-base hover:bg-white dark:hover:bg-gray-700"
               >
                 โทรหาทีมงาน
               </Link>
             </div>
             <div className="text-center mt-12 max-w-4xl mx-auto">
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+              <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
                 อยากเที่ยวแบบไหน เราจัดให้ได้ตามความต้องการ กรอกข้อมูลส่งมาได้เลย
               </h3>
-              <p className="text-gray-600 text-base">
+              <p className="text-gray-600 dark:text-gray-300 text-base">
                 ให้คุณได้ออกแบบแผนการเดินทางในฝันของคุณ พาเรา Gography จะช่วยเติมเต็มช่วงเวลาแห่งความสุขด้วยภาพถ่ายสวยงาม
                 ให้ช่วงเวลาสุดพิเศษของคุณยังคงอยู่ตลอดไป
               </p>
@@ -256,23 +256,23 @@ export default function PrivateTripsPage() {
         </section>
 
         {/* Testimonials */}
-        <section className="py-20 px-6 bg-white">
+        <section className="py-20 px-6 bg-white dark:bg-gray-900">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-12">
-              <p className="text-lg text-gray-500">เสียงจากลูกค้าที่เลือก Gography</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900">ทุกประสบการณ์ถูกดูแลอย่างตั้งใจ</h2>
+              <p className="text-lg text-gray-500 dark:text-gray-400">เสียงจากลูกค้าที่เลือก Gography</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">ทุกประสบการณ์ถูกดูแลอย่างตั้งใจ</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {testimonials.map((testimonial) => (
-                <div key={testimonial.name} className="rounded-3xl border border-gray-100 p-6 flex flex-col gap-4 shadow-sm">
+                <div key={testimonial.name} className="rounded-3xl border border-gray-100 dark:border-gray-700 p-6 flex flex-col gap-4 shadow-sm bg-white dark:bg-gray-800">
                   <div className="flex items-center gap-4">
                     <Image src={testimonial.image} alt={testimonial.name} width={72} height={72} className="rounded-2xl object-cover" />
                     <div>
-                      <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                      <p className="text-sm text-orange-500">Private Trip</p>
+                      <p className="font-semibold text-gray-900 dark:text-white">{testimonial.name}</p>
+                      <p className="text-sm text-orange-500 dark:text-orange-400">Private Trip</p>
                     </div>
                   </div>
-                  <p className="text-gray-600 text-base leading-relaxed">“{testimonial.quote}”</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-base leading-relaxed">&quot;{testimonial.quote}&quot;</p>
                 </div>
               ))}
             </div>
@@ -280,25 +280,25 @@ export default function PrivateTripsPage() {
         </section>
 
         {/* CTA */}
-        <section className="bg-orange-50 py-20 px-6">
+        <section className="bg-orange-50 dark:bg-gray-800 py-20 px-6">
           <div className="container mx-auto max-w-4xl text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-orange-500 mb-4">GOGRAPHY PRIVATE TRIP</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+            <p className="text-sm uppercase tracking-[0.3em] text-orange-500 dark:text-orange-400 mb-4">GOGRAPHY PRIVATE TRIP</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
               พร้อมพาคุณออกเดินทางในแบบที่คุณเป็น
             </h2>
-            <p className="text-gray-700 text-base md:text-lg mb-8">
+            <p className="text-gray-700 dark:text-gray-300 text-base md:text-lg mb-8">
               ทักมาคุยกันเพื่อให้นักออกแบบทริปช่วยวางแผนเส้นทาง กิจกรรม และทีมงานที่เหมาะสมที่สุด ทั้งแบบครอบครัว คู่รัก แก๊งเพื่อน หรือทริปองค์กร
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center rounded-full bg-orange-500 px-8 py-3 text-white font-semibold text-base shadow-md hover:bg-orange-600 transition"
+                className="inline-flex items-center justify-center rounded-full bg-orange-500 dark:bg-orange-600 px-8 py-3 text-white font-semibold text-base shadow-md hover:bg-orange-600 dark:hover:bg-orange-700 transition"
               >
                 เริ่มคุยกับทีมงาน
               </Link>
               <Link
                 href="/trips"
-                className="inline-flex items-center justify-center rounded-full border border-orange-200 px-8 py-3 text-orange-500 font-semibold text-base hover:bg-white"
+                className="inline-flex items-center justify-center rounded-full border border-orange-200 dark:border-orange-500 px-8 py-3 text-orange-500 dark:text-orange-400 font-semibold text-base hover:bg-white dark:hover:bg-gray-800"
               >
                 ดูทริปตัวอย่าง
               </Link>

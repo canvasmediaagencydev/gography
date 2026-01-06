@@ -37,12 +37,12 @@ export default function About() {
   }, [slides.length]);
 
   return (
-    <section className="bg-white py-20 px-6">
+    <section className="bg-white dark:bg-gray-800 py-20 px-6">
       <div className="container mx-auto max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left: Image Carousel */}
           <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-            <div className="aspect-[4/3] relative">
+            <div className="aspect-4/3 relative">
               {slides.map((slide, index) => (
                 <div
                   key={index}
@@ -66,7 +66,7 @@ export default function About() {
                   key={index}
                   onClick={() => setCurrentSlide(index)}
                   className={`w-2 h-2 rounded-full transition-all ${
-                    index === currentSlide ? 'bg-white w-8' : 'bg-white/60'
+                    index === currentSlide ? 'bg-white dark:bg-white w-8' : 'bg-white/60 dark:bg-white/70'
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
@@ -76,20 +76,20 @@ export default function About() {
 
           {/* Right: Content */}
           <div className="space-y-6">
-            <h2 className="text-gray-900 text-3xl md:text-4xl font-bold leading-tight">
+            <h2 className="text-gray-900 dark:text-white text-3xl md:text-4xl font-bold leading-tight">
               จากกลุ่มนักเดินทาง...สู่ผู้จัดทัวร์ มืออาชีพ
             </h2>
 
             <h3
-              className="text-orange-600 text-4xl md:text-5xl font-bold"
+              className="text-orange-600 dark:text-orange-500 text-4xl md:text-5xl font-bold"
               style={{ fontFamily: 'Rosella, sans-serif' }}
             >
               GOGRAPHY
             </h3>
 
-            <div className="space-y-4 text-gray-700 text-base md:text-lg leading-relaxed">
+            <div className="space-y-4 text-gray-700 dark:text-gray-300 text-base md:text-lg leading-relaxed">
               <p>
-                เริ่มต้นจากกลุ่มเพื่อนที่รัก<span className="text-orange-600 font-semibold">การเดินทางและถ่ายภาพ</span>
+                เริ่มต้นจากกลุ่มเพื่อนที่รัก<span className="text-orange-600 dark:text-orange-400 font-semibold">การเดินทางและถ่ายภาพ</span>
               </p>
               <p>
                 เราจะสอบประสบการณ์กว่า 10 ปี จากการออกเดินทางทั่วโลก จนหลาย เป็น
@@ -101,10 +101,10 @@ export default function About() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-8 py-3 rounded-full transition-colors shadow-lg">
+              <button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-full transition-colors shadow-lg">
                 เรื่องราวของเรา
               </button>
-              <button className="border-2 border-orange-600 text-orange-600 hover:bg-orange-50 font-semibold px-8 py-3 rounded-full transition-colors">
+              <button className="border-2 border-orange-600 dark:border-orange-500 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20 font-semibold px-8 py-3 rounded-full transition-colors">
                 ติดต่อเรา
               </button>
             </div>

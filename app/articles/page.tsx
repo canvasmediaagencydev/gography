@@ -116,19 +116,19 @@ export default function ArticlesPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white dark:bg-gray-900">
         {/* Hero Section */}
         <section className="relative h-[50vh] md:h-[60vh] overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=1920&q=80)' }}
           >
-            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
+            <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/60 to-black/70 dark:from-black/80 dark:via-black/70 dark:to-black/80"></div>
           </div>
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center justify-center">
             <div className="text-center text-white max-w-4xl">
               <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6">
-                "เพราะทุกการเดินทาง คือประสบการณ์ที่น่าจดจำ"
+                &quot;เพราะทุกการเดินทาง คือประสบการณ์ที่น่าจดจำ&quot;
               </h1>
               <p className="text-lg md:text-xl text-white/90 mb-2">
                 อ่านเรื่องราวจากทริปจริง เคล็ดลับ และไอเดีย
@@ -155,8 +155,8 @@ export default function ArticlesPage() {
                     }}
                     className={`px-6 py-2 rounded-full font-medium whitespace-nowrap transition-all duration-300 ${
                       selectedCategory === category
-                        ? 'bg-gray-900 text-white'
-                        : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-gray-400'
+                        ? 'bg-gray-900 dark:bg-orange-600 text-white'
+                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
                     }`}
                   >
                     {category}
@@ -170,7 +170,7 @@ export default function ArticlesPage() {
               {currentArticles.map((article) => (
                 <article
                   key={article.id}
-                  className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
+                  className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
                 >
                   {/* Article Image */}
                   <Link href={`/articles/${article.id}`}>
@@ -180,32 +180,32 @@ export default function ArticlesPage() {
                         alt={article.title}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       />
-                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
-                        <span className="text-sm font-semibold text-gray-700">{article.category}</span>
+                      <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                        <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{article.category}</span>
                       </div>
                     </div>
                   </Link>
 
                   {/* Article Content */}
                   <div className="p-6">
-                    <div className="flex items-center gap-3 text-sm text-gray-500 mb-3">
+                    <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400 mb-3">
                       <time>{article.date}</time>
                       <span>•</span>
                       <span>{article.readTime}</span>
                     </div>
 
                     <Link href={`/articles/${article.id}`}>
-                      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors line-clamp-2">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors line-clamp-2">
                         {article.title}
                       </h3>
                     </Link>
 
-                    <p className="text-gray-600 mb-4 line-clamp-3">
+                    <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
                       {article.excerpt}
                     </p>
 
                     <Link href={`/articles/${article.id}`}>
-                      <button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 text-sm">
+                      <button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 text-sm">
                         อ่านต่อ →
                       </button>
                     </Link>
@@ -220,7 +220,7 @@ export default function ArticlesPage() {
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
-                  className="w-10 h-10 rounded-lg flex items-center justify-center border-2 border-gray-200 hover:border-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="w-10 h-10 rounded-lg flex items-center justify-center border-2 border-gray-200 dark:border-gray-600 dark:text-gray-300 hover:border-orange-600 dark:hover:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   ‹
                 </button>
@@ -231,8 +231,8 @@ export default function ArticlesPage() {
                     onClick={() => setCurrentPage(page)}
                     className={`w-10 h-10 rounded-lg flex items-center justify-center font-semibold transition-all duration-300 ${
                       currentPage === page
-                        ? 'bg-gray-900 text-white'
-                        : 'border-2 border-gray-200 text-gray-700 hover:border-orange-600'
+                        ? 'bg-gray-900 dark:bg-orange-600 text-white'
+                        : 'border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-orange-600 dark:hover:border-orange-500'
                     }`}
                   >
                     {page}
@@ -242,7 +242,7 @@ export default function ArticlesPage() {
                 <button
                   onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                   disabled={currentPage === totalPages}
-                  className="w-10 h-10 rounded-lg flex items-center justify-center border-2 border-gray-200 hover:border-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="w-10 h-10 rounded-lg flex items-center justify-center border-2 border-gray-200 dark:border-gray-600 dark:text-gray-300 hover:border-orange-600 dark:hover:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   ›
                 </button>
@@ -255,12 +255,12 @@ export default function ArticlesPage() {
         <HighlightTrips />
 
         {/* CTA Section */}
-        <section className="py-20 px-6 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+        <section className="py-20 px-6 bg-linear-to-br from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-900 text-white">
           <div className="container mx-auto max-w-4xl text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              "อยากปล่อยให้ความชื่นในการเดินทางของคุณรอบเท็บไป"
+              &quot;อยากปล่อยให้ความชื่นในการเดินทางของคุณรอบเท็บไป&quot;
             </h2>
-            <p className="text-xl text-gray-300 mb-8">
+            <p className="text-xl text-gray-300 dark:text-gray-400 mb-8">
               ปล่อยให้ทีมประสบการณ์การเดินทางพาที่ เหล่าจะดีบนทุกที่ยืนอยู่มากมากกับการท่องเที่ยว
               และจ่างหาทริปด้วยเพื่อพิชิตที่ทำการคุมรวมผลกันทั้งประจำ ของคุณรออยู่หรื่ของที่ผู้เริ่น
             </p>
@@ -268,7 +268,7 @@ export default function ArticlesPage() {
               เริ่มต้นการเดินทางของคุณเดินดี
             </p>
             <Link href="/#contact">
-              <button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg">
+              <button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg">
                 สอบถามหรือจองทริป
               </button>
             </Link>

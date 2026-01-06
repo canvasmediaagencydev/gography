@@ -46,10 +46,10 @@ export default function UpcomingTrips() {
 
   if (isLoading) {
     return (
-      <section className="bg-gray-50 py-20 px-6">
+      <section className="bg-gray-50 dark:bg-gray-900 py-20 px-6">
         <div className="container mx-auto max-w-7xl">
           <div className="flex items-center justify-center h-64">
-            <p className="text-gray-500">กำลังโหลด...</p>
+            <p className="text-gray-500 dark:text-gray-400">กำลังโหลด...</p>
           </div>
         </div>
       </section>
@@ -58,10 +58,10 @@ export default function UpcomingTrips() {
 
   if (trips.length === 0) {
     return (
-      <section className="bg-gray-50 py-20 px-6">
+      <section className="bg-gray-50 dark:bg-gray-900 py-20 px-6">
         <div className="container mx-auto max-w-7xl">
           <div className="text-center py-12">
-            <p className="text-gray-500">ยังไม่มีทริปที่กำลังจะมาถึง</p>
+            <p className="text-gray-500 dark:text-gray-400">ยังไม่มีทริปที่กำลังจะมาถึง</p>
           </div>
         </div>
       </section>
@@ -69,14 +69,14 @@ export default function UpcomingTrips() {
   }
 
   return (
-    <section className="bg-gray-50 py-20 px-6">
+    <section className="bg-gray-50 dark:bg-gray-900 py-20 px-6">
       <div className="container mx-auto max-w-7xl">
         {/* Section Header */}
-        <h2 className="text-center text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <h2 className="text-center text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
           UPCOMING TRIPS
         </h2>
-        <p className="text-center text-gray-700 text-base md:text-lg mb-12 max-w-4xl mx-auto">
-          ลูกค้าทุกท่านจะไม่พลาด<span className="text-orange-600 font-semibold">ความทรงจำที่ดีและภาพสวยสุดประทับใจ</span>จากการเดินทางกับเราอย่างแน่นอน!
+        <p className="text-center text-gray-700 dark:text-gray-300 text-base md:text-lg mb-12 max-w-4xl mx-auto">
+          ลูกค้าทุกท่านจะไม่พลาด<span className="text-orange-600 dark:text-orange-400 font-semibold">ความทรงจำที่ดีและภาพสวยสุดประทับใจ</span>จากการเดินทางกับเราอย่างแน่นอน!
           <br />
           เราจะพาคุณไปสัมผัสสถานที่พิเศษในช่วงเวลาที่เหมาะสมที่สุดเสมอ
         </p>
@@ -97,7 +97,7 @@ export default function UpcomingTrips() {
         <div className="text-center mt-12">
           <Link
             href="/trips"
-            className="inline-block bg-gray-800 hover:bg-gray-900 text-white font-semibold px-12 py-4 rounded-full transition-colors duration-300"
+            className="inline-block bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 dark:hover:bg-gray-600 text-white font-semibold px-12 py-4 rounded-full transition-colors duration-300"
           >
             ดูทริปทั้งหมด
           </Link>

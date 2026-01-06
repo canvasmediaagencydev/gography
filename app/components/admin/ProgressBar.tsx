@@ -30,18 +30,18 @@ export default function ProgressBar({
     <div className="w-full space-y-2">
       {message && (
         <div className="flex items-center justify-between text-sm">
-          <span className="text-gray-700 font-medium">{message}</span>
+          <span className="text-gray-700 dark:text-gray-300 font-medium">{message}</span>
           {showPercentage && (
-            <span className="text-gray-600">{Math.round(clampedProgress)}%</span>
+            <span className="text-gray-600 dark:text-gray-400">{Math.round(clampedProgress)}%</span>
           )}
         </div>
       )}
-      <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-300 ease-out ${getColorClasses()}`}
           style={{ width: `${clampedProgress}%` }}
         >
-          <div className="h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+          <div className="h-full w-full bg-linear-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
         </div>
       </div>
     </div>

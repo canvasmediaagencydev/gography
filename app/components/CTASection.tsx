@@ -13,16 +13,16 @@ export default function CTASection() {
           priority
         />
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-black/50 dark:bg-black/60" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center px-6 text-center">
         <h2 className="text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-          "อย่าปล่อยให้ความฝัน
+          &quot;อย่าปล่อยให้ความฝัน
         </h2>
-        <h3 className="text-cyan-400 text-3xl md:text-4xl lg:text-5xl font-bold mb-8">
-          ในการเดินทางของคุณรอนานเกินไป"
+        <h3 className="text-cyan-400 dark:text-cyan-300 text-3xl md:text-4xl lg:text-5xl font-bold mb-8">
+          ในการเดินทางของคุณรอนานเกินไป&quot;
         </h3>
 
         <p className="text-white text-base md:text-lg max-w-3xl mb-4">
@@ -36,7 +36,7 @@ export default function CTASection() {
           เริ่มต้นการเดินทางของคุณตอนนี้
         </p>
 
-        <button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-12 py-4 rounded-full transition-colors duration-300 text-lg shadow-lg">
+        <button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-12 py-4 rounded-full transition-colors duration-300 text-lg shadow-lg">
           สอบถามหรือจองทริป
         </button>
       </div>

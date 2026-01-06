@@ -185,24 +185,24 @@ export default function AdminDashboard() {
 
   if (isLoading) {
     return (
-      <div className="flex h-64 items-center justify-center rounded-3xl border border-dashed border-slate-200 bg-white/60">
-        <p className="text-slate-500">{THAI_LABELS.loading}</p>
+      <div className="flex h-64 items-center justify-center rounded-3xl border border-dashed border-slate-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/60">
+        <p className="text-slate-500 dark:text-gray-400">{THAI_LABELS.loading}</p>
       </div>
     )
   }
 
   return (
     <div className="space-y-8">
-      <section className="rounded-3xl border border-white/60 bg-white/90 p-8 shadow-2xl shadow-slate-200/70">
+      <section className="rounded-3xl border border-white/60 dark:border-gray-700 bg-white/90 dark:bg-gray-800/90 p-8 shadow-2xl shadow-slate-200/70 dark:shadow-gray-900/50">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.4em] text-slate-400">
+            <p className="text-sm uppercase tracking-[0.4em] text-slate-400 dark:text-gray-500">
               {THAI_LABELS.dashboard}
             </p>
-            <h1 className="mt-2 text-4xl font-semibold text-slate-900">
+            <h1 className="mt-2 text-4xl font-semibold text-slate-900 dark:text-white">
               ภาพรวมระบบจัดการทริป
             </h1>
-            <p className="mt-3 text-slate-500">
+            <p className="mt-3 text-slate-500 dark:text-gray-400">
               ตรวจสอบสถานะทริป กำหนดการ และจำนวนที่นั่งได้จากที่นี่แบบเรียลไทม์
             </p>
           </div>
@@ -213,30 +213,30 @@ export default function AdminDashboard() {
         {statCards.map((card) => (
           <div
             key={card.label}
-            className="rounded-3xl border border-white/60 bg-white/80 p-6 shadow-xl shadow-slate-200/60"
+            className="rounded-3xl border border-white/60 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 p-6 shadow-xl shadow-slate-200/60 dark:shadow-gray-900/50"
           >
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-slate-500">{card.label}</p>
-                <p className="mt-2 text-4xl font-semibold text-slate-900">
+                <p className="text-sm text-slate-500 dark:text-gray-400">{card.label}</p>
+                <p className="mt-2 text-4xl font-semibold text-slate-900 dark:text-white">
                   {card.value}
                 </p>
               </div>
               <div
-                className={`rounded-2xl border border-white/70 bg-gradient-to-br ${card.accent} p-3`}
+                className={`rounded-2xl border border-white/70 dark:border-gray-600 bg-linear-to-br ${card.accent} p-3`}
               >
-                <card.Icon className={`text-2xl ${card.iconColor}`} />
+                <card.Icon className={`text-2xl ${card.iconColor} dark:${card.iconColor.replace('600', '400').replace('500', '400')}`} />
               </div>
             </div>
           </div>
         ))}
       </section>
 
-      <section className="rounded-3xl border border-white/60 bg-white/80 p-6 shadow-xl shadow-slate-200/60">
+      <section className="rounded-3xl border border-white/60 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 p-6 shadow-xl shadow-slate-200/60 dark:shadow-gray-900/50">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-semibold text-slate-900">Quick Actions</h2>
-            <p className="text-sm text-slate-500">คำสั่งลัดเพื่อเริ่มต้นจัดการข้อมูลได้รวดเร็ว</p>
+            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">Quick Actions</h2>
+            <p className="text-sm text-slate-500 dark:text-gray-400">คำสั่งลัดเพื่อเริ่มต้นจัดการข้อมูลได้รวดเร็ว</p>
           </div>
         </div>
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -244,13 +244,13 @@ export default function AdminDashboard() {
             <Link
               key={action.href}
               href={action.href}
-              className={`rounded-2xl border bg-gradient-to-br px-5 py-6 transition hover:-translate-y-1 hover:shadow-lg ${action.accent}`}
+              className={`rounded-2xl border dark:border-gray-600 bg-linear-to-br px-5 py-6 transition hover:-translate-y-1 hover:shadow-lg ${action.accent}`}
             >
               <action.Icon className="text-2xl" />
-              <p className="mt-4 text-lg font-semibold text-slate-900">
+              <p className="mt-4 text-lg font-semibold text-slate-900 dark:text-white">
                 {action.title}
               </p>
-              <p className="mt-1 text-sm text-slate-600">{action.description}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-gray-400">{action.description}</p>
             </Link>
           ))}
         </div>

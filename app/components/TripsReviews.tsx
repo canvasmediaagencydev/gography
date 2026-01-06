@@ -32,14 +32,14 @@ export default function TripsReviews() {
   };
 
   return (
-    <section className="bg-gray-50 py-20 px-6">
+    <section className="bg-gray-50 dark:bg-gray-900 py-20 px-6">
       <div className="container mx-auto max-w-7xl">
         {/* Section Header */}
-        <h2 className="text-center text-3xl md:text-4xl font-bold text-orange-600 mb-4">
-          TRIPS' REVIEWS
+        <h2 className="text-center text-3xl md:text-4xl font-bold text-orange-600 dark:text-orange-500 mb-4">
+          TRIPS&apos; REVIEWS
         </h2>
-        <p className="text-center text-gray-700 text-base md:text-lg mb-16">
-          รีวิว 5 ⭐ เต็ม! จากลูกค้ามากกว่า <span className="text-orange-600 font-bold">100</span> รีวิวใน Facebook ของเรา
+        <p className="text-center text-gray-700 dark:text-gray-300 text-base md:text-lg mb-16">
+          รีวิว 5 ⭐ เต็ม! จากลูกค้ามากกว่า <span className="text-orange-600 dark:text-orange-400 font-bold">100</span> รีวิวใน Facebook ของเรา
           <br />
           การันตีความเป็นมืออาชีพ และความประทับใจของลูกค้าทุกท่าน
         </p>
@@ -49,7 +49,7 @@ export default function TripsReviews() {
           {/* Left Arrow */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-6 z-10 bg-black hover:bg-gray-800 text-white w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-6 z-10 bg-black dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl"
             aria-label="Previous review"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,7 +65,7 @@ export default function TripsReviews() {
               return (
                 <div
                   key={offset}
-                  className="bg-white rounded-lg overflow-hidden shadow-lg"
+                  className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg"
                 >
                   {/* Review Image */}
                   <div className="relative h-64 overflow-hidden">
@@ -78,10 +78,10 @@ export default function TripsReviews() {
 
                   {/* Review Content */}
                   <div className="p-6">
-                    <h3 className="text-base font-bold text-gray-900 mb-3">
+                    <h3 className="text-base font-bold text-gray-900 dark:text-white mb-3">
                       {review.name}
                     </h3>
-                    <p className="text-gray-700 text-sm leading-relaxed">
+                    <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
                       {review.review}
                     </p>
                   </div>
@@ -93,7 +93,7 @@ export default function TripsReviews() {
           {/* Right Arrow */}
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-6 z-10 bg-black hover:bg-gray-800 text-white w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-6 z-10 bg-black dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl"
             aria-label="Next review"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -104,10 +104,10 @@ export default function TripsReviews() {
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300">
+          <button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300">
             สอบถามและจองทริป
           </button>
-          <button className="bg-gray-800 hover:bg-gray-900 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300">
+          <button className="bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 dark:hover:bg-gray-600 text-white font-semibold px-10 py-3 rounded-full transition-colors duration-300">
             ดูรีวิวทั้งหมด
           </button>
         </div>

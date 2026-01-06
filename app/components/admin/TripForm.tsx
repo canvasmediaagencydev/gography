@@ -147,14 +147,14 @@ export default function TripForm({ trip, mode }: TripFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-600 text-sm">{error}</p>
+        <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
         </div>
       )}
 
       {/* Upload Progress */}
       {isUploading && (
-        <div className="p-6 bg-orange-50 border border-orange-200 rounded-lg">
+        <div className="p-6 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
           <ProgressBar
             progress={uploadProgress}
             message="กำลังอัปโหลดรูปปก..."
@@ -165,7 +165,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
 
       {/* Title */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           {THAI_LABELS.tripTitle} *
         </label>
         <input
@@ -173,21 +173,21 @@ export default function TripForm({ trip, mode }: TripFormProps) {
           required
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
           placeholder="ชื่อทริป"
         />
       </div>
 
       {/* Description */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           {THAI_LABELS.description}
         </label>
         <textarea
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           rows={4}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500 resize-none"
           placeholder="รายละเอียดทริป"
         />
       </div>
@@ -195,14 +195,14 @@ export default function TripForm({ trip, mode }: TripFormProps) {
       {/* Country & Trip Type Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             {THAI_LABELS.country} *
           </label>
           <select
             required
             value={formData.country_id}
             onChange={(e) => setFormData({ ...formData, country_id: e.target.value })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400"
           >
             <option value="">เลือกประเทศ</option>
             {countries.map((country) => (
@@ -214,14 +214,14 @@ export default function TripForm({ trip, mode }: TripFormProps) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             {THAI_LABELS.tripType} *
           </label>
           <select
             required
             value={formData.trip_type}
             onChange={(e) => setFormData({ ...formData, trip_type: e.target.value as 'group' | 'private' })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400"
           >
             <option value="group">{THAI_LABELS.groupTour}</option>
             <option value="private">{THAI_LABELS.privateTour}</option>
@@ -231,7 +231,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
 
       {/* Price */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           {THAI_LABELS.price} (บาท) *
         </label>
         <input
@@ -241,33 +241,33 @@ export default function TripForm({ trip, mode }: TripFormProps) {
           step="0.01"
           value={formData.price_per_person}
           onChange={(e) => setFormData({ ...formData, price_per_person: parseFloat(e.target.value) })}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
           placeholder="165900"
         />
       </div>
 
       {/* Cover Image Upload */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           {THAI_LABELS.coverImage}
         </label>
         <input
           type="file"
           accept="image/jpeg,image/jpg,image/png,image/webp"
           onChange={handleFileChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100"
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-50 dark:file:bg-orange-900/30 file:text-orange-700 dark:file:text-orange-400 hover:file:bg-orange-100 dark:hover:file:bg-orange-900/50"
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
           รองรับไฟล์ JPG, PNG, WebP (สูงสุด 5MB)
         </p>
         {coverImagePreview && (
           <div className="mt-4">
-            <p className="text-sm font-medium text-gray-700 mb-2">ตัวอย่างรูปภาพ:</p>
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">ตัวอย่างรูปภาพ:</p>
             <div className="relative w-full max-w-md">
               <img
                 src={coverImagePreview}
                 alt="Preview"
-                className="w-full h-48 object-cover rounded-lg border border-gray-300"
+                className="w-full h-48 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
               />
               <button
                 type="button"
@@ -278,7 +278,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
                     setCoverImagePreview(trip?.cover_image_url || '')
                   }
                 }}
-                className="absolute top-2 right-2 p-2 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg"
+                className="absolute top-2 right-2 p-2 bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white rounded-full shadow-lg"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -291,14 +291,14 @@ export default function TripForm({ trip, mode }: TripFormProps) {
 
       {/* File Link */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           {THAI_LABELS.documentLink} (URL)
         </label>
         <input
           type="url"
           value={formData.file_link}
           onChange={(e) => setFormData({ ...formData, file_link: e.target.value })}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
           placeholder="https://drive.google.com/..."
         />
       </div>
@@ -310,9 +310,9 @@ export default function TripForm({ trip, mode }: TripFormProps) {
           id="is_active"
           checked={formData.is_active}
           onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-          className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
+          className="w-4 h-4 text-orange-600 dark:text-orange-500 border-gray-300 dark:border-gray-600 rounded focus:ring-orange-500 dark:focus:ring-orange-400 bg-white dark:bg-gray-700"
         />
-        <label htmlFor="is_active" className="text-sm font-medium text-gray-700">
+        <label htmlFor="is_active" className="text-sm font-medium text-gray-700 dark:text-gray-300">
           {THAI_LABELS.active}
         </label>
       </div>
@@ -322,7 +322,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
         <button
           type="submit"
           disabled={isLoading || isUploading}
-          className="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+          className="px-6 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
         >
           {isUploading
             ? 'กำลังอัปโหลดรูปภาพ...'
@@ -333,7 +333,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition-colors"
+          className="px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors"
         >
           {THAI_LABELS.cancel}
         </button>

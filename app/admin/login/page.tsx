@@ -48,26 +48,26 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
             Gography Admin
           </h1>
-          <p className="text-gray-600">ระบบจัดการทริป</p>
+          <p className="text-gray-600 dark:text-gray-400">ระบบจัดการทริป</p>
         </div>
 
         {/* Login Form Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h2 className="text-2xl font-bold text-center text-gray-900 mb-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-200 dark:border-gray-700">
+          <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-8">
             {THAI_LABELS.login}
           </h2>
 
           {/* Error Messages */}
           {(error || urlError === 'unauthorized') && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-600 text-sm text-center">
+            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+              <p className="text-red-600 dark:text-red-400 text-sm text-center">
                 {error ||
                   (urlError === 'unauthorized' && 'คุณไม่มีสิทธิ์เข้าถึงระบบ')}
               </p>
@@ -79,7 +79,7 @@ function LoginForm() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
               >
                 {THAI_LABELS.email}
               </label>
@@ -89,7 +89,7 @@ function LoginForm() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 transition-colors placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 placeholder="admin@example.com"
                 disabled={isLoading}
               />
@@ -99,7 +99,7 @@ function LoginForm() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
               >
                 {THAI_LABELS.password}
               </label>
@@ -109,7 +109,7 @@ function LoginForm() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 transition-colors placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 placeholder="••••••••"
                 disabled={isLoading}
               />
@@ -119,7 +119,7 @@ function LoginForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? THAI_LABELS.loading : THAI_LABELS.login}
             </button>
@@ -127,7 +127,7 @@ function LoginForm() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-sm text-gray-600">
+        <p className="text-center text-sm text-gray-600 dark:text-gray-400">
           © 2025 Gography. All rights reserved.
         </p>
       </div>

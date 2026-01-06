@@ -32,7 +32,7 @@ export default function GalleryEditPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500">{THAI_LABELS.loading}</p>
+        <p className="text-gray-500 dark:text-gray-400">{THAI_LABELS.loading}</p>
       </div>
     )
   }
@@ -40,7 +40,7 @@ export default function GalleryEditPage() {
   if (!image) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">ไม่พบรูปภาพ</p>
+        <p className="text-gray-500 dark:text-gray-400">ไม่พบรูปภาพ</p>
       </div>
     )
   }
@@ -50,21 +50,21 @@ export default function GalleryEditPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             {THAI_LABELS.editImage}
           </h1>
-          <p className="text-gray-600 mt-1">แก้ไขข้อมูลรูปภาพ</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">แก้ไขข้อมูลรูปภาพ</p>
         </div>
         <button
           onClick={() => router.back()}
-          className="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition-colors"
+          className="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors"
         >
           {THAI_LABELS.back}
         </button>
       </div>
 
       {/* Edit Form */}
-      <div className="bg-white rounded-lg shadow-md p-8 border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 border border-gray-200 dark:border-gray-700">
         <GalleryEditForm image={image} />
       </div>
     </div>

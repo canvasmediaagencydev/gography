@@ -79,14 +79,14 @@ export default function TripsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             {THAI_LABELS.manageTrips}
           </h1>
-          <p className="text-gray-600 mt-1">จัดการทริปทั้งหมดในระบบ</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">จัดการทริปทั้งหมดในระบบ</p>
         </div>
         <Link
           href="/admin/trips/create"
-          className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+          className="px-6 py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
         >
           <span>➕</span>
           <span>{THAI_LABELS.createNew}</span>
@@ -94,11 +94,11 @@ export default function TripsPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Search */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {THAI_LABELS.search}
             </label>
             <input
@@ -106,19 +106,19 @@ export default function TripsPage() {
               value={filters.search}
               onChange={(e) => setFilters({ ...filters, search: e.target.value })}
               placeholder="ค้นหาทริป..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
             />
           </div>
 
           {/* Country Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {THAI_LABELS.country}
             </label>
             <select
               value={filters.country_id}
               onChange={(e) => setFilters({ ...filters, country_id: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400"
             >
               <option value="">{THAI_LABELS.allDestinations}</option>
               {countries.map((country) => (
@@ -131,13 +131,13 @@ export default function TripsPage() {
 
           {/* Status Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {THAI_LABELS.status}
             </label>
             <select
               value={filters.is_active}
               onChange={(e) => setFilters({ ...filters, is_active: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400"
             >
               <option value="">{THAI_LABELS.allStatuses}</option>
               <option value="true">{THAI_LABELS.active}</option>
@@ -149,8 +149,8 @@ export default function TripsPage() {
 
       {/* Table */}
       {isLoading ? (
-        <div className="flex items-center justify-center h-64 bg-white rounded-lg border border-gray-200">
-          <p className="text-gray-500">{THAI_LABELS.loading}</p>
+        <div className="flex items-center justify-center h-64 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <p className="text-gray-500 dark:text-gray-400">{THAI_LABELS.loading}</p>
         </div>
       ) : (
         <TripTable

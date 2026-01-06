@@ -97,13 +97,13 @@ export default function EditScheduleModal({ isOpen, onClose, onUpdate, schedule 
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto dark:border dark:border-gray-700">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">แก้ไขรอบเดินทาง</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">แก้ไขรอบเดินทาง</h2>
           <button
             onClick={handleClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
             disabled={isSubmitting}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -113,7 +113,7 @@ export default function EditScheduleModal({ isOpen, onClose, onUpdate, schedule 
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700">
+          <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400">
             {error}
           </div>
         )}
@@ -122,7 +122,7 @@ export default function EditScheduleModal({ isOpen, onClose, onUpdate, schedule 
           {/* Dates Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
                 {THAI_LABELS.departureDate} <span className="text-red-500">*</span>
               </label>
               <input
@@ -130,13 +130,13 @@ export default function EditScheduleModal({ isOpen, onClose, onUpdate, schedule 
                 required
                 value={departureDate}
                 onChange={(e) => setDepartureDate(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400"
                 disabled={isSubmitting}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
                 {THAI_LABELS.returnDate} <span className="text-red-500">*</span>
               </label>
               <input
@@ -144,20 +144,20 @@ export default function EditScheduleModal({ isOpen, onClose, onUpdate, schedule 
                 required
                 value={returnDate}
                 onChange={(e) => setReturnDate(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400"
                 disabled={isSubmitting}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
                 {THAI_LABELS.registrationDeadline}
               </label>
               <input
                 type="date"
                 value={registrationDeadline}
                 onChange={(e) => setRegistrationDeadline(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400"
                 disabled={isSubmitting}
               />
             </div>
@@ -166,7 +166,7 @@ export default function EditScheduleModal({ isOpen, onClose, onUpdate, schedule 
           {/* Seats Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
                 {THAI_LABELS.totalSeats} <span className="text-red-500">*</span>
               </label>
               <input
@@ -183,13 +183,13 @@ export default function EditScheduleModal({ isOpen, onClose, onUpdate, schedule 
                     setAvailableSeats(Math.min(availableSeats, total))
                   }
                 }}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400"
                 disabled={isSubmitting}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
                 {THAI_LABELS.availableSeats}
               </label>
               <input
@@ -198,7 +198,7 @@ export default function EditScheduleModal({ isOpen, onClose, onUpdate, schedule 
                 max={totalSeats}
                 value={availableSeats}
                 onChange={(e) => setAvailableSeats(e.target.value === '' ? '' : parseInt(e.target.value))}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 placeholder={`ค่าเริ่มต้น: ${totalSeats}`}
                 disabled={isSubmitting}
               />
@@ -212,10 +212,10 @@ export default function EditScheduleModal({ isOpen, onClose, onUpdate, schedule 
               id="is_active_edit"
               checked={isActive}
               onChange={(e) => setIsActive(e.target.checked)}
-              className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
+              className="w-4 h-4 text-orange-600 dark:text-orange-500 border-gray-300 dark:border-gray-600 rounded focus:ring-orange-500 dark:focus:ring-orange-400 bg-white dark:bg-gray-700"
               disabled={isSubmitting}
             />
-            <label htmlFor="is_active_edit" className="text-sm font-semibold text-gray-700">
+            <label htmlFor="is_active_edit" className="text-sm font-semibold text-gray-700 dark:text-gray-300">
               {THAI_LABELS.active}
             </label>
           </div>
@@ -225,7 +225,7 @@ export default function EditScheduleModal({ isOpen, onClose, onUpdate, schedule 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+              className="px-6 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
             >
               {isSubmitting ? THAI_LABELS.loading : 'บันทึกการแก้ไข'}
             </button>
@@ -233,7 +233,7 @@ export default function EditScheduleModal({ isOpen, onClose, onUpdate, schedule 
               type="button"
               onClick={handleClose}
               disabled={isSubmitting}
-              className="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition-colors"
+              className="px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors"
             >
               {THAI_LABELS.cancel}
             </button>

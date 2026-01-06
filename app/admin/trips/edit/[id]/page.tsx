@@ -29,7 +29,7 @@ export default function EditTripPage({ params }: { params: Promise<{ id: string 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500">{THAI_LABELS.loading}</p>
+        <p className="text-gray-500 dark:text-gray-400">{THAI_LABELS.loading}</p>
       </div>
     )
   }
@@ -37,7 +37,7 @@ export default function EditTripPage({ params }: { params: Promise<{ id: string 
   if (!trip) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">ไม่พบทริปนี้</p>
+        <p className="text-gray-500 dark:text-gray-400">ไม่พบทริปนี้</p>
       </div>
     )
   }
@@ -46,14 +46,14 @@ export default function EditTripPage({ params }: { params: Promise<{ id: string 
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           {THAI_LABELS.edit}{THAI_LABELS.tripTitle}
         </h1>
-        <p className="text-gray-600 mt-1">แก้ไขข้อมูลทริป: {trip.title}</p>
+        <p className="text-gray-600 dark:text-gray-400 mt-1">แก้ไขข้อมูลทริป: {trip.title}</p>
       </div>
 
       {/* Form */}
-      <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
         <TripForm trip={trip} mode="edit" />
       </div>
     </div>

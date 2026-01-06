@@ -277,7 +277,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
         <Navbar />
         <div className="container mx-auto px-6 py-20">
           <div className="flex items-center justify-center h-96">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-orange-600"></div>
+            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-orange-600 dark:border-orange-500"></div>
           </div>
         </div>
         <Footer />
@@ -292,10 +292,10 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
         <div className="container mx-auto px-6 py-20">
           <div className="text-center">
             <div className="text-6xl mb-4">😞</div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">{error}</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{error}</h1>
             <Link
               href="/trips"
-              className="inline-block px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-full transition-colors"
+              className="inline-block px-6 py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-full transition-colors"
             >
               ดูทริปทั้งหมด
             </Link>
@@ -371,7 +371,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
             }}
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-indigo-700"></div>
+          <div className="absolute inset-0 bg-linear-to-br from-purple-600 to-indigo-700"></div>
         )}
         <div className="absolute inset-0 bg-black/30" style={{ zIndex: 2 }}></div>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-6" style={{ zIndex: 3 }}>
@@ -394,28 +394,28 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto px-6 py-12 bg-white dark:bg-gray-900 min-h-screen">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left Column - Content */}
           <div className="lg:col-span-8 space-y-6">
 
             {/* Trip Overview */}
             {trip.description && (
-              <div className="bg-white rounded-2xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-4 text-black">รายละเอียดทริป</h2>
-                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{trip.description}</p>
+              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">รายละเอียดทริป</h2>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{trip.description}</p>
               </div>
             )}
 
             {/* Itinerary Section */}
             {trip.file_link && (
-              <div className="bg-white rounded-2xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-4">กำหนดการเดินทาง</h2>
+              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">กำหนดการเดินทาง</h2>
                 <a
                   href={trip.file_link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-full transition-colors"
+                  className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white px-6 py-3 rounded-full transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -427,8 +427,8 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
 
             {/* Gallery Section */}
             {gallery.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-4 text-black">แกลเลอรี่ภาพ</h2>
+              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">แกลเลอรี่ภาพ</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {gallery.slice(0, 5).map((img, idx) => (
                     <div
@@ -445,7 +445,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
                   ))}
                   {gallery.length > 5 && (
                     <div
-                      className="relative aspect-square rounded-lg overflow-hidden cursor-pointer bg-gray-900"
+                      className="relative aspect-square rounded-lg overflow-hidden cursor-pointer bg-gray-900 dark:bg-gray-800"
                       onClick={() => openGallery(5)}
                     >
                       <img
@@ -466,35 +466,35 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
 
             {/* Daily Itinerary Section */}
             {tripData?.itinerary && tripData.itinerary.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-6 text-gray-900">กำหนดการเดินทางรายวัน</h2>
+              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">กำหนดการเดินทางรายวัน</h2>
                 <div className="space-y-6">
                   {tripData.itinerary.map((day) => (
-                    <div key={day.id} className="border-2 border-gray-200 rounded-xl overflow-hidden">
+                    <div key={day.id} className="border-2 border-gray-200 dark:border-gray-600 rounded-xl overflow-hidden">
                       {/* Day Header */}
-                      <div className="p-5 bg-gradient-to-r from-orange-50 to-orange-100 border-b-2 border-orange-200">
+                      <div className="p-5 bg-linear-to-r from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30 border-b-2 border-orange-200 dark:border-orange-700">
                         <div className="flex items-center gap-4">
-                          <span className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md">
+                          <span className="shrink-0 w-14 h-14 bg-linear-to-br from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md">
                             {day.day_number}
                           </span>
-                          <h3 className="flex-1 text-gray-900 font-bold text-lg">{day.day_title}</h3>
+                          <h3 className="flex-1 text-gray-900 dark:text-white font-bold text-lg">{day.day_title}</h3>
                         </div>
                       </div>
 
                       {/* Day Content */}
-                      <div className="p-6 space-y-5 bg-gray-50">
+                      <div className="p-6 space-y-5 bg-gray-50 dark:bg-gray-900">
                         {/* Day Description */}
                         {day.day_description && (
-                          <div className="bg-white p-4 rounded-lg border border-gray-200">
-                            <p className="text-gray-800 whitespace-pre-wrap leading-relaxed text-base">{day.day_description}</p>
+                          <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-4 rounded-lg border border-gray-200">
+                            <p className="text-gray-800 dark:text-gray-300 whitespace-pre-wrap leading-relaxed text-base">{day.day_description}</p>
                           </div>
                         )}
 
                         {/* Activities */}
                         {day.activities && day.activities.length > 0 && (
-                          <div className="bg-white p-5 rounded-lg border border-gray-200">
-                            <h3 className="font-bold text-gray-900 mb-3 text-base flex items-center gap-2">
-                              <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                          <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-5 rounded-lg border border-gray-200">
+                            <h3 className="font-bold text-gray-900 dark:text-white mb-3 text-base flex items-center gap-2">
+                              <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                                 <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
                               </svg>
@@ -503,14 +503,14 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
                             <div className="space-y-3">
                               {day.activities.map((activity) => (
                                 <div key={activity.id} className="flex gap-3 items-start pl-1">
-                                  <span className="flex-shrink-0 text-blue-600 font-bold text-lg mt-0.5">•</span>
+                                  <span className="shrink-0 text-blue-600 dark:text-blue-400 font-bold text-lg mt-0.5">•</span>
                                   <div className="flex gap-3 items-start flex-1">
                                     {activity.activity_time && (
-                                      <span className="flex-shrink-0 px-3 py-1 bg-orange-600 text-white font-bold text-sm rounded-md shadow-sm">
+                                      <span className="shrink-0 px-3 py-1 bg-orange-600 dark:bg-orange-500 text-white font-bold text-sm rounded-md shadow-sm">
                                         {activity.activity_time}
                                       </span>
                                     )}
-                                    <span className="text-gray-900 flex-1 leading-relaxed font-medium text-base">{activity.activity_description}</span>
+                                    <span className="text-gray-900 dark:text-gray-300 flex-1 leading-relaxed font-medium text-base">{activity.activity_description}</span>
                                   </div>
                                 </div>
                               ))}
@@ -520,9 +520,9 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
 
                         {/* Day Images */}
                         {day.images && day.images.length > 0 && (
-                          <div className="bg-white p-5 rounded-lg border border-gray-200">
-                            <h3 className="font-bold text-gray-900 mb-3 text-base flex items-center gap-2">
-                              <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                          <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-5 rounded-lg border border-gray-200">
+                            <h3 className="font-bold text-gray-900 dark:text-white mb-3 text-base flex items-center gap-2">
+                              <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
                               </svg>
                               รูปภาพ
@@ -531,7 +531,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
                               {day.images.map((img, imgIdx) => (
                                 <div
                                   key={img.id}
-                                  className="relative aspect-video rounded-lg overflow-hidden border-2 border-gray-200 hover:border-green-400 transition-colors cursor-pointer group"
+                                  className="relative aspect-video rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-600 hover:border-green-400 dark:hover:border-green-500 transition-colors cursor-pointer group"
                                   onClick={() => openItineraryImage(day.images || [], imgIdx)}
                                 >
                                   <img
@@ -540,7 +540,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                   />
                                   {img.caption && (
-                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent text-white text-sm p-3 font-medium">
+                                    <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black to-transparent text-white text-sm p-3 font-medium">
                                       {img.caption}
                                     </div>
                                   )}
@@ -564,8 +564,8 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
 
             {/* FAQ Section */}
             {tripData?.faqs && tripData.faqs.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-6 text-gray-900">คำถามที่พบบ่อย (FAQ)</h2>
+              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">คำถามที่พบบ่อย (FAQ)</h2>
                 <div className="space-y-4">
                   {tripData.faqs.map((faq, index) => (
                     <FAQAccordionItem
@@ -584,19 +584,19 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
           {/* Right Column - Booking Card (Sticky) */}
           <div className="lg:col-span-4">
             <div className="lg:sticky lg:top-24 space-y-6">
-              <div className="bg-white rounded-2xl shadow-xl p-6 border-2 border-gray-100">
+              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-xl p-6 border-2 border-gray-100">
                 {/* Price */}
-                <div className="mb-6 pb-6 border-b-2 border-gray-100">
-                  <p className="text-gray-700 text-sm font-semibold mb-1">ราคาเริ่มต้น</p>
-                  <p className="text-5xl font-bold text-orange-600">{trip.formatted_price}</p>
-                  <p className="text-gray-700 text-sm font-medium mt-1">ต่อท่าน</p>
+                <div className="mb-6 pb-6 border-b-2 border-gray-100 dark:border-gray-700">
+                  <p className="text-gray-700 dark:text-gray-300 text-sm font-semibold mb-1">ราคาเริ่มต้น</p>
+                  <p className="text-5xl font-bold text-orange-600 dark:text-orange-500">{trip.formatted_price}</p>
+                  <p className="text-gray-700 dark:text-gray-300 text-sm font-medium mt-1">ต่อท่าน</p>
                 </div>
 
                 {/* Schedule Selector */}
                 {schedules.length > 0 ? (
                   <>
                     <div className="mb-6">
-                      <label className="block text-base font-bold text-gray-900 mb-3">
+                      <label className="block text-base font-bold text-gray-900 dark:text-white mb-3">
                         เลือกรอบเดินทาง
                       </label>
                       <div className="space-y-3">
@@ -606,17 +606,17 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
                             onClick={() => setSelectedScheduleId(schedule.id)}
                             className={`w-full p-4 rounded-xl border-2 text-left transition-all shadow-sm hover:shadow-md ${
                               selectedScheduleId === schedule.id
-                                ? 'border-orange-600 bg-orange-50 shadow-md'
-                                : 'border-gray-300 hover:border-orange-400 bg-white'
+                                ? 'border-orange-600 dark:border-orange-500 bg-orange-50 dark:bg-orange-900/30 shadow-md'
+                                : 'border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-500 bg-white dark:bg-gray-700'
                             }`}
                           >
                             <div className="flex justify-between items-start">
                               <div className="flex-1">
-                                <p className="font-bold text-gray-900 text-base mb-1">{schedule.dates}</p>
-                                <p className="text-sm text-gray-700 font-medium">{schedule.duration}</p>
+                                <p className="font-bold text-gray-900 dark:text-white text-base mb-1">{schedule.dates}</p>
+                                <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">{schedule.duration}</p>
                               </div>
                               <div className="text-right ml-2">
-                                <p className="text-sm font-bold text-orange-600 bg-orange-100 px-3 py-1 rounded-full whitespace-nowrap">{schedule.slots}</p>
+                                <p className="text-sm font-bold text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/40 px-3 py-1 rounded-full whitespace-nowrap">{schedule.slots}</p>
                               </div>
                             </div>
                           </button>
@@ -626,25 +626,25 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
 
                     {/* Selected Schedule Details */}
                     {selectedSchedule && (
-                      <div className="mt-4 mb-6 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-200 space-y-3">
-                        <p className="text-sm font-bold text-gray-900 mb-2">รายละเอียดรอบที่เลือก</p>
+                      <div className="mt-4 mb-6 p-4 bg-linear-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl border-2 border-blue-200 dark:border-blue-700 space-y-3">
+                        <p className="text-sm font-bold text-gray-900 dark:text-white mb-2">รายละเอียดรอบที่เลือก</p>
                         <div className="flex items-center gap-3 text-sm">
-                          <svg className="w-5 h-5 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
-                          <span className="font-semibold text-gray-900">{selectedSchedule.dates}</span>
+                          <span className="font-semibold text-gray-900 dark:text-white">{selectedSchedule.dates}</span>
                         </div>
                         <div className="flex items-center gap-3 text-sm">
-                          <svg className="w-5 h-5 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
-                          <span className="font-semibold text-gray-900">{selectedSchedule.duration}</span>
+                          <span className="font-semibold text-gray-900 dark:text-white">{selectedSchedule.duration}</span>
                         </div>
                         <div className="flex items-center gap-3 text-sm">
-                          <svg className="w-5 h-5 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                           </svg>
-                          <span className="font-semibold text-gray-900">{selectedSchedule.slots}</span>
+                          <span className="font-semibold text-gray-900 dark:text-white">{selectedSchedule.slots}</span>
                         </div>
                       </div>
                     )}
@@ -653,13 +653,13 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
                     <div className="mt-6 space-y-3">
                       <button
                         onClick={handleBooking}
-                        className="w-full bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white py-4 rounded-xl font-bold text-base transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                        className="w-full bg-linear-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 dark:from-orange-500 dark:to-orange-600 dark:hover:from-orange-600 dark:hover:to-orange-700 text-white py-4 rounded-xl font-bold text-base transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
                       >
                         สอบถาม/จองทริป
                       </button>
                       <button
                         onClick={handleShare}
-                        className="w-full border-2 border-gray-400 hover:border-orange-600 hover:bg-orange-50 text-gray-900 py-3 rounded-xl font-bold text-base transition-all"
+                        className="w-full border-2 border-gray-400 dark:border-gray-600 hover:border-orange-600 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 text-gray-900 dark:text-white py-3 rounded-xl font-bold text-base transition-all"
                       >
                         แชร์ทริปนี้
                       </button>
@@ -667,10 +667,10 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
                   </>
                 ) : (
                   <div className="text-center py-8">
-                    <p className="text-gray-500 mb-4">ขณะนี้ยังไม่มีรอบเดินทางที่เปิดรับ</p>
+                    <p className="text-gray-500 dark:text-gray-400 mb-4">ขณะนี้ยังไม่มีรอบเดินทางที่เปิดรับ</p>
                     <button
                       onClick={() => window.open('https://line.me/ti/p/@Gography', '_blank')}
-                      className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-full font-semibold transition-colors"
+                      className="w-full bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white py-3 rounded-full font-semibold transition-colors"
                     >
                       ติดต่อสอบถาม
                     </button>
@@ -684,7 +684,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
 
       {/* Gallery Modal */}
       {isGalleryOpen && gallery.length > 0 && (
-        <div className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center">
+        <div className="fixed inset-0 z-9999 bg-black/90 flex items-center justify-center">
           <button
             onClick={closeGallery}
             className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
@@ -727,7 +727,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
 
       {/* Itinerary Image Modal */}
       {isItineraryImageOpen && currentItineraryImages.length > 0 && (
-        <div className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center">
+        <div className="fixed inset-0 z-9999 bg-black/90 flex items-center justify-center">
           <button
             onClick={closeItineraryImage}
             className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
@@ -775,7 +775,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
 
       {/* FAQ Image Modal */}
       {isFaqImageOpen && currentFaqImages.length > 0 && (
-        <div className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center">
+        <div className="fixed inset-0 z-9999 bg-black/90 flex items-center justify-center">
           <button
             onClick={closeFaqImage}
             className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
@@ -840,18 +840,18 @@ function FAQAccordionItem({ faq, index, onOpenImage }: {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <div className="border-2 border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+    <div className="border-2 border-gray-200 dark:border-gray-600 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
       {/* Question Header */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full p-5 flex items-center gap-4 hover:bg-gray-50 transition-colors text-left"
+        className="w-full p-5 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left"
       >
-        <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-base shadow-md">
+        <div className="shrink-0 w-10 h-10 bg-linear-to-br from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 text-white rounded-full flex items-center justify-center font-bold text-base shadow-md">
           {index + 1}
         </div>
-        <h3 className="flex-1 font-bold text-lg text-gray-900">{faq.question}</h3>
+        <h3 className="flex-1 font-bold text-lg text-gray-900 dark:text-white">{faq.question}</h3>
         <svg
-          className={`w-6 h-6 text-gray-400 transition-transform flex-shrink-0 ${isExpanded ? 'rotate-180' : ''}`}
+          className={`w-6 h-6 text-gray-400 dark:text-gray-500 transition-transform shrink-0 ${isExpanded ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -862,19 +862,19 @@ function FAQAccordionItem({ faq, index, onOpenImage }: {
 
       {/* Answer Content */}
       {isExpanded && (
-        <div className="border-t-2 border-gray-100 bg-gray-50 p-5 space-y-4">
+        <div className="border-t-2 border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-5 space-y-4">
           {/* Answer Text */}
-          <div className="bg-white p-4 rounded-lg border border-gray-200">
-            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-base">
+          <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-4 rounded-lg border border-gray-200">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap text-base">
               {faq.answer}
             </p>
           </div>
 
           {/* Answer Images */}
           {faq.images && faq.images.length > 0 && (
-            <div className="bg-white p-4 rounded-lg border border-gray-200">
-              <h4 className="font-semibold text-gray-900 mb-3 text-base flex items-center gap-2">
-                <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+            <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-4 rounded-lg border border-gray-200">
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-3 text-base flex items-center gap-2">
+                <svg className="w-5 h-5 text-purple-600 dark:text-purple-400" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
                 </svg>
                 รูปภาพประกอบ
@@ -883,7 +883,7 @@ function FAQAccordionItem({ faq, index, onOpenImage }: {
                 {faq.images.map((img, imgIdx) => (
                   <div
                     key={img.id}
-                    className="relative aspect-video rounded-lg overflow-hidden border-2 border-gray-200 hover:border-purple-400 transition-colors cursor-pointer group"
+                    className="relative aspect-video rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-600 hover:border-purple-400 dark:hover:border-purple-500 transition-colors cursor-pointer group"
                     onClick={() => onOpenImage(faq.images || [], imgIdx)}
                   >
                     <img
@@ -892,7 +892,7 @@ function FAQAccordionItem({ faq, index, onOpenImage }: {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     {img.caption && (
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent text-white text-sm p-3 font-medium">
+                      <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black to-transparent text-white text-sm p-3 font-medium">
                         {img.caption}
                       </div>
                     )}

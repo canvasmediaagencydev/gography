@@ -34,7 +34,7 @@ export default function GalleryPage() {
       <>
         <Navbar />
         <div className="min-h-screen flex items-center justify-center">
-          <p className="text-gray-500">กำลังโหลด...</p>
+          <p className="text-gray-500 dark:text-gray-400">กำลังโหลด...</p>
         </div>
         <Footer />
       </>
@@ -65,14 +65,14 @@ export default function GalleryPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white dark:bg-gray-900">
         {/* Hero Section with Background Image */}
         <section className="relative h-[50vh] md:h-[60vh] overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80)' }}
           >
-            <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/50 to-black/70"></div>
+            <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/50 to-black/70 dark:from-black/70 dark:via-black/60 dark:to-black/80"></div>
           </div>
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center justify-center">
             <div className="text-center text-white">
@@ -97,11 +97,11 @@ export default function GalleryPage() {
 
         {/* Featured Carousel Section */}
         {highlights.length > 0 && (
-          <section className="py-16 px-6 bg-gray-50">
+          <section className="py-16 px-6 bg-gray-50 dark:bg-gray-800">
             <div className="container mx-auto max-w-7xl">
               <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">ภาพไฮไลท์รวม</h2>
-                <p className="text-gray-600 text-lg">ภาพเด่นที่คัดสรรมาจากทุกทริป</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">ภาพไฮไลท์รวม</h2>
+                <p className="text-gray-600 dark:text-gray-300 text-lg">ภาพเด่นที่คัดสรรมาจากทุกทริป</p>
               </div>
 
               {/* Main Carousel */}
@@ -112,9 +112,9 @@ export default function GalleryPage() {
                   alt={highlights[currentSlide].alt_text || highlights[currentSlide].title}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent">
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent">
                   <div className="absolute bottom-0 left-0 right-0 p-8">
-                    <span className="inline-block bg-orange-600 text-white text-sm font-semibold px-4 py-2 rounded-full mb-3">
+                    <span className="inline-block bg-orange-600 dark:bg-orange-500 text-white text-sm font-semibold px-4 py-2 rounded-full mb-3">
                       {highlights[currentSlide].country?.name_th}
                     </span>
                     <h3 className="text-white text-2xl md:text-3xl font-bold">{highlights[currentSlide].title}</h3>
@@ -125,7 +125,7 @@ export default function GalleryPage() {
               {/* Navigation Arrows */}
               <button
                 onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-900 w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110"
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110"
                 aria-label="Previous"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,7 +134,7 @@ export default function GalleryPage() {
               </button>
               <button
                 onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-900 w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110"
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 text-gray-900 dark:text-white w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110"
                 aria-label="Next"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,10 +149,10 @@ export default function GalleryPage() {
                 <button
                   key={image.id}
                   onClick={() => setCurrentSlide(index)}
-                  className={`flex-shrink-0 w-24 h-20 rounded-lg overflow-hidden transition-all duration-300 ${
+                  className={`shrink-0 w-24 h-20 rounded-lg overflow-hidden transition-all duration-300 ${
                     currentSlide === index
-                      ? 'ring-4 ring-orange-600 scale-105'
-                      : 'ring-2 ring-gray-300 hover:ring-orange-400 opacity-60 hover:opacity-100'
+                      ? 'ring-4 ring-orange-600 dark:ring-orange-500 scale-105'
+                      : 'ring-2 ring-gray-300 dark:ring-gray-600 hover:ring-orange-400 dark:hover:ring-orange-500 opacity-60 hover:opacity-100'
                   }`}
                 >
                   <img
@@ -168,11 +168,11 @@ export default function GalleryPage() {
         )}
 
         {/* Gallery by Country */}
-        <section className="py-20 px-6 bg-white">
+        <section className="py-20 px-6 bg-white dark:bg-gray-900">
           <div className="container mx-auto max-w-7xl">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">แกลเลอรีแยกตามประเทศ</h2>
-              <p className="text-gray-600 text-lg">สำรวจภาพถ่ายจากจุดหมายปลายทางต่างๆ ทั่วโลก</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">แกลเลอรีแยกตามประเทศ</h2>
+              <p className="text-gray-600 dark:text-gray-300 text-lg">สำรวจภาพถ่ายจากจุดหมายปลายทางต่างๆ ทั่วโลก</p>
             </div>
 
             {/* Country Filter */}
@@ -182,8 +182,8 @@ export default function GalleryPage() {
                   onClick={() => setSelectedCountry('all')}
                   className={`px-8 py-3 rounded-full font-semibold transition-all duration-300 text-sm md:text-base ${
                     selectedCountry === 'all'
-                      ? 'bg-orange-600 text-white shadow-lg scale-105'
-                      : 'bg-white text-gray-700 hover:bg-gray-100 border-2 border-gray-200 hover:border-orange-300'
+                      ? 'bg-orange-600 dark:bg-orange-500 text-white shadow-lg scale-105'
+                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-500'
                   }`}
                 >
                   ทั้งหมด
@@ -194,8 +194,8 @@ export default function GalleryPage() {
                     onClick={() => setSelectedCountry(country)}
                     className={`px-8 py-3 rounded-full font-semibold transition-all duration-300 text-sm md:text-base ${
                       selectedCountry === country
-                        ? 'bg-orange-600 text-white shadow-lg scale-105'
-                        : 'bg-white text-gray-700 hover:bg-gray-100 border-2 border-gray-200 hover:border-orange-300'
+                        ? 'bg-orange-600 dark:bg-orange-500 text-white shadow-lg scale-105'
+                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-500'
                     }`}
                   >
                     {country}
@@ -215,11 +215,11 @@ export default function GalleryPage() {
                   return (
                     <div key={country} className="mb-20">
                       <div className="flex items-center gap-3 mb-8">
-                        <svg className="w-8 h-8 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-8 h-8 text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                         </svg>
-                        <h3 className="text-3xl font-bold text-gray-900">{country}</h3>
-                        <div className="flex-1 h-px bg-gradient-to-r from-gray-300 to-transparent"></div>
+                        <h3 className="text-3xl font-bold text-gray-900 dark:text-white">{country}</h3>
+                        <div className="flex-1 h-px bg-linear-to-r from-gray-300 dark:from-gray-600 to-transparent"></div>
                       </div>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {countryImages.map((image) => (
@@ -228,21 +228,21 @@ export default function GalleryPage() {
                             className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:-translate-y-2"
                             onClick={() => setSelectedImage(image)}
                           >
-                            <div className="aspect-square overflow-hidden bg-gray-100">
+                            <div className="aspect-square overflow-hidden bg-gray-100 dark:bg-gray-800">
                               <img
                                 src={image.storage_url}
                                 alt={image.alt_text || image.title}
                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                               />
                             </div>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <div className="absolute bottom-0 left-0 right-0 p-4">
                                 <p className="text-white text-sm font-semibold">{image.title}</p>
                               </div>
                             </div>
                             {/* Hover Icon */}
-                            <div className="absolute top-4 right-4 bg-white/90 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-800/90 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              <svg className="w-5 h-5 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                               </svg>
@@ -262,21 +262,21 @@ export default function GalleryPage() {
                       className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:-translate-y-2"
                       onClick={() => setSelectedImage(image)}
                     >
-                      <div className="aspect-square overflow-hidden bg-gray-100">
+                      <div className="aspect-square overflow-hidden bg-gray-100 dark:bg-gray-800">
                         <img
                           src={image.storage_url}
                           alt={image.alt_text || image.title}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         />
                       </div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <div className="absolute bottom-0 left-0 right-0 p-4">
                           <p className="text-white text-sm font-semibold">{image.title}</p>
                         </div>
                       </div>
                       {/* Hover Icon */}
-                      <div className="absolute top-4 right-4 bg-white/90 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-800/90 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <svg className="w-5 h-5 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
@@ -288,7 +288,7 @@ export default function GalleryPage() {
             </div>
 
             {/* CTA Section */}
-            <div className="mt-20 bg-gradient-to-br from-orange-600 to-orange-700 rounded-3xl p-12 text-center text-white shadow-xl">
+            <div className="mt-20 bg-linear-to-br from-orange-600 to-orange-700 dark:from-orange-700 dark:to-orange-800 rounded-3xl p-12 text-center text-white shadow-xl">
               <h3 className="text-3xl md:text-4xl font-bold mb-4">พร้อมสร้างความทรงจำกับเราแล้วหรือยัง?</h3>
               <p className="text-xl text-orange-100 mb-8 max-w-2xl mx-auto">
                 ให้เราช่วยออกแบบการเดินทางในฝันของคุณ และบันทึกทุกช่วงเวลาพิเศษด้วยช่างภาพมืออาชีพ
@@ -312,11 +312,11 @@ export default function GalleryPage() {
         {/* Image Modal */}
         {selectedImage && (
           <div
-            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/95 dark:bg-black/98 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
             onClick={() => setSelectedImage(null)}
           >
             <button
-              className="absolute top-4 right-4 text-white hover:text-orange-500 transition-colors z-10 bg-black/50 rounded-full p-2 hover:bg-black/70"
+              className="absolute top-4 right-4 text-white hover:text-orange-500 dark:hover:text-orange-400 transition-colors z-10 bg-black/50 dark:bg-black/70 rounded-full p-2 hover:bg-black/70 dark:hover:bg-black/80"
               onClick={() => setSelectedImage(null)}
             >
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -331,7 +331,7 @@ export default function GalleryPage() {
                 onClick={(e) => e.stopPropagation()}
               />
               <div className="mt-6 text-center">
-                <span className="inline-block bg-orange-600 text-white text-sm font-semibold px-5 py-2 rounded-full mb-3">
+                <span className="inline-block bg-orange-600 dark:bg-orange-500 text-white text-sm font-semibold px-5 py-2 rounded-full mb-3">
                   {selectedImage.country?.name_th}
                 </span>
                 <p className="text-white text-xl font-semibold">{selectedImage.title}</p>

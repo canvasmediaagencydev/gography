@@ -221,14 +221,14 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
   return (
     <div className="space-y-6">
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-600 text-sm">{error}</p>
+        <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
         </div>
       )}
 
       {/* Upload Progress */}
       {isUploading && (
-        <div className="p-6 bg-orange-50 border border-orange-200 rounded-lg">
+        <div className="p-6 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
           <ProgressBar
             progress={uploadProgress}
             message={uploadMessage}
@@ -244,17 +244,17 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
         onDrop={handleDrop}
         className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
           isDragging
-            ? 'border-orange-500 bg-orange-50'
-            : 'border-gray-300 hover:border-orange-400'
+            ? 'border-orange-500 dark:border-orange-400 bg-orange-50 dark:bg-orange-900/20'
+            : 'border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-500'
         }`}
       >
         <div className="space-y-4">
           <div className="text-6xl">📸</div>
           <div>
-            <p className="text-lg font-semibold text-gray-900">
+            <p className="text-lg font-semibold text-gray-900 dark:text-white">
               ลากไฟล์มาวางที่นี่
             </p>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               หรือคลิกเพื่อเลือกไฟล์ (JPG, PNG, WebP สูงสุด 5MB)
             </p>
           </div>
@@ -268,7 +268,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
           />
           <label
             htmlFor="file-upload"
-            className="inline-block px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg cursor-pointer transition-colors"
+            className="inline-block px-6 py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg cursor-pointer transition-colors"
           >
             {THAI_LABELS.selectFiles}
           </label>
@@ -278,18 +278,18 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
       {/* File Previews & Metadata */}
       {files.length > 0 && (
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             ไฟล์ที่เลือก ({files.length})
           </h3>
 
           {files.map((uploadFile, index) => (
             <div
               key={index}
-              className="border border-gray-200 rounded-lg p-4 bg-gray-50"
+              className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-800"
             >
               <div className="flex gap-4">
                 {/* Preview */}
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <img
                     src={uploadFile.preview}
                     alt={uploadFile.title}
@@ -301,7 +301,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Title */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       {THAI_LABELS.imageTitle} *
                     </label>
                     <input
@@ -310,14 +310,14 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                       onChange={(e) =>
                         updateFile(index, 'title', e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       placeholder="ชื่อรูปภาพ"
                     />
                   </div>
 
                   {/* Country */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       {THAI_LABELS.country}
                     </label>
                     <select
@@ -325,7 +325,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                       onChange={(e) =>
                         updateFile(index, 'country_id', e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400"
                     >
                       <option value="">เลือกประเทศ</option>
                       {countries.map((country) => (
@@ -338,7 +338,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
 
                   {/* Trip */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       ทริป (ถ้ามี)
                     </label>
                     <select
@@ -347,7 +347,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                         updateFile(index, 'trip_id', e.target.value)
                       }
                       disabled={!!tripId}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed"
                     >
                       <option value="">ไม่เชื่อมกับทริป</option>
                       {trips.map((trip) => (
@@ -357,7 +357,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                       ))}
                     </select>
                     {tripId && (
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         📌 กำลังอัพโหลดให้กับทริปนี้โดยอัตโนมัติ
                       </p>
                     )}
@@ -365,7 +365,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
 
                   {/* Description */}
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       {THAI_LABELS.description}
                     </label>
                     <textarea
@@ -374,14 +374,14 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                         updateFile(index, 'description', e.target.value)
                       }
                       rows={2}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500 resize-none"
                       placeholder="คำอธิบายรูปภาพ"
                     />
                   </div>
 
                   {/* Alt Text */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       {THAI_LABELS.altText}
                     </label>
                     <input
@@ -390,7 +390,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                       onChange={(e) =>
                         updateFile(index, 'alt_text', e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       placeholder="ข้อความสำหรับผู้พิการทางสายตา"
                     />
                   </div>
@@ -404,11 +404,11 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                       onChange={(e) =>
                         updateFile(index, 'is_highlight', e.target.checked)
                       }
-                      className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
+                      className="w-4 h-4 text-orange-600 dark:text-orange-500 border-gray-300 dark:border-gray-600 rounded focus:ring-orange-500 dark:focus:ring-orange-400 bg-white dark:bg-gray-700"
                     />
                     <label
                       htmlFor={`highlight-${index}`}
-                      className="text-sm font-medium text-gray-700"
+                      className="text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
                       ⭐ {THAI_LABELS.setAsHighlight}
                     </label>
@@ -416,10 +416,10 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                 </div>
 
                 {/* Remove Button */}
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <button
                     onClick={() => removeFile(index)}
-                    className="text-red-600 hover:text-red-900 p-2"
+                    className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 p-2"
                     title={THAI_LABELS.remove}
                   >
                     <svg
@@ -449,7 +449,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
           <button
             onClick={handleUpload}
             disabled={isUploading}
-            className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isUploading
               ? `${THAI_LABELS.uploading}...`
@@ -458,7 +458,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
           <button
             onClick={() => router.back()}
             disabled={isUploading}
-            className="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition-colors disabled:opacity-50"
+            className="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors disabled:opacity-50"
           >
             {THAI_LABELS.cancel}
           </button>
