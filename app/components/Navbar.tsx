@@ -48,7 +48,7 @@ export default function Navbar() {
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 dark:bg-black/70 z-40 lg:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
           aria-hidden="true"
         />
@@ -56,7 +56,7 @@ export default function Navbar() {
 
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-white shadow-md' : 'bg-transparent'
+          isScrolled ? 'bg-white dark:bg-gray-800 shadow-md' : 'bg-transparent'
         }`}
       >
       <div className="container mx-auto px-6 py-4">
@@ -69,11 +69,13 @@ export default function Navbar() {
               width={46}
               height={48}
               priority
-              className={isScrolled ? 'brightness-0' : ''}
+              className={`transition-all duration-300 ${
+                isScrolled ? 'brightness-0 dark:brightness-100' : ''
+              }`}
             />
             <span
               className={`text-xl font-bold transition-colors duration-300 ${
-                isScrolled ? 'text-gray-900' : 'text-white'
+                isScrolled ? 'text-gray-900 dark:text-white' : 'text-white'
               }`}
               style={{ fontFamily: 'Rosella, sans-serif' }}
             >
@@ -89,8 +91,8 @@ export default function Navbar() {
                 href={item.href}
                 className={`transition-colors text-sm ${
                   isScrolled
-                    ? 'text-gray-900 hover:text-orange-600'
-                    : 'text-white hover:text-gray-300'
+                    ? 'text-gray-900 dark:text-white hover:text-orange-600 dark:hover:text-orange-400'
+                    : 'text-white hover:text-gray-300 dark:hover:text-gray-200'
                 }`}
               >
                 {item.label}
@@ -103,8 +105,8 @@ export default function Navbar() {
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className={`transition-colors text-sm border px-3 py-1 rounded flex items-center gap-1 ${
                   isScrolled
-                    ? 'text-gray-900 border-gray-300 hover:bg-gray-100'
-                    : 'text-white border-white/30 hover:bg-white/10'
+                    ? 'text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    : 'text-white border-white/30 dark:border-white/20 hover:bg-white/10 dark:hover:bg-white/5'
                 }`}
               >
                 {language} ▼
@@ -114,7 +116,7 @@ export default function Navbar() {
               {isDropdownOpen && (
                 <div
                   className={`absolute right-0 mt-2 w-32 rounded-md shadow-lg z-50 ${
-                    isScrolled ? 'bg-white' : 'bg-gray-800'
+                    isScrolled ? 'bg-white dark:bg-gray-800' : 'bg-gray-800'
                   }`}
                   onMouseLeave={() => setIsDropdownOpen(false)}
                 >
@@ -132,7 +134,7 @@ export default function Navbar() {
                       }}
                       className={`w-full text-left px-4 py-2 text-sm transition-colors ${
                         isScrolled
-                          ? 'text-gray-900 hover:bg-gray-100'
+                          ? 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
                           : 'text-white hover:bg-gray-700'
                       } ${language === 'TH' ? 'font-bold' : ''}`}
                     >
@@ -152,7 +154,7 @@ export default function Navbar() {
                       }}
                       className={`w-full text-left px-4 py-2 text-sm transition-colors ${
                         isScrolled
-                          ? 'text-gray-900 hover:bg-gray-100'
+                          ? 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
                           : 'text-white hover:bg-gray-700'
                       } ${language === 'EN' ? 'font-bold' : ''}`}
                     >
@@ -169,7 +171,7 @@ export default function Navbar() {
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className={`lg:hidden transition-colors ${
-              isScrolled ? 'text-gray-900' : 'text-white'
+              isScrolled ? 'text-gray-900 dark:text-white' : 'text-white'
             }`}
             aria-label="Toggle menu"
           >
@@ -188,22 +190,22 @@ export default function Navbar() {
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="lg:hidden mt-4 animate-in fade-in slide-in-from-top-2 duration-300">
-            <div className="pb-6 px-2 bg-white rounded-lg shadow-lg">
+            <div className="pb-6 px-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
             <div className="flex flex-col space-y-1">
               {menuItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="transition-all duration-200 text-sm py-3 px-4 rounded-md text-gray-900 hover:bg-orange-50 hover:text-orange-600"
+                  className="transition-all duration-200 text-sm py-3 px-4 rounded-md text-gray-900 dark:text-white hover:bg-orange-50 dark:hover:bg-orange-900/20 hover:text-orange-600 dark:hover:text-orange-400"
                 >
                   {item.label}
                 </Link>
               ))}
 
               {/* Mobile Language Selector */}
-              <div className="mt-4 pt-4 px-4 border-t border-gray-200">
-                <p className="text-xs font-semibold mb-3 text-gray-600">
+              <div className="mt-4 pt-4 px-4 border-t border-gray-200 dark:border-gray-700">
+                <p className="text-xs font-semibold mb-3 text-gray-600 dark:text-gray-400">
                   ภาษา / Language
                 </p>
                 <div className="flex gap-2">
@@ -219,8 +221,8 @@ export default function Navbar() {
                     }}
                     className={`flex-1 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
                       language === 'TH'
-                        ? 'bg-orange-600 text-white shadow-md'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        ? 'bg-orange-600 dark:bg-orange-500 text-white shadow-md'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     🇹🇭 ไทย
@@ -238,8 +240,8 @@ export default function Navbar() {
                     }}
                     className={`flex-1 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
                       language === 'EN'
-                        ? 'bg-orange-600 text-white shadow-md'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        ? 'bg-orange-600 dark:bg-orange-500 text-white shadow-md'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     🇬🇧 English

@@ -191,7 +191,7 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500">กำลังโหลด...</p>
+        <p className="text-gray-500 dark:text-gray-400">กำลังโหลด...</p>
       </div>
     )
   }
@@ -201,20 +201,20 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">จัดการ FAQ (คำถามที่พบบ่อย)</h1>
-          <p className="text-gray-600 mt-1">{trip?.title}</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">จัดการ FAQ (คำถามที่พบบ่อย)</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">{trip?.title}</p>
         </div>
         <div className="flex gap-3">
           <button
             onClick={() => setShowAddModal(true)}
-            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
           >
             <span>+</span>
             <span>เพิ่ม FAQ</span>
           </button>
           <Link
             href={`/admin/trips/${tripId}`}
-            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-semibold"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-semibold"
           >
             กลับ
           </Link>
@@ -223,11 +223,11 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
 
       {/* FAQs List */}
       {faqs.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">ยังไม่มี FAQ</p>
+        <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <p className="text-gray-500 dark:text-gray-400">ยังไม่มี FAQ</p>
           <button
             onClick={() => setShowAddModal(true)}
-            className="mt-4 text-purple-600 hover:text-purple-700 font-semibold"
+            className="mt-4 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-semibold"
           >
             เริ่มเพิ่ม FAQ แรก
           </button>
@@ -235,22 +235,22 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
       ) : (
         <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <div key={faq.id} className="bg-white border-2 border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+            <div key={faq.id} className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl shadow-md hover:shadow-lg transition-shadow">
               {/* FAQ Header */}
               <div
                 onClick={() => toggleFaq(faq.id)}
-                className="flex items-start gap-4 p-5 cursor-pointer hover:bg-gray-50 transition-colors rounded-t-xl"
+                className="flex items-start gap-4 p-5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors rounded-t-xl"
               >
-                <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md">
+                <div className="shrink-0 w-14 h-14 bg-linear-to-br from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-500 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md">
                   {index + 1}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-xl text-gray-900 mb-2">{faq.question}</h3>
+                  <h3 className="font-bold text-xl text-gray-900 dark:text-white mb-2">{faq.question}</h3>
 
                   {/* Summary badges */}
                   <div className="flex flex-wrap gap-2">
                     {faq.images && faq.images.length > 0 && (
-                      <span className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full">
+                      <span className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 text-xs font-semibold rounded-full">
                         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
                         </svg>
@@ -259,13 +259,13 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
+                <div className="flex items-center gap-3 shrink-0">
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
                       handleOpenEditModal(faq)
                     }}
-                    className="px-3 py-1.5 text-purple-600 hover:bg-purple-50 font-semibold text-sm rounded-lg transition-colors"
+                    className="px-3 py-1.5 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/30 font-semibold text-sm rounded-lg transition-colors"
                   >
                     แก้ไข
                   </button>
@@ -274,12 +274,12 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
                       e.stopPropagation()
                       handleDeleteFaq(faq.id)
                     }}
-                    className="px-3 py-1.5 text-red-600 hover:bg-red-50 font-semibold text-sm rounded-lg transition-colors"
+                    className="px-3 py-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 font-semibold text-sm rounded-lg transition-colors"
                   >
                     ลบ
                   </button>
                   <svg
-                    className={`w-6 h-6 text-gray-400 transition-transform ${expandedFaqs.has(faq.id) ? 'rotate-180' : ''}`}
+                    className={`w-6 h-6 text-gray-400 dark:text-gray-500 transition-transform ${expandedFaqs.has(faq.id) ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -291,12 +291,12 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
 
               {/* FAQ Content (Expanded) */}
               {expandedFaqs.has(faq.id) && (
-                <div className="border-t-2 border-gray-100 bg-gray-50">
+                <div className="border-t-2 border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                   {/* Answer */}
                   <div className="px-5 pt-4 pb-2">
-                    <div className="bg-white p-4 rounded-lg border border-gray-200">
-                      <h4 className="font-semibold text-gray-700 mb-2">คำตอบ:</h4>
-                      <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                      <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-2">คำตอบ:</h4>
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
                         {faq.answer}
                       </p>
                     </div>
@@ -304,15 +304,15 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
 
                   <div className="p-5">
                     {/* Images Section */}
-                    <div className="bg-white rounded-xl border-2 border-gray-200 p-5">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-5">
                       <div className="flex items-center justify-between mb-4">
-                        <h4 className="font-bold text-lg text-gray-900 flex items-center gap-2">
-                          <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                        <h4 className="font-bold text-lg text-gray-900 dark:text-white flex items-center gap-2">
+                          <svg className="w-5 h-5 text-purple-600 dark:text-purple-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
                           </svg>
                           รูปภาพประกอบคำตอบ
                         </h4>
-                        <label className="flex items-center gap-1 px-4 py-2 text-sm bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors cursor-pointer">
+                        <label className="flex items-center gap-1 px-4 py-2 text-sm bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors cursor-pointer">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
@@ -329,7 +329,7 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                           {faq.images.map((img: TripFAQImage) => (
                             <div key={img.id} className="relative group">
-                              <div className="aspect-video rounded-lg overflow-hidden border-2 border-gray-200 group-hover:border-purple-400 transition-colors">
+                              <div className="aspect-video rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-700 group-hover:border-purple-400 dark:group-hover:border-purple-500 transition-colors">
                                 <img
                                   src={img.storage_url}
                                   alt={img.alt_text || img.caption || 'FAQ image'}
@@ -337,11 +337,11 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
                                 />
                               </div>
                               {img.caption && (
-                                <p className="text-xs text-gray-700 mt-2 font-medium truncate px-1">{img.caption}</p>
+                                <p className="text-xs text-gray-700 dark:text-gray-300 mt-2 font-medium truncate px-1">{img.caption}</p>
                               )}
                               <button
                                 onClick={() => handleDeleteImage(img.id)}
-                                className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
                               >
                                 ลบ
                               </button>
@@ -349,12 +349,12 @@ export default function TripFaqsPage({ params }: { params: Promise<{ id: string 
                           ))}
                         </div>
                       ) : (
-                        <div className="text-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                          <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="text-center py-8 bg-gray-50 dark:bg-gray-900 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
+                          <svg className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
-                          <p className="text-sm text-gray-500">ยังไม่มีรูปภาพ</p>
-                          <label className="mt-2 inline-block text-sm text-purple-600 hover:text-purple-700 font-semibold cursor-pointer">
+                          <p className="text-sm text-gray-500 dark:text-gray-400">ยังไม่มีรูปภาพ</p>
+                          <label className="mt-2 inline-block text-sm text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-semibold cursor-pointer">
                             + อัปโหลดรูปภาพแรก
                             <input
                               type="file"

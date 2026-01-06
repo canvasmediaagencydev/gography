@@ -82,7 +82,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="th">
-      <head />
+      <head>
+        <meta name="color-scheme" content="light dark" />
+      </head>
       <body className="antialiased">
         <GoogleTranslateProvider />
         {children}

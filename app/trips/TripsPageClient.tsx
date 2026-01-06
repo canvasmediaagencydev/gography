@@ -123,7 +123,7 @@ export default function TripsPageClient() {
             className="w-full h-full object-cover"
           />
           {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-black/50 dark:bg-black/60" />
         </div>
 
         {/* Hero Content */}
@@ -135,7 +135,7 @@ export default function TripsPageClient() {
       </section>
 
       {/* Filters and Trips Section */}
-      <section className="bg-white py-8 md:py-12 px-4 md:px-6">
+      <section className="bg-white dark:bg-gray-900 py-8 md:py-12 px-4 md:px-6">
         <div className="container mx-auto max-w-7xl">
           {/* Filter Dropdowns */}
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center mb-8 md:mb-12">
@@ -143,7 +143,7 @@ export default function TripsPageClient() {
               <select
                 value={selectedDestination}
                 onChange={(e) => setSelectedDestination(e.target.value)}
-                className="w-full bg-white border-2 border-gray-300 text-gray-700 rounded-lg px-4 md:px-6 py-3 pr-10 focus:outline-none focus:border-orange-600 appearance-none cursor-pointer sm:min-w-[200px]"
+                className="w-full bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 md:px-6 py-3 pr-10 focus:outline-none focus:border-orange-600 dark:focus:border-orange-500 appearance-none cursor-pointer sm:min-w-[200px]"
               >
                 <option value="ทั่วหมด">🌍 ทุกประเทศ</option>
                 {filterOptions.countries.map((country) => (
@@ -152,7 +152,7 @@ export default function TripsPageClient() {
                   </option>
                 ))}
               </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700 dark:text-gray-300">
                 <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                 </svg>
@@ -163,7 +163,7 @@ export default function TripsPageClient() {
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
-                className="w-full bg-white border-2 border-gray-300 text-gray-700 rounded-lg px-4 md:px-6 py-3 pr-10 focus:outline-none focus:border-orange-600 appearance-none cursor-pointer sm:min-w-[200px]"
+                className="w-full bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 md:px-6 py-3 pr-10 focus:outline-none focus:border-orange-600 dark:focus:border-orange-500 appearance-none cursor-pointer sm:min-w-[200px]"
               >
                 <option value="ทุกเดือน">ทุกเดือน</option>
                 {filterOptions.months.map((month) => (
@@ -172,7 +172,7 @@ export default function TripsPageClient() {
                   </option>
                 ))}
               </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700 dark:text-gray-300">
                 <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                 </svg>
@@ -183,11 +183,11 @@ export default function TripsPageClient() {
           {/* Trips Grid */}
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
-              <p className="text-gray-500">กำลังโหลด...</p>
+              <p className="text-gray-500 dark:text-gray-400">กำลังโหลด...</p>
             </div>
           ) : allTrips.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500">ไม่พบทริปที่ตรงกับการค้นหา</p>
+              <p className="text-gray-500 dark:text-gray-400">ไม่พบทริปที่ตรงกับการค้นหา</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -211,8 +211,8 @@ export default function TripsPageClient() {
                 disabled={currentPage === 1}
                 className={`px-3 md:px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-colors ${
                   currentPage === 1
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-white border-2 border-gray-300 text-gray-700 hover:border-slate-800 hover:text-slate-800'
+                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
+                    : 'bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400'
                 }`}
               >
                 <span className="hidden sm:inline">← ก่อนหน้า</span>
@@ -234,12 +234,12 @@ export default function TripsPageClient() {
                   if (!showOnMobile && totalPages > 5) {
                     // Show ellipsis only once between ranges
                     if (page === 2 && currentPage > 3) {
-                      return <span key={page} className="md:hidden px-2 text-gray-400">...</span>;
+                      return <span key={page} className="md:hidden px-2 text-gray-400 dark:text-gray-500">...</span>;
                     }
                     if (page === totalPages - 1 && currentPage < totalPages - 2) {
-                      return <span key={page} className="md:hidden px-2 text-gray-400">...</span>;
+                      return <span key={page} className="md:hidden px-2 text-gray-400 dark:text-gray-500">...</span>;
                     }
-                    return <button key={page} className="hidden md:inline-flex w-8 md:w-10 h-8 md:h-10 rounded-lg font-medium text-sm md:text-base items-center justify-center transition-colors bg-white border-2 border-gray-300 text-gray-700 hover:border-slate-800 hover:text-slate-800" onClick={() => loadTrips(page)}>{page}</button>;
+                    return <button key={page} className="hidden md:inline-flex w-8 md:w-10 h-8 md:h-10 rounded-lg font-medium text-sm md:text-base items-center justify-center transition-colors bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400" onClick={() => loadTrips(page)}>{page}</button>;
                   }
 
                   return (
@@ -248,8 +248,8 @@ export default function TripsPageClient() {
                       onClick={() => loadTrips(page)}
                       className={`w-8 md:w-10 h-8 md:h-10 rounded-lg font-medium text-sm md:text-base transition-colors ${
                         currentPage === page
-                          ? 'bg-slate-800 text-white'
-                          : 'bg-white border-2 border-gray-300 text-gray-700 hover:border-slate-800 hover:text-slate-800'
+                          ? 'bg-slate-800 dark:bg-orange-600 text-white'
+                          : 'bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400'
                       }`}
                     >
                       {page}
@@ -264,8 +264,8 @@ export default function TripsPageClient() {
                 disabled={currentPage === totalPages}
                 className={`px-3 md:px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-colors ${
                   currentPage === totalPages
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-white border-2 border-gray-300 text-gray-700 hover:border-slate-800 hover:text-slate-800'
+                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
+                    : 'bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400'
                 }`}
               >
                 <span className="hidden sm:inline">ถัดไป →</span>

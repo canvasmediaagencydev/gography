@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-800 text-white">
+    <footer className="bg-slate-800 dark:bg-gray-900 text-white">
       {/* Main Footer Content */}
       <div className="container mx-auto max-w-7xl px-6 py-12 md:py-16">
         <div className="flex flex-col md:flex-row md:justify-between gap-8 md:gap-4">
@@ -16,7 +16,7 @@ export default function Footer() {
                 width={50}
                 height={50}
               />
-              <span className="text-xs text-gray-400">Gography</span>
+              <span className="text-xs text-gray-400 dark:text-gray-500">Gography</span>
             </div>
 
             <h3
@@ -26,7 +26,7 @@ export default function Footer() {
               GOGRAPHY
             </h3>
 
-            <div className="text-gray-300 text-sm space-y-1">
+            <div className="text-gray-300 dark:text-gray-400 text-sm space-y-1">
               <p>79/576 ซอยรามคำแหง 150 แขวงสะพานสูง</p>
               <p>เขตสะพานสูง กรุงเทพมหานคร 10240</p>
             </div>
@@ -37,13 +37,13 @@ export default function Footer() {
             <h4 className="text-lg md:text-xl font-bold mb-4 md:mb-6">Follow us</h4>
 
             <div className="space-y-2 mb-6 text-sm">
-              <p className="text-gray-300">
+              <p className="text-gray-300 dark:text-gray-400">
                 Tel: 097-919-9293
               </p>
-              <p className="text-gray-300">
+              <p className="text-gray-300 dark:text-gray-400">
                 Email: info@gography.net
               </p>
-              <p className="text-gray-300">
+              <p className="text-gray-300 dark:text-gray-400">
                 Line: @Gography
               </p>
             </div>
@@ -53,7 +53,7 @@ export default function Footer() {
               <Link
                 href="https://facebook.com"
                 target="_blank"
-                className="bg-white/10 hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
+                className="bg-white/10 dark:bg-white/10 hover:bg-white/20 dark:hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
                 aria-label="Facebook"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -64,7 +64,7 @@ export default function Footer() {
               <Link
                 href="https://instagram.com"
                 target="_blank"
-                className="bg-white/10 hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
+                className="bg-white/10 dark:bg-white/10 hover:bg-white/20 dark:hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
                 aria-label="Instagram"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -75,7 +75,7 @@ export default function Footer() {
               <Link
                 href="https://line.me"
                 target="_blank"
-                className="bg-white/10 hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
+                className="bg-white/10 dark:bg-white/10 hover:bg-white/20 dark:hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
                 aria-label="Line"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -88,9 +88,9 @@ export default function Footer() {
       </div>
 
       {/* Copyright Bar */}
-      <div className="border-t border-slate-700">
+      <div className="border-t border-slate-700 dark:border-gray-700">
         <div className="container mx-auto max-w-7xl px-6 py-4">
-          <p className="text-center text-gray-400 text-xs">
+          <p className="text-center text-gray-400 dark:text-gray-500 text-xs">
             Copyright © 2025 Gography. All rights reserved
           </p>
         </div>

@@ -57,33 +57,33 @@ export default function AboutPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white dark:bg-gray-900">
         {/* Hero Section */}
         <section className="relative h-[60vh] md:h-[70vh] overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920&q=80)' }}
           >
-            <div className="absolute inset-0 bg-black/40"></div>
+            <div className="absolute inset-0 bg-black/40 dark:bg-black/50"></div>
           </div>
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center justify-center">
             <div className="text-center text-white">
               <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4">
-                "เราเชื่อว่าทุกการเดินทาง
+                &quot;เราเชื่อว่าทุกการเดินทาง
               </h1>
               <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold">
-                คือของขวัญที่ควรพิเศษ"
+                คือของขวัญที่ควรพิเศษ&quot;
               </h2>
             </div>
           </div>
         </section>
 
         {/* GOGRAPHY Section */}
-        <section className="py-20 px-6 bg-white">
+        <section className="py-20 px-6 bg-white dark:bg-gray-800">
           <div className="container mx-auto max-w-7xl">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">GOGRAPHY</h2>
-              <p className="text-gray-700 text-lg md:text-xl max-w-5xl mx-auto leading-relaxed">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-8">GOGRAPHY</h2>
+              <p className="text-gray-700 dark:text-gray-300 text-lg md:text-xl max-w-5xl mx-auto leading-relaxed">
                 ก่อตั้งจากความตั้งใจที่จะอยากมอบประสบการณ์การเดินทางที่อบอุ่นและเหมาะกับความต้องการที่แตกต่างของลูกค้า
                 <br />
                 เราเชื่อว่าการเดินทางคือของขวัญที่มีค่าสำหรับทุกคน ดังนั้นเราจึงให้ความสำคัญกับทุกรายละเอียดเพื่อสร้างประสบการณ์ที่น่าจดจำ
@@ -96,7 +96,7 @@ export default function AboutPage() {
                 {/* Previous Button */}
                 <button
                   onClick={prevSlide}
-                  className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-900 text-white flex items-center justify-center hover:bg-gray-800 transition-colors z-10"
+                  className="shrink-0 w-12 h-12 rounded-full bg-gray-900 dark:bg-gray-700 text-white flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors z-10"
                   aria-label="Previous"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,7 +130,7 @@ export default function AboutPage() {
                 {/* Next Button */}
                 <button
                   onClick={nextSlide}
-                  className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-900 text-white flex items-center justify-center hover:bg-gray-800 transition-colors z-10"
+                  className="shrink-0 w-12 h-12 rounded-full bg-gray-900 dark:bg-gray-700 text-white flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors z-10"
                   aria-label="Next"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -142,7 +142,7 @@ export default function AboutPage() {
 
             {/* Description Text */}
             <div className="text-center max-w-5xl mx-auto">
-              <p className="text-gray-700 text-base md:text-lg leading-relaxed">
+              <p className="text-gray-700 dark:text-gray-300 text-base md:text-lg leading-relaxed">
                 เราเชื่อว่าไกด์ที่ดีในการจัดทริปควรมีความเชี่ยวชาญทั้งด้านการท่องเที่ยวและการถ่ายภาพ
                 พร้อมด้วย <span className="text-orange-600 font-semibold">ช่างภาพมืออาชีพ</span> ที่พร้อมบันทึกทุกช่วงเวลาพิเศษตลอดการเดินทาง
               </p>
@@ -151,38 +151,38 @@ export default function AboutPage() {
         </section>
 
         {/* What We Do Section */}
-        <section className="py-20 px-6 bg-gray-50">
+        <section className="py-20 px-6 bg-gray-50 dark:bg-gray-800">
           <div className="container mx-auto max-w-7xl">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-16">เราทำอะไร?</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white text-center mb-16">เราทำอะไร?</h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* Left Side - Text Content */}
               <div className="space-y-8">
-                <div className="bg-white p-8 rounded-2xl shadow-md">
-                  <p className="text-gray-700 text-lg leading-relaxed">
+                <div className="bg-white dark:bg-gray-700 dark:border dark:border-gray-600 p-8 rounded-2xl shadow-md">
+                  <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
                     เป็นผู้เชี่ยวชาญด้านการจัดทริปถ่ายภาพ
                     จัดทริปด้วยกลุ่มเล็ก และคัดสรรสถานที่ท่องเที่ยวอย่างพิถีพิถัน
                   </p>
                 </div>
 
-                <div className="bg-white p-8 rounded-2xl shadow-md">
-                  <p className="text-gray-700 text-lg leading-relaxed">
+                <div className="bg-white dark:bg-gray-700 dark:border dark:border-gray-600 p-8 rounded-2xl shadow-md">
+                  <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
                     มุ่งมั่นที่จะมอบประสบการณ์การเดินทาง
-                    ที่เหนือความคาดหวัง "การันตีความประทับใจ
-                    ของทุกผู้ร่วมเดินทาง"
+                    ที่เหนือความคาดหวัง &quot;การันตีความประทับใจ
+                    ของทุกผู้ร่วมเดินทาง&quot;
                   </p>
                 </div>
 
-                <div className="bg-white p-8 rounded-2xl shadow-md">
-                  <p className="text-gray-700 text-lg leading-relaxed">
+                <div className="bg-white dark:bg-gray-700 dark:border dark:border-gray-600 p-8 rounded-2xl shadow-md">
+                  <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
                     ทีมงานมีประสบการณ์การทำงานมากกว่า 15 ปี
                     ในการนำเที่ยวและถ่ายภาพ ที่หลากหลายประเทศ
                     ทั่วโลกทั้งในเอเชียและยุโรป
                   </p>
                 </div>
 
-                <div className="bg-white p-8 rounded-2xl shadow-md">
-                  <p className="text-gray-700 text-lg leading-relaxed">
+                <div className="bg-white dark:bg-gray-700 dark:border dark:border-gray-600 p-8 rounded-2xl shadow-md">
+                  <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
                     ที่ปรึกษาการเดินทางส่วนตัว
                     ช่วยวางแผนและจัดทริปให้ตรงกับ
                     ความต้องการและงบประมาณของคุณ
@@ -205,20 +205,20 @@ export default function AboutPage() {
         </section>
 
         {/* Photo Gallery Section */}
-        <section className="py-20 px-6 bg-white">
+        <section className="py-20 px-6 bg-white dark:bg-gray-900">
           <div className="container mx-auto max-w-7xl">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white text-center mb-16">
               ภาพจากการเดินทาง
             </h2>
 
             {/* Gallery Grid */}
             {isLoadingGallery ? (
               <div className="flex items-center justify-center py-12 mb-12">
-                <p className="text-gray-500">กำลังโหลดรูปภาพ...</p>
+                <p className="text-gray-500 dark:text-gray-400">กำลังโหลดรูปภาพ...</p>
               </div>
             ) : galleryImages.length === 0 ? (
               <div className="text-center py-12 mb-12">
-                <p className="text-gray-500">ยังไม่มีรูปภาพในแกลเลอรี</p>
+                <p className="text-gray-500 dark:text-gray-400">ยังไม่มีรูปภาพในแกลเลอรี</p>
               </div>
             ) : (
               <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-12">
@@ -249,15 +249,15 @@ export default function AboutPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-6 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+        <section className="py-20 px-6 bg-linear-to-br from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-900 text-white">
           <div className="container mx-auto max-w-4xl text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              "อยากปล่อยให้<span className="text-orange-500">ความฝัน</span>
+              &quot;อยากปล่อยให้<span className="text-orange-500 dark:text-orange-400">ความฝัน</span>
             </h2>
             <h3 className="text-3xl md:text-4xl font-bold mb-8">
-              ในการเดินทางของคุณ<span className="text-orange-500">เป็นจริง</span>"
+              ในการเดินทางของคุณ<span className="text-orange-500 dark:text-orange-400">เป็นจริง</span>&quot;
             </h3>
-            <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+            <p className="text-xl text-gray-300 dark:text-gray-400 mb-8 leading-relaxed">
               ปล่อยให้ทีมผู้เชี่ยวชาญของเราดูแลทุกรายละเอียด
               <br />
               เพื่อให้คุณได้เพลิดเพลินกับการท่องเที่ยวและสร้างความทรงจำที่ไม่มีวันลืมไปกับเรา
@@ -266,7 +266,7 @@ export default function AboutPage() {
               เริ่มต้นการเดินทางของคุณวันนี้
             </p>
             <Link href="/#contact">
-              <button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-12 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-lg">
+              <button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-12 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg text-lg">
                 สอบถามหรือจองทริป
               </button>
             </Link>

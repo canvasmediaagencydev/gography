@@ -112,7 +112,7 @@ export default function Hero() {
           </div>
         ))}
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-black/40 dark:bg-black/50" />
       </div>
 
       {/* Hero Content */}
@@ -140,7 +140,7 @@ export default function Hero() {
         </div>
 
         {/* Search Section */}
-        <div className="bg-white/10 backdrop-blur-md rounded-lg p-6 md:p-8 max-w-3xl w-full">
+        <div className="bg-white/10 dark:bg-gray-900/40 backdrop-blur-md rounded-lg p-6 md:p-8 max-w-3xl w-full dark:border dark:border-gray-700/50">
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             {/* Country Dropdown */}
             <div className="flex-1">
@@ -179,7 +179,7 @@ export default function Hero() {
             {/* Search Button */}
             <button
               onClick={handleSearch}
-              className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg hover:bg-white/10 transition-colors"
+              className="bg-transparent border-2 border-white dark:border-gray-300 text-white dark:text-gray-100 px-6 py-3 rounded-lg hover:bg-white/10 dark:hover:bg-gray-800/30 transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -196,13 +196,13 @@ export default function Hero() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={handleBookTrip}
-              className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-8 py-3 rounded-full transition-colors"
+              className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-full transition-colors"
             >
               จองทริป
             </button>
             <button
               onClick={handleContactLine}
-              className="bg-gray-700 hover:bg-gray-800 text-white font-semibold px-8 py-3 rounded-full transition-colors"
+              className="bg-gray-700 hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-700 text-white font-semibold px-8 py-3 rounded-full transition-colors"
             >
               สอบถามข้อมูล
             </button>
@@ -215,8 +215,8 @@ export default function Hero() {
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-2 h-2 rounded-full transition-all ${
-                index === currentSlide ? 'bg-white w-8' : 'bg-white/50'
+                className={`w-2 h-2 rounded-full transition-all ${
+                index === currentSlide ? 'bg-white dark:bg-white w-8' : 'bg-white/50 dark:bg-white/60'
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
@@ -227,7 +227,7 @@ export default function Hero() {
       {/* Navigation Arrows */}
       <button
         onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
-        className="hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-colors"
+        className="hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 dark:bg-gray-800/30 hover:bg-white/30 dark:hover:bg-gray-800/40 backdrop-blur-sm text-white p-3 rounded-full transition-colors"
         aria-label="Previous slide"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -236,22 +236,11 @@ export default function Hero() {
       </button>
       <button
         onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
-        className="hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-colors"
+        className="hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 dark:bg-gray-800/30 hover:bg-white/30 dark:hover:bg-gray-800/40 backdrop-blur-sm text-white p-3 rounded-full transition-colors"
         aria-label="Next slide"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
-
-      {/* Chat Button */}
-      <button
-        onClick={handleContactLine}
-        className="fixed bottom-8 right-8 z-50 bg-orange-600 hover:bg-orange-700 text-white p-4 rounded-full shadow-lg transition-colors"
-        aria-label="Chat with us"
-      >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
         </svg>
       </button>
     </section>

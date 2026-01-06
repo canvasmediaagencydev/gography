@@ -19,7 +19,7 @@ export default function AdminLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex min-h-screen bg-linear-to-br from-slate-50 via-slate-100 to-white text-slate-900">
+    <div className="flex min-h-screen bg-linear-to-br from-slate-50 via-slate-100 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 text-slate-900 dark:text-white">
       <Sidebar />
 
       <div className="flex-1 ml-64 lg:ml-72">

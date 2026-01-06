@@ -75,14 +75,14 @@ export default function VideoGallery() {
             className="w-full h-full object-cover transition-all duration-700"
           />
         )}
-        <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/50 to-black/70"></div>
+        <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/50 to-black/70 dark:from-black/70 dark:via-black/60 dark:to-black/80"></div>
       </div>
 
       {/* Content Container */}
       <div className="relative z-10 container mx-auto px-6 py-16 md:py-24">
         {/* Location Badge */}
         <div className="mb-8 md:mb-12">
-          <div className="inline-flex items-center gap-2 bg-orange-600/90 backdrop-blur-sm px-4 py-2 rounded-full">
+          <div className="inline-flex items-center gap-2 bg-orange-600/90 dark:bg-orange-500/90 backdrop-blur-sm px-4 py-2 rounded-full">
             <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
             </svg>
@@ -106,7 +106,7 @@ export default function VideoGallery() {
           <div className="flex items-center gap-4 mt-8">
             <button
               onClick={() => setIsPlaying(!isPlaying)}
-              className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 rounded-full font-semibold flex items-center gap-2 transition-all duration-300 hover:scale-105 shadow-lg"
+              className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white px-8 py-3 rounded-full font-semibold flex items-center gap-2 transition-all duration-300 hover:scale-105 shadow-lg"
             >
               {isPlaying ? (
                 <>
@@ -133,8 +133,8 @@ export default function VideoGallery() {
             <div
               key={index}
               onClick={() => handleVideoClick(index)}
-              className={`group relative rounded-xl overflow-hidden shadow-2xl hover:shadow-orange-500/20 transition-all duration-300 hover:-translate-y-2 cursor-pointer ${
-                activeVideoIndex === index ? 'ring-4 ring-orange-500' : ''
+              className={`group relative rounded-xl overflow-hidden shadow-2xl hover:shadow-orange-500/20 dark:hover:shadow-orange-400/20 transition-all duration-300 hover:-translate-y-2 cursor-pointer ${
+                activeVideoIndex === index ? 'ring-4 ring-orange-500 dark:ring-orange-400' : ''
               }`}
             >
               {/* Video Thumbnail */}
@@ -146,19 +146,19 @@ export default function VideoGallery() {
                 />
 
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent dark:from-black/90 dark:via-black/40 dark:to-transparent"></div>
 
                 {/* Play Button or Now Playing Indicator */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   {activeVideoIndex === index && isPlaying ? (
-                    <div className="bg-orange-600 w-16 h-16 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                    <div className="bg-orange-600 dark:bg-orange-500 w-16 h-16 rounded-full flex items-center justify-center shadow-lg animate-pulse">
                       <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
                       </svg>
                     </div>
                   ) : (
-                    <div className="bg-orange-600 hover:bg-orange-500 w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-lg">
-                      <svg className="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                    <div className="bg-orange-600 hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-400 w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-lg">
+                      <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M8 5v14l11-7z" />
                       </svg>
                     </div>

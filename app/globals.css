@@ -11,6 +11,12 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --card-background: #ffffff;
+  --card-foreground: #111827;
+  --section-background: #f9fafb;
+  --section-foreground: #111827;
+  --border-color: #e5e7eb;
+  --muted-foreground: #6b7280;
   --font-base-sans: "Noto Sans Thai", Arial, Helvetica, sans-serif;
   --font-base-mono: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
@@ -25,8 +31,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #111827;
     --foreground: #ededed;
+    --card-background: #1f2937;
+    --card-foreground: #f9fafb;
+    --section-background: #111827;
+    --section-foreground: #f9fafb;
+    --border-color: #374151;
+    --muted-foreground: #9ca3af;
   }
 }
 

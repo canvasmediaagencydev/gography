@@ -221,7 +221,7 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500">กำลังโหลด...</p>
+        <p className="text-gray-500 dark:text-gray-400">กำลังโหลด...</p>
       </div>
     )
   }
@@ -233,20 +233,20 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">กำหนดการเดินทางรายวัน</h1>
-          <p className="text-gray-600 mt-1">{trip?.title}</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">กำหนดการเดินทางรายวัน</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">{trip?.title}</p>
         </div>
         <div className="flex gap-3">
           <button
             onClick={() => setShowAddModal(true)}
-            className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
           >
             <span>+</span>
             <span>เพิ่มวันเดินทาง</span>
           </button>
           <Link
             href={`/admin/trips/${tripId}`}
-            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-semibold"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-semibold"
           >
             กลับ
           </Link>
@@ -255,11 +255,11 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
 
       {/* Days List */}
       {days.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">ยังไม่มีกำหนดการเดินทาง</p>
+        <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <p className="text-gray-500 dark:text-gray-400">ยังไม่มีกำหนดการเดินทาง</p>
           <button
             onClick={() => setShowAddModal(true)}
-            className="mt-4 text-orange-600 hover:text-orange-700 font-semibold"
+            className="mt-4 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 font-semibold"
           >
             เริ่มเพิ่มวันเดินทาง
           </button>
@@ -267,22 +267,22 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
       ) : (
         <div className="space-y-4">
           {days.map((day) => (
-            <div key={day.id} className="bg-white border-2 border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+            <div key={day.id} className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl shadow-md hover:shadow-lg transition-shadow">
               {/* Day Header */}
               <div
                 onClick={() => toggleDay(day.id)}
-                className="flex items-start gap-4 p-5 cursor-pointer hover:bg-gray-50 transition-colors rounded-t-xl"
+                className="flex items-start gap-4 p-5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors rounded-t-xl"
               >
-                <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md">
+                <div className="shrink-0 w-14 h-14 bg-linear-to-br from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-500 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md">
                   {day.day_number}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-xl text-gray-900 mb-2">{day.day_title}</h3>
+                  <h3 className="font-bold text-xl text-gray-900 dark:text-white mb-2">{day.day_title}</h3>
 
                   {/* Summary badges */}
                   <div className="flex flex-wrap gap-2 mb-2">
                     {day.activities && day.activities.length > 0 && (
-                      <span className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+                      <span className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-semibold rounded-full">
                         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                           <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                           <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
@@ -291,7 +291,7 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                       </span>
                     )}
                     {day.images && day.images.length > 0 && (
-                      <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
+                      <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-semibold rounded-full">
                         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
                         </svg>
@@ -301,16 +301,16 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                   </div>
 
                   {day.day_description && (
-                    <p className="text-sm text-gray-600 line-clamp-2">{day.day_description}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{day.day_description}</p>
                   )}
                 </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
+                <div className="flex items-center gap-3 shrink-0">
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
                       handleOpenEditDayModal(day)
                     }}
-                    className="px-3 py-1.5 text-orange-600 hover:bg-orange-50 font-semibold text-sm rounded-lg transition-colors"
+                    className="px-3 py-1.5 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/30 font-semibold text-sm rounded-lg transition-colors"
                   >
                     แก้ไข
                   </button>
@@ -319,12 +319,12 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                       e.stopPropagation()
                       handleDeleteDay(day.id)
                     }}
-                    className="px-3 py-1.5 text-red-600 hover:bg-red-50 font-semibold text-sm rounded-lg transition-colors"
+                    className="px-3 py-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 font-semibold text-sm rounded-lg transition-colors"
                   >
                     ลบ
                   </button>
                   <svg
-                    className={`w-6 h-6 text-gray-400 transition-transform ${expandedDays.has(day.id) ? 'rotate-180' : ''}`}
+                    className={`w-6 h-6 text-gray-400 dark:text-gray-500 transition-transform ${expandedDays.has(day.id) ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -336,11 +336,11 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
 
               {/* Day Content (Expanded) */}
               {expandedDays.has(day.id) && (
-                <div className="border-t-2 border-gray-100 bg-gray-50">
+                <div className="border-t-2 border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
                   {/* Full Description */}
                   {day.day_description && (
                     <div className="px-5 pt-4 pb-2">
-                      <p className="text-gray-700 leading-relaxed whitespace-pre-wrap bg-white p-4 rounded-lg border border-gray-200">
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                         {day.day_description}
                       </p>
                     </div>
@@ -348,10 +348,10 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
 
                   <div className="p-5 space-y-6">
                     {/* Activities Section */}
-                    <div className="bg-white rounded-xl border-2 border-gray-200 p-5">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-5">
                       <div className="flex items-center justify-between mb-4">
-                        <h4 className="font-bold text-lg text-gray-900 flex items-center gap-2">
-                          <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                        <h4 className="font-bold text-lg text-gray-900 dark:text-white flex items-center gap-2">
+                          <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                             <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
                           </svg>
@@ -359,7 +359,7 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                         </h4>
                         <button
                           onClick={() => handleOpenAddActivityModal(day.id, day.day_title)}
-                          className="flex items-center gap-1 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
+                          className="flex items-center gap-1 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -370,23 +370,23 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                       {day.activities && day.activities.length > 0 ? (
                         <div className="space-y-2">
                           {day.activities.map((activity: TripItineraryActivity) => (
-                            <div key={activity.id} className="flex gap-3 items-start p-3 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition-colors group">
+                            <div key={activity.id} className="flex gap-3 items-start p-3 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-800 transition-colors group">
                               {activity.activity_time && (
-                                <span className="flex-shrink-0 px-3 py-1 bg-orange-600 text-white font-bold text-sm rounded-md min-w-[70px] text-center">
+                                <span className="shrink-0 px-3 py-1 bg-orange-600 dark:bg-orange-500 text-white font-bold text-sm rounded-md min-w-[70px] text-center">
                                   {activity.activity_time}
                                 </span>
                               )}
-                              <span className="flex-1 text-gray-800 font-medium leading-relaxed">{activity.activity_description}</span>
-                              <div className="flex gap-2 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <span className="flex-1 text-gray-800 dark:text-gray-200 font-medium leading-relaxed">{activity.activity_description}</span>
+                              <div className="flex gap-2 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <button
                                   onClick={() => handleOpenEditActivityModal(activity, day.day_title)}
-                                  className="px-3 py-1 text-xs bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md"
+                                  className="px-3 py-1 text-xs bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-md"
                                 >
                                   แก้ไข
                                 </button>
                                 <button
                                   onClick={() => handleDeleteActivity(activity.id)}
-                                  className="px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md"
+                                  className="px-3 py-1 text-xs bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold rounded-md"
                                 >
                                   ลบ
                                 </button>
@@ -395,14 +395,14 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                           ))}
                         </div>
                       ) : (
-                        <div className="text-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                          <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="text-center py-8 bg-gray-50 dark:bg-gray-900 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
+                          <svg className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                           </svg>
-                          <p className="text-sm text-gray-500">ยังไม่มีกิจกรรม</p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">ยังไม่มีกิจกรรม</p>
                           <button
                             onClick={() => handleOpenAddActivityModal(day.id, day.day_title)}
-                            className="mt-2 text-sm text-blue-600 hover:text-blue-700 font-semibold"
+                            className="mt-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold"
                           >
                             + เพิ่มกิจกรรมแรก
                           </button>
@@ -411,15 +411,15 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                     </div>
 
                     {/* Images Section */}
-                    <div className="bg-white rounded-xl border-2 border-gray-200 p-5">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-5">
                       <div className="flex items-center justify-between mb-4">
-                        <h4 className="font-bold text-lg text-gray-900 flex items-center gap-2">
-                          <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                        <h4 className="font-bold text-lg text-gray-900 dark:text-white flex items-center gap-2">
+                          <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
                           </svg>
                           รูปภาพ
                         </h4>
-                        <label className={`flex items-center gap-1 px-4 py-2 text-sm bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors ${uploadingDayId === day.id ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
+                        <label className={`flex items-center gap-1 px-4 py-2 text-sm bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white font-semibold rounded-lg transition-colors ${uploadingDayId === day.id ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
@@ -436,7 +436,7 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
 
                       {/* Upload Progress */}
                       {uploadingDayId === day.id && (
-                        <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <div className="mb-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
                           <ProgressBar
                             progress={uploadProgress}
                             message="กำลังอัปโหลดรูปภาพ..."
@@ -449,7 +449,7 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                         <div className="grid grid-cols-3 lg:grid-cols-4 gap-4">
                           {day.images.map((img: TripItineraryDayImage) => (
                             <div key={img.id} className="relative group">
-                              <div className="aspect-video rounded-lg overflow-hidden border-2 border-gray-200 group-hover:border-green-400 transition-colors">
+                              <div className="aspect-video rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-700 group-hover:border-green-400 dark:group-hover:border-green-500 transition-colors">
                                 <img
                                   src={img.storage_url}
                                   alt={img.alt_text || img.caption || 'Day image'}
@@ -457,11 +457,11 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                                 />
                               </div>
                               {img.caption && (
-                                <p className="text-xs text-gray-700 mt-2 font-medium truncate px-1">{img.caption}</p>
+                                <p className="text-xs text-gray-700 dark:text-gray-300 mt-2 font-medium truncate px-1">{img.caption}</p>
                               )}
                               <button
                                 onClick={() => handleDeleteImage(img.id)}
-                                className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
                               >
                                 ลบ
                               </button>
@@ -469,12 +469,12 @@ export default function TripItineraryPage({ params }: { params: Promise<{ id: st
                           ))}
                         </div>
                       ) : (
-                        <div className="text-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                          <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="text-center py-8 bg-gray-50 dark:bg-gray-900 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
+                          <svg className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
-                          <p className="text-sm text-gray-500">ยังไม่มีรูปภาพ</p>
-                          <label className={`mt-2 inline-block text-sm text-green-600 hover:text-green-700 font-semibold ${uploadingDayId === day.id ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">ยังไม่มีรูปภาพ</p>
+                          <label className={`mt-2 inline-block text-sm text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-semibold ${uploadingDayId === day.id ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
                             {uploadingDayId === day.id ? 'กำลังอัปโหลด...' : '+ อัปโหลดรูปภาพแรก'}
                             <input
                               type="file"

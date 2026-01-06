@@ -88,7 +88,7 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500">{THAI_LABELS.loading}</p>
+        <p className="text-gray-500 dark:text-gray-400">{THAI_LABELS.loading}</p>
       </div>
     )
   }
@@ -96,7 +96,7 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
   if (!trip) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">ไม่พบทริปนี้</p>
+        <p className="text-gray-500 dark:text-gray-400">ไม่พบทริปนี้</p>
       </div>
     )
   }
@@ -106,20 +106,20 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">จัดการรูปภาพทริป</h1>
-          <p className="text-gray-600 mt-1">{trip.title}</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">จัดการรูปภาพทริป</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">{trip.title}</p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowUploadForm(!showUploadForm)}
-            className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
           >
             <span>{showUploadForm ? '✕' : '➕'}</span>
             <span>{showUploadForm ? 'ปิดฟอร์ม' : 'อัพโหลดรูปภาพ'}</span>
           </button>
           <Link
             href={`/admin/trips/${id}`}
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition-colors"
+            className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors"
           >
             ← กลับ
           </Link>
@@ -128,49 +128,49 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
 
       {/* Upload Form */}
       {showUploadForm && (
-        <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">อัพโหลดรูปภาพใหม่</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">อัพโหลดรูปภาพใหม่</h2>
           <GalleryUploadForm tripId={id} />
         </div>
       )}
 
       {/* Gallery Stats */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
         <div className="flex items-center gap-4 text-sm">
           <div>
-            <span className="font-semibold text-blue-900">รูปภาพทั้งหมด:</span>{' '}
-            <span className="text-blue-700">{images.length} รูป</span>
+            <span className="font-semibold text-blue-900 dark:text-blue-300">รูปภาพทั้งหมด:</span>{' '}
+            <span className="text-blue-700 dark:text-blue-400">{images.length} รูป</span>
           </div>
           <div>
-            <span className="font-semibold text-blue-900">Active:</span>{' '}
-            <span className="text-blue-700">{images.filter((img) => img.is_active).length} รูป</span>
+            <span className="font-semibold text-blue-900 dark:text-blue-300">Active:</span>{' '}
+            <span className="text-blue-700 dark:text-blue-400">{images.filter((img) => img.is_active).length} รูป</span>
           </div>
           <div>
-            <span className="font-semibold text-blue-900">Highlight:</span>{' '}
-            <span className="text-blue-700">{images.filter((img) => img.is_highlight).length} รูป</span>
+            <span className="font-semibold text-blue-900 dark:text-blue-300">Highlight:</span>{' '}
+            <span className="text-blue-700 dark:text-blue-400">{images.filter((img) => img.is_highlight).length} รูป</span>
           </div>
         </div>
       </div>
 
       {/* Gallery Grid */}
-      <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">รูปภาพในทริป</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">รูปภาพในทริป</h2>
 
         {images.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 text-gray-500 dark:text-gray-400">
             <div className="text-6xl mb-4">📸</div>
             <p className="text-lg">ยังไม่มีรูปภาพในทริปนี้</p>
-            <p className="text-sm mt-2">คลิกปุ่ม "อัพโหลดรูปภาพ" เพื่อเริ่มต้น</p>
+            <p className="text-sm mt-2">คลิกปุ่ม &quot;อัพโหลดรูปภาพ&quot; เพื่อเริ่มต้น</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {images.map((image) => (
               <div
                 key={image.id}
-                className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow bg-white dark:bg-gray-800"
               >
                 {/* Image */}
-                <div className="relative aspect-video bg-gray-100">
+                <div className="relative aspect-video bg-gray-100 dark:bg-gray-700">
                   <img
                     src={image.storage_url}
                     alt={image.alt_text || image.title}
@@ -179,12 +179,12 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
                   {/* Badges */}
                   <div className="absolute top-2 right-2 flex gap-2">
                     {image.is_highlight && (
-                      <span className="px-2 py-1 bg-yellow-500 text-white text-xs font-semibold rounded">
+                      <span className="px-2 py-1 bg-yellow-500 dark:bg-yellow-600 text-white text-xs font-semibold rounded">
                         ⭐ Highlight
                       </span>
                     )}
                     {!image.is_active && (
-                      <span className="px-2 py-1 bg-gray-500 text-white text-xs font-semibold rounded">
+                      <span className="px-2 py-1 bg-gray-500 dark:bg-gray-600 text-white text-xs font-semibold rounded">
                         Inactive
                       </span>
                     )}
@@ -194,9 +194,9 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
                 {/* Details */}
                 <div className="p-4 space-y-3">
                   <div>
-                    <h3 className="font-semibold text-gray-900 truncate">{image.title}</h3>
+                    <h3 className="font-semibold text-gray-900 dark:text-white truncate">{image.title}</h3>
                     {image.description && (
-                      <p className="text-sm text-gray-600 mt-1 line-clamp-2">{image.description}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">{image.description}</p>
                     )}
                   </div>
 
@@ -204,7 +204,7 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
                   <div className="flex flex-wrap gap-2">
                     <Link
                       href={`/admin/gallery/edit/${image.id}`}
-                      className="flex-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded text-center transition-colors"
+                      className="flex-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white text-sm font-medium rounded text-center transition-colors"
                     >
                       ✏️ แก้ไข
                     </Link>
@@ -212,8 +212,8 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
                       onClick={() => handleToggleActive(image.id, image.is_active ?? true)}
                       className={`flex-1 px-3 py-1.5 text-sm font-medium rounded transition-colors ${
                         image.is_active
-                          ? 'bg-gray-600 hover:bg-gray-700 text-white'
-                          : 'bg-green-600 hover:bg-green-700 text-white'
+                          ? 'bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 text-white'
+                          : 'bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white'
                       }`}
                     >
                       {image.is_active ? '👁️ ซ่อน' : '👁️ แสดง'}
@@ -222,22 +222,22 @@ export default function TripGalleryPage({ params }: { params: Promise<{ id: stri
                       onClick={() => handleToggleHighlight(image.id, image.is_highlight ?? false)}
                       className={`flex-1 px-3 py-1.5 text-sm font-medium rounded transition-colors ${
                         image.is_highlight
-                          ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
-                          : 'bg-gray-300 hover:bg-gray-400 text-gray-700'
+                          ? 'bg-yellow-600 hover:bg-yellow-700 dark:bg-yellow-500 dark:hover:bg-yellow-600 text-white'
+                          : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-300'
                       }`}
                     >
                       {image.is_highlight ? '⭐' : '☆'}
                     </button>
                     <button
                       onClick={() => handleDeleteImage(image.id)}
-                      className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded transition-colors"
+                      className="px-3 py-1.5 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white text-sm font-medium rounded transition-colors"
                     >
                       🗑️
                     </button>
                   </div>
 
                   {/* Meta Info */}
-                  <div className="text-xs text-gray-500 pt-2 border-t border-gray-200">
+                  <div className="text-xs text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-200 dark:border-gray-700">
                     Order: {image.order_index} • {Math.round((image.file_size || 0) / 1024)} KB
                   </div>
                 </div>

@@ -10,11 +10,6 @@ export default function FloatingContactButton() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
-  // Don't show in admin pages
-  if (pathname?.startsWith('/admin')) {
-    return null;
-  }
-
   // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -37,6 +32,11 @@ export default function FloatingContactButton() {
     };
   }, [isOpen]);
 
+  // Don't show in admin pages
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   return (
     <>
       {/* Backdrop overlay when menu is open */}
@@ -53,7 +53,7 @@ export default function FloatingContactButton() {
         <button
           ref={buttonRef}
           onClick={() => setIsOpen(!isOpen)}
-          className={`relative bg-orange-600 hover:bg-orange-700 text-white w-14 h-14 md:w-16 md:h-16 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 ${
+          className={`relative bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white w-14 h-14 md:w-16 md:h-16 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 ${
             !isOpen ? 'animate-pulse-slow' : ''
           }`}
           aria-label="Contact us"
@@ -83,16 +83,16 @@ export default function FloatingContactButton() {
         {isOpen && (
           <div
             ref={menuRef}
-            className="absolute bottom-20 right-0 bg-white rounded-2xl shadow-2xl p-5 w-72 md:w-80 animate-slideUp border border-gray-100"
+            className="absolute bottom-20 right-0 bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-2xl p-5 w-72 md:w-80 animate-slideUp border border-gray-100"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-gray-900">ติดต่อเรา</h3>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">ติดต่อเรา</h3>
               <div className="flex items-center gap-1">
                 <span className="relative flex h-3 w-3">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                 </span>
-                <span className="text-xs text-green-600 font-semibold">Online</span>
+                <span className="text-xs text-green-600 dark:text-green-400 font-semibold">Online</span>
               </div>
             </div>
 
@@ -100,7 +100,7 @@ export default function FloatingContactButton() {
               {/* Phone */}
               <a
                 href="tel:097-919-9293"
-                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors group"
+                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
               >
                 <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -108,17 +108,17 @@ export default function FloatingContactButton() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">โทรหาเรา</p>
-                  <p className="text-xs text-gray-600">097-919-9293</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">โทรหาเรา</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">097-919-9293</p>
                 </div>
               </a>
 
               {/* LINE */}
               <a
-                href="https://line.me/ti/p/@Gography"
+                href={`https://line.me/ti/p/@Gography?text=${encodeURIComponent('สวัสดีครับ สนใจสอบถามข้อมูลเกี่ยวกับทริป')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors group"
+                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
               >
                 <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -126,8 +126,8 @@ export default function FloatingContactButton() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">LINE</p>
-                  <p className="text-xs text-gray-600">@Gography</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">LINE</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">@Gography</p>
                 </div>
               </a>
 
@@ -136,7 +136,7 @@ export default function FloatingContactButton() {
                 href="https://m.me/Gography"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors group"
+                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
               >
                 <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -144,15 +144,15 @@ export default function FloatingContactButton() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">Messenger</p>
-                  <p className="text-xs text-gray-600">Gography</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">Messenger</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Gography</p>
                 </div>
               </a>
 
               {/* Contact Page */}
               <Link
                 href="/contact"
-                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors group"
+                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
               >
                 <div className="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -161,8 +161,8 @@ export default function FloatingContactButton() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">ติดต่อเรา</p>
-                  <p className="text-xs text-gray-600">ส่งข้อความถึงเรา</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">ติดต่อเรา</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">ส่งข้อความถึงเรา</p>
                 </div>
               </Link>
             </div>
