@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import type { PublicTripDisplay } from '@/types/database.types';
-import TripCard from '../components/TripCard';
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import type { PublicTripDisplay } from "@/types/database.types";
+import TripCard from "../components/TripCard";
 
 interface FilterOption {
   value: string;
@@ -20,21 +20,26 @@ interface FilterOptions {
 
 export default function TripsPageClient() {
   const searchParams = useSearchParams();
-  const [selectedTripType, setSelectedTripType] = useState('ประเภททริปทั้งหมด');
-  const [selectedDestination, setSelectedDestination] = useState('ทั่วหมด');
-  const [selectedMonth, setSelectedMonth] = useState('ทุกเดือน');
+  const [selectedTripType] = useState("ประเภททริปทั้งหมด");
+  const [selectedDestination, setSelectedDestination] = useState("ทั่วหมด");
+  const [selectedMonth, setSelectedMonth] = useState("ทุกเดือน");
   const [allTrips, setAllTrips] = useState<PublicTripDisplay[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedSchedules, setSelectedSchedules] = useState<Record<string, string>>({});
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>({ countries: [], months: [] });
+  const [selectedSchedules, setSelectedSchedules] = useState<
+    Record<string, string>
+  >({});
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
+    countries: [],
+    months: [],
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 9;
 
   // Load initial filters from URL parameters
   useEffect(() => {
-    const country = searchParams.get('country');
-    const month = searchParams.get('month');
+    const country = searchParams.get("country");
+    const month = searchParams.get("month");
 
     if (country) {
       setSelectedDestination(country);
@@ -55,11 +60,11 @@ export default function TripsPageClient() {
 
   const loadFilterOptions = async () => {
     try {
-      const res = await fetch('/api/trips/filters');
+      const res = await fetch("/api/trips/filters");
       const data = await res.json();
       setFilterOptions(data);
     } catch (error) {
-      console.error('Error loading filter options:', error);
+      console.error("Error loading filter options:", error);
     }
   };
 
@@ -67,17 +72,17 @@ export default function TripsPageClient() {
     setIsLoading(true);
     try {
       const params = new URLSearchParams();
-      params.append('page', page.toString());
-      params.append('pageSize', pageSize.toString());
+      params.append("page", page.toString());
+      params.append("pageSize", pageSize.toString());
 
-      if (selectedDestination !== 'ทั่วหมด') {
-        params.append('country', selectedDestination);
+      if (selectedDestination !== "ทั่วหมด") {
+        params.append("country", selectedDestination);
       }
-      if (selectedTripType !== 'ประเภททริปทั้งหมด') {
-        params.append('trip_type', selectedTripType);
+      if (selectedTripType !== "ประเภททริปทั้งหมด") {
+        params.append("trip_type", selectedTripType);
       }
-      if (selectedMonth !== 'ทุกเดือน') {
-        params.append('month', selectedMonth);
+      if (selectedMonth !== "ทุกเดือน") {
+        params.append("month", selectedMonth);
       }
 
       const res = await fetch(`/api/trips/public?${params.toString()}`);
@@ -96,7 +101,7 @@ export default function TripsPageClient() {
       });
       setSelectedSchedules(initialSelected);
     } catch (error) {
-      console.error('Error loading trips:', error);
+      console.error("Error loading trips:", error);
     } finally {
       setIsLoading(false);
     }
@@ -153,7 +158,11 @@ export default function TripsPageClient() {
                 ))}
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700 dark:text-gray-300">
-                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <svg
+                  className="fill-current h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
                   <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                 </svg>
               </div>
@@ -173,7 +182,11 @@ export default function TripsPageClient() {
                 ))}
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700 dark:text-gray-300">
-                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <svg
+                  className="fill-current h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
                   <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                 </svg>
               </div>
@@ -187,7 +200,9 @@ export default function TripsPageClient() {
             </div>
           ) : allTrips.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 dark:text-gray-400">ไม่พบทริปที่ตรงกับการค้นหา</p>
+              <p className="text-gray-500 dark:text-gray-400">
+                ไม่พบทริปที่ตรงกับการค้นหา
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -196,7 +211,9 @@ export default function TripsPageClient() {
                   key={trip.id}
                   trip={trip}
                   selectedScheduleId={selectedSchedules[trip.id]}
-                  onScheduleChange={(scheduleId) => handleScheduleChange(trip.id, scheduleId)}
+                  onScheduleChange={(scheduleId) =>
+                    handleScheduleChange(trip.id, scheduleId)
+                  }
                 />
               ))}
             </div>
@@ -211,8 +228,8 @@ export default function TripsPageClient() {
                 disabled={currentPage === 1}
                 className={`px-3 md:px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-colors ${
                   currentPage === 1
-                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
-                    : 'cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400'
+                    ? "bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed"
+                    : "cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400"
                 }`}
               >
                 <span className="hidden sm:inline">← ก่อนหน้า</span>
@@ -221,41 +238,68 @@ export default function TripsPageClient() {
 
               {/* Page Numbers */}
               <div className="flex gap-1 md:gap-2 flex-wrap justify-center">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-                  // On mobile, show only current page, first, last, and adjacent pages
-                  const showOnMobile =
-                    page === 1 ||
-                    page === totalPages ||
-                    page === currentPage ||
-                    page === currentPage - 1 ||
-                    page === currentPage + 1;
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => {
+                    // On mobile, show only current page, first, last, and adjacent pages
+                    const showOnMobile =
+                      page === 1 ||
+                      page === totalPages ||
+                      page === currentPage ||
+                      page === currentPage - 1 ||
+                      page === currentPage + 1;
 
-                  // Show ellipsis on mobile
-                  if (!showOnMobile && totalPages > 5) {
-                    // Show ellipsis only once between ranges
-                    if (page === 2 && currentPage > 3) {
-                      return <span key={page} className="md:hidden px-2 text-gray-400 dark:text-gray-500">...</span>;
+                    // Show ellipsis on mobile
+                    if (!showOnMobile && totalPages > 5) {
+                      // Show ellipsis only once between ranges
+                      if (page === 2 && currentPage > 3) {
+                        return (
+                          <span
+                            key={page}
+                            className="md:hidden px-2 text-gray-400 dark:text-gray-500"
+                          >
+                            ...
+                          </span>
+                        );
+                      }
+                      if (
+                        page === totalPages - 1 &&
+                        currentPage < totalPages - 2
+                      ) {
+                        return (
+                          <span
+                            key={page}
+                            className="md:hidden px-2 text-gray-400 dark:text-gray-500"
+                          >
+                            ...
+                          </span>
+                        );
+                      }
+                      return (
+                        <button
+                          key={page}
+                          className="cursor-pointer hidden md:inline-flex w-8 md:w-10 h-8 md:h-10 rounded-lg font-medium text-sm md:text-base items-center justify-center transition-colors bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400"
+                          onClick={() => loadTrips(page)}
+                        >
+                          {page}
+                        </button>
+                      );
                     }
-                    if (page === totalPages - 1 && currentPage < totalPages - 2) {
-                      return <span key={page} className="md:hidden px-2 text-gray-400 dark:text-gray-500">...</span>;
-                    }
-                    return <button key={page} className="cursor-pointer hidden md:inline-flex w-8 md:w-10 h-8 md:h-10 rounded-lg font-medium text-sm md:text-base items-center justify-center transition-colors bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400" onClick={() => loadTrips(page)}>{page}</button>;
+
+                    return (
+                      <button
+                        key={page}
+                        onClick={() => loadTrips(page)}
+                        className={`cursor-pointer w-8 md:w-10 h-8 md:h-10 rounded-lg font-medium text-sm md:text-base transition-colors ${
+                          currentPage === page
+                            ? "bg-slate-800 dark:bg-orange-600 text-white"
+                            : "bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400"
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    );
                   }
-
-                  return (
-                    <button
-                      key={page}
-                      onClick={() => loadTrips(page)}
-                      className={`cursor-pointer w-8 md:w-10 h-8 md:h-10 rounded-lg font-medium text-sm md:text-base transition-colors ${
-                        currentPage === page
-                          ? 'bg-slate-800 dark:bg-orange-600 text-white'
-                          : 'bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400'
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  );
-                })}
+                )}
               </div>
 
               {/* Next Button */}
@@ -264,8 +308,8 @@ export default function TripsPageClient() {
                 disabled={currentPage === totalPages}
                 className={`px-3 md:px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-colors ${
                   currentPage === totalPages
-                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
-                    : 'cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400'
+                    ? "bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed"
+                    : "cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-slate-800 dark:hover:border-orange-500 hover:text-slate-800 dark:hover:text-orange-400"
                 }`}
               >
                 <span className="hidden sm:inline">ถัดไป →</span>

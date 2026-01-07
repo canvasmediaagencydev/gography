@@ -1,12 +1,13 @@
-import TripForm from '@/app/components/admin/TripForm'
-import { THAI_LABELS } from '@/lib/thai-labels'
+import TripForm from "@/app/components/admin/TripForm";
 
 export default function CreateTripPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">สร้างทริปใหม่</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          สร้างทริปใหม่
+        </h1>
         <p className="text-gray-600 dark:text-gray-400 mt-1">
           เพิ่มทริปใหม่เข้าสู่ระบบ
         </p>
@@ -17,5 +18,5 @@ export default function CreateTripPage() {
         <TripForm mode="create" />
       </div>
     </div>
-  )
+  );
 }

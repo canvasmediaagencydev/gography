@@ -30,7 +30,7 @@ export default function Navbar() {
             }
           }
         }
-      } catch (e) {
+      } catch {
         // Fallback if formatting fails
         return "TH";
       }
