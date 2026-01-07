@@ -1,27 +1,33 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState } from "react";
+import Link from "next/link";
 
 export default function TripsReviews() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const reviews = [
     {
-      image: 'https://images.unsplash.com/photo-1513326738677-b964603b136d?w=800&q=80',
-      name: 'คุณนลินี อรุณสวัสดิ์',
-      review: 'ประทับใจมาก 10000% แนะนำเลย! ทัวร์ที่จัดทุกอย่างครบ ไกด์เก่งมาก ถ้าจะไปกับ Gography อีกแน่นอน เป็นกลุ่มเล็กสนิทกัน ได้ภาพสวยมากทุกคน ไม่เหมือนทัวร์อื่นที่ไปแบบเร่งรีบ ที่นี่ใจเย็นมากมี guide ที่ smart และเราได้ภาพจาก professional photographers อีกด้วย'
+      image:
+        "https://images.unsplash.com/photo-1513326738677-b964603b136d?w=800&q=80",
+      name: "คุณนลินี อรุณสวัสดิ์",
+      review:
+        "ประทับใจมาก 10000% แนะนำเลย! ทัวร์ที่จัดทุกอย่างครบ ไกด์เก่งมาก ถ้าจะไปกับ Gography อีกแน่นอน เป็นกลุ่มเล็กสนิทกัน ได้ภาพสวยมากทุกคน ไม่เหมือนทัวร์อื่นที่ไปแบบเร่งรีบ ที่นี่ใจเย็นมากมี guide ที่ smart และเราได้ภาพจาก professional photographers อีกด้วย",
     },
     {
-      image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80',
-      name: 'คุณสัมพันธ์ วิริยะราช',
-      review: 'ทริป Lofoten จัดเจ้งมาก! Gography ดูแลดีมาก ทั้งที่พักและอาหาร สนุกมาก ได้ทั้งเที่ยวและถ่ายภาพสวยๆ กลับบ้านแล้วยังคิดถึง ต้องไปอีกแน่นอน แนะนำเลยค่ะ'
+      image:
+        "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80",
+      name: "คุณสัมพันธ์ วิริยะราช",
+      review:
+        "ทริป Lofoten จัดเจ๋งมาก! Gography ดูแลดีมาก ทั้งที่พักและอาหาร สนุกมาก ได้ทั้งเที่ยวและถ่ายภาพสวยๆ กลับบ้านแล้วยังคิดถึง ต้องไปอีกแน่นอน แนะนำเลยค่ะ",
     },
     {
-      image: 'https://images.unsplash.com/photo-1464207687429-7505649dae38?w=800&q=80',
-      name: 'คุณธิดา นิธิสานต์',
-      review: 'ตกหลุมรักการถ่ายภาพ และยิ่งประทับใจมากเมื่อจองทริปมาจาก Gography ที่ได้ทำงานกับช่างภาพมืออาชีพ เพื่อให้ได้ภาพที่สวยมาก และแบบนี้ทำให้รู้สึกว่าได้ภาพที่มีคุณค่าจริงๆ มีช่างภาพคอยช่วยแนะนำองค์ประกอบ ขอบคุณสำหรับประสบการณ์ที่ไม่เคยมีมาก่อนค่ะ'
-    }
+      image:
+        "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=800&q=80",
+      name: "คุณธิดา นิธิสานต์",
+      review:
+        "ตกหลุมรักการถ่ายภาพ และยิ่งประทับใจมากเมื่อจองทริปมาจาก Gography ที่ได้ทำงานกับช่างภาพมืออาชีพ เพื่อให้ได้ภาพที่สวยที่สุด และแบบนี้ทำให้รู้สึกว่าได้ภาพที่มีคุณค่าจริงๆ มีช่างภาพคอยช่วยแนะนำองค์ประกอบ ขอบคุณสำหรับประสบการณ์ที่ไม่เคยมีมาก่อนค่ะ",
+    },
   ];
 
   const nextSlide = () => {
@@ -40,7 +46,11 @@ export default function TripsReviews() {
           TRIPS&apos; REVIEWS
         </h2>
         <p className="text-center text-gray-700 dark:text-gray-300 text-base md:text-lg mb-16">
-          รีวิว 5 ⭐ เต็ม! จากลูกค้ามากกว่า <span className="text-orange-600 dark:text-orange-400 font-bold">100</span> รีวิวใน Facebook ของเรา
+          รีวิว 5 ⭐ เต็ม! จากลูกค้ามากกว่า{" "}
+          <span className="text-orange-600 dark:text-orange-400 font-bold">
+            100
+          </span>{" "}
+          รีวิวใน Facebook ของเรา
           <br />
           การันตีความเป็นมืออาชีพ และความประทับใจของลูกค้าทุกท่าน
         </p>
@@ -53,8 +63,18 @@ export default function TripsReviews() {
             className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-6 z-10 bg-black dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl"
             aria-label="Previous review"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
           </button>
 
@@ -97,8 +117,18 @@ export default function TripsReviews() {
             className="cursor-pointer absolute right-0 top-1/2 -translate-y-1/2 translate-x-6 z-10 bg-black dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-300 shadow-xl"
             aria-label="Next review"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
             </svg>
           </button>
         </div>

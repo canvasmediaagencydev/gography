@@ -67,3 +67,56 @@ body {
     color: #ffffff;
   }
 }
+
+/* =========================================
+   Google Translate Overrides (Nuclear Option)
+   ========================================= */
+
+/* 1. Hide the top banner frame */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+iframe.goog-te-banner-frame {
+  display: none !important;
+}
+body > .skiptranslate {
+  display: none !important;
+}
+
+/* 2. Reset body position (Google adds 40px top margin) */
+body {
+  top: 0px !important;
+  position: static !important;
+}
+
+/* 3. Dropdown Menu: Hide Google's default branding/links if possible, but keep functionality */
+/* We can't easily style the iframe content inside the dropdown, but we can style the container */
+
+/* 4. Hide the "Original Text" Tooltip Popup */
+.goog-tooltip,
+.goog-tooltip:hover {
+  display: none !important;
+}
+
+/* 5. Hide the blue/grey text highlight on hover */
+.goog-text-highlight {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* 6. Aggressively target font tags that have background-color (Google's highlighting mechanism) */
+font[style*="background-color"] {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 7. Hide the Google Translate Element container itself (we use custom buttons) */
+#google_translate_element {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  pointer-events: none;
+}

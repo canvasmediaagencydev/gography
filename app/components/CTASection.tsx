@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
 export default function CTASection() {
   return (
@@ -27,10 +27,11 @@ export default function CTASection() {
         </h3>
 
         <p className="text-white text-base md:text-lg max-w-3xl mb-4">
-          ปลดล็อคประสบการณ์การเดินทางที่ เหนือระดับกับผู้เชี่ยวชาญด้านการท่องเที่ยว
+          ปลดล็อคประสบการณ์การเดินทางที่
+          เหนือระดับกับผู้เชี่ยวชาญด้านการท่องเที่ยว
         </p>
         <p className="text-white text-base md:text-lg max-w-3xl mb-8">
-          และช่างภาพมืออาชีพที่จะทำให้ทุกทริป ของคุณเป็นความทรงจำที่ไม่รีลืม
+          และช่างภาพมืออาชีพที่จะทำให้ทุกทริป ของคุณเป็นความทรงจำที่ไม่รู้ลืม
         </p>
 
         <p className="text-white text-lg md:text-xl font-semibold mb-8">

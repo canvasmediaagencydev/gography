@@ -1,29 +1,36 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function AboutPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const [galleryImages, setGalleryImages] = useState<Array<{ id: string; storage_url: string; title: string; alt_text: string | null }>>([]);
+  const [galleryImages, setGalleryImages] = useState<
+    Array<{
+      id: string;
+      storage_url: string;
+      title: string;
+      alt_text: string | null;
+    }>
+  >([]);
   const [isLoadingGallery, setIsLoadingGallery] = useState(true);
 
   const carouselImages = [
     {
-      url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
-      alt: 'Mountain landscape'
+      url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+      alt: "Mountain landscape",
     },
     {
-      url: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=800&q=80',
-      alt: 'Desert landscape'
+      url: "https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=800&q=80",
+      alt: "Desert landscape",
     },
     {
-      url: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800&q=80',
-      alt: 'Aurora landscape'
-    }
+      url: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800&q=80",
+      alt: "Aurora landscape",
+    },
   ];
 
   // Fetch gallery images from database
@@ -31,13 +38,13 @@ export default function AboutPage() {
     const fetchGalleryImages = async () => {
       try {
         setIsLoadingGallery(true);
-        const response = await fetch('/api/gallery?is_active=true&pageSize=12');
+        const response = await fetch("/api/gallery?is_active=true&pageSize=12");
         const data = await response.json();
         if (data.images && data.images.length > 0) {
           setGalleryImages(data.images);
         }
       } catch (error) {
-        console.error('Error fetching gallery images:', error);
+        console.error("Error fetching gallery images:", error);
       } finally {
         setIsLoadingGallery(false);
       }
@@ -51,7 +58,9 @@ export default function AboutPage() {
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+    setCurrentSlide(
+      (prev) => (prev - 1 + carouselImages.length) % carouselImages.length
+    );
   };
 
   return (
@@ -62,7 +71,10 @@ export default function AboutPage() {
         <section className="relative h-[60vh] md:h-[70vh] overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920&q=80)' }}
+            style={{
+              backgroundImage:
+                "url(https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920&q=80)",
+            }}
           >
             <div className="absolute inset-0 bg-black/40 dark:bg-black/50"></div>
           </div>
@@ -82,11 +94,14 @@ export default function AboutPage() {
         <section className="py-20 px-6 bg-white dark:bg-gray-800">
           <div className="container mx-auto max-w-7xl">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-8">GOGRAPHY</h2>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-8">
+                GOGRAPHY
+              </h2>
               <p className="text-gray-700 dark:text-gray-300 text-lg md:text-xl max-w-5xl mx-auto leading-relaxed">
                 ก่อตั้งจากความตั้งใจที่จะอยากมอบประสบการณ์การเดินทางที่อบอุ่นและเหมาะกับความต้องการที่แตกต่างของลูกค้า
                 <br />
-                เราเชื่อว่าการเดินทางคือของขวัญที่มีค่าสำหรับทุกคน ดังนั้นเราจึงให้ความสำคัญกับทุกรายละเอียดเพื่อสร้างประสบการณ์ที่น่าจดจำ
+                เราเชื่อว่าการเดินทางคือของขวัญที่มีค่าสำหรับทุกคน
+                ดังนั้นเราจึงให้ความสำคัญกับทุกรายละเอียดเพื่อสร้างประสบการณ์ที่น่าจดจำ
               </p>
             </div>
 
@@ -99,8 +114,18 @@ export default function AboutPage() {
                   className="cursor-pointer shrink-0 w-12 h-12 rounded-full bg-gray-900 dark:bg-gray-700 text-white flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors z-10"
                   aria-label="Previous"
                 >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
                   </svg>
                 </button>
 
@@ -111,11 +136,14 @@ export default function AboutPage() {
                       key={index}
                       className={`transition-all duration-500 rounded-2xl overflow-hidden ${
                         index === currentSlide
-                          ? 'w-96 h-96 opacity-100'
-                          : 'w-80 h-80 opacity-60'
+                          ? "w-96 h-96 opacity-100"
+                          : "w-80 h-80 opacity-60"
                       }`}
                       style={{
-                        display: Math.abs(index - currentSlide) <= 1 ? 'block' : 'none'
+                        display:
+                          Math.abs(index - currentSlide) <= 1
+                            ? "block"
+                            : "none",
                       }}
                     >
                       <img
@@ -133,8 +161,18 @@ export default function AboutPage() {
                   className="cursor-pointer shrink-0 w-12 h-12 rounded-full bg-gray-900 dark:bg-gray-700 text-white flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors z-10"
                   aria-label="Next"
                 >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                 </button>
               </div>
@@ -144,7 +182,11 @@ export default function AboutPage() {
             <div className="text-center max-w-5xl mx-auto">
               <p className="text-gray-700 dark:text-gray-300 text-base md:text-lg leading-relaxed">
                 เราเชื่อว่าไกด์ที่ดีในการจัดทริปควรมีความเชี่ยวชาญทั้งด้านการท่องเที่ยวและการถ่ายภาพ
-                พร้อมด้วย <span className="text-orange-600 font-semibold">ช่างภาพมืออาชีพ</span> ที่พร้อมบันทึกทุกช่วงเวลาพิเศษตลอดการเดินทาง
+                พร้อมด้วย{" "}
+                <span className="text-orange-600 font-semibold">
+                  ช่างภาพมืออาชีพ
+                </span>{" "}
+                ที่พร้อมบันทึกทุกช่วงเวลาพิเศษตลอดการเดินทาง
               </p>
             </div>
           </div>
@@ -153,23 +195,24 @@ export default function AboutPage() {
         {/* What We Do Section */}
         <section className="py-20 px-6 bg-gray-50 dark:bg-gray-800">
           <div className="container mx-auto max-w-7xl">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white text-center mb-16">เราทำอะไร?</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white text-center mb-16">
+              เราทำอะไร?
+            </h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* Left Side - Text Content */}
               <div className="space-y-8">
                 <div className="bg-white dark:bg-gray-700 dark:border dark:border-gray-600 p-8 rounded-2xl shadow-md">
                   <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
-                    เป็นผู้เชี่ยวชาญด้านการจัดทริปถ่ายภาพ
-                    จัดทริปด้วยกลุ่มเล็ก และคัดสรรสถานที่ท่องเที่ยวอย่างพิถีพิถัน
+                    เป็นผู้เชี่ยวชาญด้านการจัดทริปถ่ายภาพ จัดทริปด้วยกลุ่มเล็ก
+                    และคัดสรรสถานที่ท่องเที่ยวอย่างพิถีพิถัน
                   </p>
                 </div>
 
                 <div className="bg-white dark:bg-gray-700 dark:border dark:border-gray-600 p-8 rounded-2xl shadow-md">
                   <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
-                    มุ่งมั่นที่จะมอบประสบการณ์การเดินทาง
-                    ที่เหนือความคาดหวัง &quot;การันตีความประทับใจ
-                    ของทุกผู้ร่วมเดินทาง&quot;
+                    มุ่งมั่นที่จะมอบประสบการณ์การเดินทาง ที่เหนือความคาดหวัง
+                    &quot;การันตีความประทับใจ ของทุกผู้ร่วมเดินทาง&quot;
                   </p>
                 </div>
 
@@ -183,8 +226,7 @@ export default function AboutPage() {
 
                 <div className="bg-white dark:bg-gray-700 dark:border dark:border-gray-600 p-8 rounded-2xl shadow-md">
                   <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
-                    ที่ปรึกษาการเดินทางส่วนตัว
-                    ช่วยวางแผนและจัดทริปให้ตรงกับ
+                    ที่ปรึกษาการเดินทางส่วนตัว ช่วยวางแผนและจัดทริปให้ตรงกับ
                     ความต้องการและงบประมาณของคุณ
                   </p>
                 </div>
@@ -214,11 +256,15 @@ export default function AboutPage() {
             {/* Gallery Grid */}
             {isLoadingGallery ? (
               <div className="flex items-center justify-center py-12 mb-12">
-                <p className="text-gray-500 dark:text-gray-400">กำลังโหลดรูปภาพ...</p>
+                <p className="text-gray-500 dark:text-gray-400">
+                  กำลังโหลดรูปภาพ...
+                </p>
               </div>
             ) : galleryImages.length === 0 ? (
               <div className="text-center py-12 mb-12">
-                <p className="text-gray-500 dark:text-gray-400">ยังไม่มีรูปภาพในแกลเลอรี</p>
+                <p className="text-gray-500 dark:text-gray-400">
+                  ยังไม่มีรูปภาพในแกลเลอรี
+                </p>
               </div>
             ) : (
               <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-12">
@@ -252,10 +298,17 @@ export default function AboutPage() {
         <section className="py-20 px-6 bg-linear-to-br from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-900 text-white">
           <div className="container mx-auto max-w-4xl text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              &quot;อยากปล่อยให้<span className="text-orange-500 dark:text-orange-400">ความฝัน</span>
+              &quot;อยากให้
+              <span className="text-orange-500 dark:text-orange-400">
+                ความฝัน
+              </span>
             </h2>
             <h3 className="text-3xl md:text-4xl font-bold mb-8">
-              ในการเดินทางของคุณ<span className="text-orange-500 dark:text-orange-400">เป็นจริง</span>&quot;
+              ในการเดินทางของคุณ
+              <span className="text-orange-500 dark:text-orange-400">
+                เป็นจริง
+              </span>
+              &quot;
             </h3>
             <p className="text-xl text-gray-300 dark:text-gray-400 mb-8 leading-relaxed">
               ปล่อยให้ทีมผู้เชี่ยวชาญของเราดูแลทุกรายละเอียด
