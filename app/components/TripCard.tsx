@@ -1,8 +1,11 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import type { PublicTripDisplay, PublicScheduleDisplay } from '@/types/database.types';
+import Link from "next/link";
+import { useState } from "react";
+import type {
+  PublicTripDisplay,
+  PublicScheduleDisplay,
+} from "@/types/database.types";
 
 interface TripCardProps {
   trip: PublicTripDisplay;
@@ -10,7 +13,11 @@ interface TripCardProps {
   onScheduleChange?: (scheduleId: string) => void;
 }
 
-export default function TripCard({ trip, selectedScheduleId, onScheduleChange }: TripCardProps) {
+export default function TripCard({
+  trip,
+  selectedScheduleId,
+  onScheduleChange,
+}: TripCardProps) {
   const [localSelectedScheduleId, setLocalSelectedScheduleId] = useState(
     selectedScheduleId || trip.schedules[0]?.id
   );
@@ -25,7 +32,10 @@ export default function TripCard({ trip, selectedScheduleId, onScheduleChange }:
   };
 
   const getSelectedSchedule = (): PublicScheduleDisplay | undefined => {
-    return trip.schedules.find((s) => s.id === currentScheduleId) || trip.schedules[0];
+    return (
+      trip.schedules.find((s) => s.id === currentScheduleId) ||
+      trip.schedules[0]
+    );
   };
 
   const currentSchedule = getSelectedSchedule();
@@ -45,7 +55,7 @@ export default function TripCard({ trip, selectedScheduleId, onScheduleChange }:
       {/* Trip Content */}
       <div className="p-6">
         {/* Title */}
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 min-h-[56px]">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 min-h-14">
           {trip.title}
         </h3>
 
@@ -53,8 +63,18 @@ export default function TripCard({ trip, selectedScheduleId, onScheduleChange }:
         {trip.schedules.length > 0 && (
           <div className="mb-3">
             <div className="flex items-center gap-2 mb-2">
-              <svg className="w-5 h-5 shrink-0 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              <svg
+                className="w-5 h-5 shrink-0 text-gray-600 dark:text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
               </svg>
               <div className="flex flex-wrap gap-2">
                 {trip.schedules.map((schedule) => (
@@ -63,8 +83,8 @@ export default function TripCard({ trip, selectedScheduleId, onScheduleChange }:
                     onClick={() => handleScheduleChange(schedule.id)}
                     className={`px-3 py-1.5 text-sm rounded-full border transition-all ${
                       currentScheduleId === schedule.id
-                        ? 'bg-slate-800 dark:bg-orange-600 text-white border-slate-800 dark:border-orange-600'
-                        : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-slate-800 dark:hover:border-orange-500'
+                        ? "bg-slate-800 dark:bg-orange-600 text-white border-slate-800 dark:border-orange-600"
+                        : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-slate-800 dark:hover:border-orange-500"
                     }`}
                   >
                     {schedule.dates}
@@ -77,8 +97,18 @@ export default function TripCard({ trip, selectedScheduleId, onScheduleChange }:
 
         {/* Duration */}
         <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 mb-2">
-          <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg
+            className="w-5 h-5 shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           <span className="text-base">{currentSchedule.duration}</span>
         </div>
@@ -101,7 +131,11 @@ export default function TripCard({ trip, selectedScheduleId, onScheduleChange }:
 
         {/* Book Button */}
         <Link
-          href={`/trips/${trip.id}?schedule=${currentSchedule.id}`}
+          href={`/trips/${trip.slug || trip.id}${
+            currentSchedule.id !== trip.schedules[0]?.id
+              ? `?schedule=${currentSchedule.id}`
+              : ""
+          }`}
           className="block w-full bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold py-3 rounded-full text-center transition-colors duration-300"
         >
           ดูทริป →

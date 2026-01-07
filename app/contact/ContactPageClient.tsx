@@ -215,9 +215,9 @@ export default function ContactPage() {
                   </svg>
                   <div>
                     <p className="leading-relaxed">
-                      79/576 ซอยรามคำแหง 150 แขวงสะพานสูง
+                      75/53 ร่มเกล้าซอย 1
                       <br />
-                      เขตสะพานสูง กรุงเทพมหานคร 10240
+                      แขวงมีนบุรี เขตมีนบุรี กรุงเทพมหานคร 10240
                     </p>
                   </div>
                 </div>

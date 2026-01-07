@@ -63,6 +63,7 @@ interface TripData {
     cover_image_url: string | null;
     file_link: string | null;
     trip_type: "group" | "private";
+    slug?: string | null;
   };
   schedules: Array<{
     id: string;
@@ -219,7 +220,7 @@ export default function TripDetailsPage({
           text: tripData?.trip.description || "",
           url: url,
         });
-      } catch (err) {
+      } catch {
         console.log("Share cancelled");
       }
     } else {
@@ -412,7 +413,7 @@ export default function TripDetailsPage({
           url:
             typeof window !== "undefined"
               ? window.location.href
-              : `https://gography.net/trips/${id}`,
+              : `https://gography.net/trips/${trip.slug || trip.id}`,
         }
       : undefined,
     provider: {

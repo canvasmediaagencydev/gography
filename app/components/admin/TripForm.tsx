@@ -1,148 +1,156 @@
-'use client'
+"use client";
 
-import { useState, useEffect, FormEvent } from 'react'
-import { useRouter } from 'next/navigation'
-import { THAI_LABELS } from '@/lib/thai-labels'
-import { uploadWithProgress } from '@/lib/upload-helpers'
-import ProgressBar from '@/app/components/admin/ProgressBar'
-import type { Trip, Country } from '@/types/database.types'
+import { useState, useEffect, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { THAI_LABELS } from "@/lib/thai-labels";
+import { uploadWithProgress } from "@/lib/upload-helpers";
+import ProgressBar from "@/app/components/admin/ProgressBar";
+import type { Trip, Country } from "@/types/database.types";
 
 interface TripFormProps {
-  trip?: Trip
-  mode: 'create' | 'edit'
+  trip?: Trip;
+  mode: "create" | "edit";
 }
 
 export default function TripForm({ trip, mode }: TripFormProps) {
-  const router = useRouter()
-  const [countries, setCountries] = useState<Country[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [coverImageFile, setCoverImageFile] = useState<File | null>(null)
-  const [coverImagePreview, setCoverImagePreview] = useState<string>(trip?.cover_image_url || '')
-  const [isUploading, setIsUploading] = useState(false)
-  const [uploadProgress, setUploadProgress] = useState(0)
+  const router = useRouter();
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
+  const [coverImagePreview, setCoverImagePreview] = useState<string>(
+    trip?.cover_image_url || ""
+  );
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const [formData, setFormData] = useState({
-    title: trip?.title || '',
-    description: trip?.description || '',
-    country_id: trip?.country_id || '',
+    title: trip?.title || "",
+    description: trip?.description || "",
+    country_id: trip?.country_id || "",
     price_per_person: trip?.price_per_person || 0,
-    cover_image_url: trip?.cover_image_url || '',
-    file_link: trip?.file_link || '',
-    trip_type: trip?.trip_type || 'group',
+    cover_image_url: trip?.cover_image_url || "",
+    file_link: trip?.file_link || "",
+    trip_type: trip?.trip_type || "group",
     is_active: trip?.is_active ?? true,
-  })
+    slug: trip?.slug || "",
+  });
 
   useEffect(() => {
-    loadCountries()
-  }, [])
+    loadCountries();
+  }, []);
 
   const loadCountries = async () => {
     try {
-      const res = await fetch('/api/countries')
-      const data = await res.json()
-      setCountries(data.countries || [])
+      const res = await fetch("/api/countries");
+      const data = await res.json();
+      setCountries(data.countries || []);
     } catch (error) {
-      console.error('Error loading countries:', error)
+      console.error("Error loading countries:", error);
     }
-  }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (file) {
       // Validate file type
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/webp",
+      ];
       if (!allowedTypes.includes(file.type)) {
-        setError('รองรับเฉพาะไฟล์ JPG, PNG, WebP เท่านั้น')
-        return
+        setError("รองรับเฉพาะไฟล์ JPG, PNG, WebP เท่านั้น");
+        return;
       }
 
       // Validate file size (5MB)
       if (file.size > 5 * 1024 * 1024) {
-        setError('ขนาดไฟล์ต้องไม่เกิน 5MB')
-        return
+        setError("ขนาดไฟล์ต้องไม่เกิน 5MB");
+        return;
       }
 
-      setCoverImageFile(file)
+      setCoverImageFile(file);
       // Create preview
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onloadend = () => {
-        setCoverImagePreview(reader.result as string)
-      }
-      reader.readAsDataURL(file)
-      setError('')
+        setCoverImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      setError("");
     }
-  }
+  };
 
   const uploadCoverImage = async (): Promise<string> => {
     if (!coverImageFile) {
-      return formData.cover_image_url
+      return formData.cover_image_url;
     }
 
-    setIsUploading(true)
-    setUploadProgress(0)
+    setIsUploading(true);
+    setUploadProgress(0);
     try {
-      const uploadFormData = new FormData()
-      uploadFormData.append('file', coverImageFile)
+      const uploadFormData = new FormData();
+      uploadFormData.append("file", coverImageFile);
 
       const data = await uploadWithProgress(
-        '/api/trips/upload-cover',
+        "/api/trips/upload-cover",
         uploadFormData,
         (progress) => {
-          setUploadProgress(progress)
+          setUploadProgress(progress);
         }
-      )
+      );
 
-      return data.cover_image_url
+      return data.cover_image_url;
     } catch (err: any) {
-      setError(err.message || 'เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ')
-      setUploadProgress(0)
-      throw err
+      setError(err.message || "เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ");
+      setUploadProgress(0);
+      throw err;
     } finally {
-      setIsUploading(false)
+      setIsUploading(false);
     }
-  }
+  };
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setIsLoading(true)
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
     try {
       // Upload cover image first if a new file is selected
-      let coverImageUrl = formData.cover_image_url
+      let coverImageUrl = formData.cover_image_url;
       if (coverImageFile) {
-        coverImageUrl = await uploadCoverImage()
+        coverImageUrl = await uploadCoverImage();
       }
 
-      const url = mode === 'create' ? '/api/trips' : `/api/trips/${trip?.id}`
-      const method = mode === 'create' ? 'POST' : 'PUT'
+      const url = mode === "create" ? "/api/trips" : `/api/trips/${trip?.id}`;
+      const method = mode === "create" ? "POST" : "PUT";
 
       const res = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
           cover_image_url: coverImageUrl,
         }),
-      })
+      });
 
-      const data = await res.json()
+      const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || 'เกิดข้อผิดพลาด')
-        return
+        setError(data.error || "เกิดข้อผิดพลาด");
+        return;
       }
 
-      router.push('/admin/trips')
-      router.refresh()
+      router.push("/admin/trips");
+      router.refresh();
     } catch (err) {
-      console.error('Error saving trip:', err)
-      setError('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง')
+      console.error("Error saving trip:", err);
+      setError("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -178,6 +186,38 @@ export default function TripForm({ trip, mode }: TripFormProps) {
         />
       </div>
 
+      {/* Slug */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Slug (URL)
+        </label>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={formData.slug}
+            onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+            placeholder="dolomites-lavender-2026"
+          />
+          <button
+            type="button"
+            onClick={() => {
+              const slug = formData.title
+                .toLowerCase()
+                .replace(/ /g, "-")
+                .replace(/[^\w\-\u0E00-\u0E7F]/g, ""); // Keep Thai chars
+              setFormData({ ...formData, slug });
+            }}
+            className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 whitespace-nowrap"
+          >
+            Auto Gen
+          </button>
+        </div>
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          ใช้ภาษาอังกฤษ ตัวพิมพ์เล็ก และขีดกลาง (-) เท่านั้นจะดีต่อ SEO ที่สุด
+        </p>
+      </div>
+
       {/* Description */}
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -185,7 +225,9 @@ export default function TripForm({ trip, mode }: TripFormProps) {
         </label>
         <textarea
           value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, description: e.target.value })
+          }
           rows={4}
           className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500 resize-none"
           placeholder="รายละเอียดทริป"
@@ -201,7 +243,9 @@ export default function TripForm({ trip, mode }: TripFormProps) {
           <select
             required
             value={formData.country_id}
-            onChange={(e) => setFormData({ ...formData, country_id: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, country_id: e.target.value })
+            }
             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400"
           >
             <option value="">เลือกประเทศ</option>
@@ -220,7 +264,12 @@ export default function TripForm({ trip, mode }: TripFormProps) {
           <select
             required
             value={formData.trip_type}
-            onChange={(e) => setFormData({ ...formData, trip_type: e.target.value as 'group' | 'private' })}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                trip_type: e.target.value as "group" | "private",
+              })
+            }
             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400"
           >
             <option value="group">{THAI_LABELS.groupTour}</option>
@@ -240,7 +289,12 @@ export default function TripForm({ trip, mode }: TripFormProps) {
           min="0"
           step="0.01"
           value={formData.price_per_person}
-          onChange={(e) => setFormData({ ...formData, price_per_person: parseFloat(e.target.value) })}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              price_per_person: parseFloat(e.target.value),
+            })
+          }
           className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
           placeholder="165900"
         />
@@ -262,7 +316,9 @@ export default function TripForm({ trip, mode }: TripFormProps) {
         </p>
         {coverImagePreview && (
           <div className="mt-4">
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">ตัวอย่างรูปภาพ:</p>
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              ตัวอย่างรูปภาพ:
+            </p>
             <div className="relative w-full max-w-md">
               <img
                 src={coverImagePreview}
@@ -272,16 +328,26 @@ export default function TripForm({ trip, mode }: TripFormProps) {
               <button
                 type="button"
                 onClick={() => {
-                  setCoverImageFile(null)
-                  setCoverImagePreview('')
-                  if (mode === 'edit') {
-                    setCoverImagePreview(trip?.cover_image_url || '')
+                  setCoverImageFile(null);
+                  setCoverImagePreview("");
+                  if (mode === "edit") {
+                    setCoverImagePreview(trip?.cover_image_url || "");
                   }
                 }}
                 className="cursor-pointer absolute top-2 right-2 p-2 bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white rounded-full shadow-lg"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
@@ -297,7 +363,9 @@ export default function TripForm({ trip, mode }: TripFormProps) {
         <input
           type="url"
           value={formData.file_link}
-          onChange={(e) => setFormData({ ...formData, file_link: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, file_link: e.target.value })
+          }
           className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
           placeholder="https://drive.google.com/..."
         />
@@ -309,10 +377,15 @@ export default function TripForm({ trip, mode }: TripFormProps) {
           type="checkbox"
           id="is_active"
           checked={formData.is_active}
-          onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+          onChange={(e) =>
+            setFormData({ ...formData, is_active: e.target.checked })
+          }
           className="w-4 h-4 text-orange-600 dark:text-orange-500 border-gray-300 dark:border-gray-600 rounded focus:ring-orange-500 dark:focus:ring-orange-400 bg-white dark:bg-gray-700"
         />
-        <label htmlFor="is_active" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label
+          htmlFor="is_active"
+          className="text-sm font-medium text-gray-700 dark:text-gray-300"
+        >
           {THAI_LABELS.active}
         </label>
       </div>
@@ -325,7 +398,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
           className="cursor-pointer px-6 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isUploading
-            ? 'กำลังอัปโหลดรูปภาพ...'
+            ? "กำลังอัปโหลดรูปภาพ..."
             : isLoading
             ? THAI_LABELS.loading
             : THAI_LABELS.save}
@@ -339,5 +412,5 @@ export default function TripForm({ trip, mode }: TripFormProps) {
         </button>
       </div>
     </form>
-  )
+  );
 }

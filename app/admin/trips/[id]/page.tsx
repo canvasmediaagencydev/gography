@@ -157,7 +157,7 @@ export default function ViewTripPage({
             <span>จัดการ FAQ</span>
           </Link>
           <Link
-            href={`/trips/${trip.id}?preview=1`}
+            href={`/trips/${trip.slug || trip.id}?preview=1`}
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"

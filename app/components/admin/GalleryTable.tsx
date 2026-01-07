@@ -1,16 +1,16 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { FiEdit, FiTrash2 } from 'react-icons/fi'
-import { THAI_LABELS } from '@/lib/thai-labels'
-import type { GalleryImageWithRelations } from '@/types/database.types'
+import Link from "next/link";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { THAI_LABELS } from "@/lib/thai-labels";
+import type { GalleryImageWithRelations } from "@/types/database.types";
 
 interface GalleryTableProps {
-  images: GalleryImageWithRelations[]
-  onDelete: (id: string) => void
-  onToggleActive: (id: string, currentStatus: boolean) => void
-  onToggleHighlight: (id: string, currentStatus: boolean) => void
-  onReorder: () => void
+  images: GalleryImageWithRelations[];
+  onDelete: (id: string) => void;
+  onToggleActive: (id: string, currentStatus: boolean) => void;
+  onToggleHighlight: (id: string, currentStatus: boolean) => void;
+  onReorder: () => void;
 }
 
 export default function GalleryTable({
@@ -18,6 +18,7 @@ export default function GalleryTable({
   onDelete,
   onToggleActive,
   onToggleHighlight,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onReorder,
 }: GalleryTableProps) {
   if (images.length === 0) {
@@ -25,7 +26,7 @@ export default function GalleryTable({
       <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
         <p className="text-gray-500 dark:text-gray-400">{THAI_LABELS.noData}</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -56,7 +57,10 @@ export default function GalleryTable({
           </thead>
           <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             {images.map((image) => (
-              <tr key={image.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+              <tr
+                key={image.id}
+                className="hover:bg-gray-50 dark:hover:bg-gray-700/50"
+              >
                 <td className="px-6 py-4">
                   <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
                     <img
@@ -85,33 +89,41 @@ export default function GalleryTable({
                       </span>
                     </div>
                   ) : (
-                    <span className="text-sm text-gray-400 dark:text-gray-500">-</span>
+                    <span className="text-sm text-gray-400 dark:text-gray-500">
+                      -
+                    </span>
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
-                    onClick={() => onToggleHighlight(image.id, image.is_highlight ?? false)}
+                    onClick={() =>
+                      onToggleHighlight(image.id, image.is_highlight ?? false)
+                    }
                     className={`cursor-pointer px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       image.is_highlight
-                        ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
+                        ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400"
+                        : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300"
                     }`}
                   >
                     {image.is_highlight
-                      ? '⭐ ' + THAI_LABELS.highlighted
+                      ? "⭐ " + THAI_LABELS.highlighted
                       : THAI_LABELS.notHighlighted}
                   </button>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
-                    onClick={() => onToggleActive(image.id, image.is_active ?? true)}
+                    onClick={() =>
+                      onToggleActive(image.id, image.is_active ?? true)
+                    }
                     className={`cursor-pointer px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       image.is_active
-                        ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
+                        ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400"
+                        : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300"
                     }`}
                   >
-                    {image.is_active ? THAI_LABELS.active : THAI_LABELS.inactive}
+                    {image.is_active
+                      ? THAI_LABELS.active
+                      : THAI_LABELS.inactive}
                   </button>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -126,7 +138,7 @@ export default function GalleryTable({
                     <button
                       onClick={() => {
                         if (confirm(THAI_LABELS.confirmDelete)) {
-                          onDelete(image.id)
+                          onDelete(image.id);
                         }
                       }}
                       className="cursor-pointer p-2 text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
@@ -142,5 +154,5 @@ export default function GalleryTable({
         </table>
       </div>
     </div>
-  )
+  );
 }
