@@ -9,45 +9,54 @@ export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const [language, setLanguage] = useState<"TH" | "EN">("TH");
+  // Determine initial language synchronously (Client-side)
+  const [language, setLanguage] = useState<"TH" | "EN">(() => {
+    if (typeof window !== "undefined") {
+      // 1. Check Cookie Direct Match (Best Practice for Google Translate)
+      // We explicitly look for the 'googtrans' cookie.
+      // If it exists and contains '/en', we are in English mode.
+      try {
+        const cookies = document.cookie.split(";");
+        for (const c of cookies) {
+          const [key, val] = c.trim().split("=");
+          if (key === "googtrans") {
+            // Check for both encoded and raw values just to be safe
+            // e.g. "/th/en" or "%2Fth%2Fen"
+            if (
+              val.includes("/en") ||
+              decodeURIComponent(val).includes("/en")
+            ) {
+              return "EN";
+            }
+          }
+        }
+      } catch (e) {
+        // Fallback if formatting fails
+        return "TH";
+      }
+    }
+    return "TH";
+  });
 
   // Sync language state with Google Translate after mount
   useEffect(() => {
-    // Get language - prioritize sources in order of reliability
+    // Get language - prioritize Cookie as Single Source of Truth
     const getLanguage = (): "TH" | "EN" => {
-      // 1. Google Translate select element (most reliable, but may not be ready immediately)
-      const select = document.querySelector(
-        "#google_translate_element select"
-      ) as HTMLSelectElement;
-      if (select?.value) {
-        return select.value === "en" ? "EN" : "TH";
+      // 1. Check Cookies
+      const cookies = document.cookie.split(";");
+      for (const c of cookies) {
+        const [key, val] = c.trim().split("=");
+        if (key === "googtrans") {
+          if (val.includes("/en") || decodeURIComponent(val).includes("/en")) {
+            return "EN";
+          }
+        }
       }
 
-      // 2. Check cookie (googtrans cookie is set immediately when language changes)
-      const cookieValue = document.cookie
-        .split(";")
-        .find((c) => c.trim().startsWith("googtrans="));
-      if (cookieValue) {
-        const rawCookie = cookieValue.split("=")[1];
-        const cookie = decodeURIComponent(rawCookie || "");
-
-        // Cookie format: /th/en means translating from Thai to English
-        if (cookie && cookie.includes("/en")) return "EN";
-        if (cookie && cookie.includes("/th") && !cookie.includes("/en"))
-          return "TH";
-      }
-
-      // 3. HTML class (translated-ltr = English)
+      // 2. Fallback: Check HTML class if cookie fails (e.g. initial widget load)
       const htmlClass = document.documentElement.className || "";
       if (htmlClass.includes("translated-ltr")) return "EN";
-      if (htmlClass.includes("translated-rtl")) return "TH";
 
-      // 4. HTML lang attribute (may not be updated immediately)
-      const lang = document.documentElement.getAttribute("lang");
-      if (lang === "en") return "EN";
-      if (lang === "th") return "TH";
-
-      // 5. Default to Thai
       return "TH";
     };
 
@@ -59,9 +68,6 @@ export default function Navbar() {
         return prev !== detectedLang ? detectedLang : prev;
       });
     };
-
-    // Immediate sync on mount (critical for post-reload state)
-    updateLanguage();
 
     // Monitor Google Translate select element (primary method)
     const setupSelectListener = () => {
@@ -181,6 +187,7 @@ export default function Navbar() {
               {/* Language Selector - Dropdown */}
               <div className="relative">
                 <button
+                  suppressHydrationWarning
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className={`cursor-pointer transition-colors text-sm border px-3 py-1 rounded flex items-center gap-1 ${
                     isScrolled
@@ -188,7 +195,7 @@ export default function Navbar() {
                       : "text-white border-white/30 dark:border-white/20 hover:bg-white/10 dark:hover:bg-white/5"
                   }`}
                 >
-                  {language} ▼
+                  <span suppressHydrationWarning>{language}</span> ▼
                 </button>
 
                 {/* Dropdown Menu */}
@@ -201,35 +208,50 @@ export default function Navbar() {
                   >
                     <div className="py-1">
                       <button
+                        suppressHydrationWarning // Allow text to differ from server (Best Practice for client-side init)
                         onClick={() => {
                           const deleteCookie = (name: string) => {
                             const hostname = window.location.hostname;
-                            const domain = hostname.substring(
-                              hostname.lastIndexOf(
-                                ".",
-                                hostname.lastIndexOf(".") - 1
-                              ) + 1
-                            );
 
-                            // Delete on current domain
+                            // 1. Delete on current path (Standard)
                             document.cookie =
                               name +
                               "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                            // Delete on root domain (e.g., .gography.net)
-                            document.cookie =
-                              name +
-                              "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." +
-                              domain;
-                            document.cookie =
-                              name +
-                              "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" +
-                              domain;
+
+                            // 2. Extra cleanup for Localhost
+                            if (hostname === "localhost") {
+                              document.cookie =
+                                name +
+                                "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=localhost";
+                            }
+                            // 3. Root domain cleanup for Production
+                            else {
+                              const domain = hostname.substring(
+                                hostname.lastIndexOf(
+                                  ".",
+                                  hostname.lastIndexOf(".") - 1
+                                ) + 1
+                              );
+                              document.cookie =
+                                name +
+                                "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." +
+                                domain;
+                              document.cookie =
+                                name +
+                                "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" +
+                                domain;
+                            }
                           };
 
                           // Reset to Thai
                           deleteCookie("googtrans");
                           setLanguage("TH");
-                          window.location.reload();
+                          setTimeout(() => {
+                            window.location.href =
+                              window.location.pathname +
+                              "?refresh=" +
+                              new Date().getTime();
+                          }, 100);
                         }}
                         className={`cursor-pointer w-full text-left px-4 py-2 text-sm transition-colors ${
                           isScrolled
@@ -237,9 +259,10 @@ export default function Navbar() {
                             : "text-white hover:bg-gray-700"
                         } ${language === "TH" ? "font-bold" : ""}`}
                       >
-                        🇹🇭 ไทย
+                        <span suppressHydrationWarning>🇹🇭 ไทย</span>
                       </button>
                       <button
+                        suppressHydrationWarning
                         onClick={() => {
                           const setCookie = (
                             name: string,
@@ -250,36 +273,44 @@ export default function Navbar() {
                               Date.now() + days * 864e5
                             ).toUTCString();
                             const hostname = window.location.hostname;
-                            const domain = hostname.substring(
-                              hostname.lastIndexOf(
-                                ".",
-                                hostname.lastIndexOf(".") - 1
-                              ) + 1
-                            );
 
-                            // Set on both current and root domain to ensures it sticks
+                            // Set on path=/
                             document.cookie =
                               name +
                               "=" +
-                              encodeURIComponent(value) +
+                              value +
                               "; expires=" +
                               expires +
                               "; path=/";
 
-                            document.cookie =
-                              name +
-                              "=" +
-                              encodeURIComponent(value) +
-                              "; expires=" +
-                              expires +
-                              "; path=/; domain=." +
-                              domain;
+                            // Set on root domain if not localhost
+                            if (hostname !== "localhost") {
+                              const domain = hostname.substring(
+                                hostname.lastIndexOf(
+                                  ".",
+                                  hostname.lastIndexOf(".") - 1
+                                ) + 1
+                              );
+                              document.cookie =
+                                name +
+                                "=" +
+                                value +
+                                "; expires=" +
+                                expires +
+                                "; path=/; domain=." +
+                                domain;
+                            }
                           };
 
                           // Set to English
                           setCookie("googtrans", "/th/en", 1);
                           setLanguage("EN");
-                          window.location.reload();
+                          setTimeout(() => {
+                            window.location.href =
+                              window.location.pathname +
+                              "?refresh=" +
+                              new Date().getTime();
+                          }, 100);
                         }}
                         className={`cursor-pointer w-full text-left px-4 py-2 text-sm transition-colors ${
                           isScrolled
@@ -287,7 +318,7 @@ export default function Navbar() {
                             : "text-white hover:bg-gray-700"
                         } ${language === "EN" ? "font-bold" : ""}`}
                       >
-                        🇬🇧 English
+                        <span suppressHydrationWarning>🇬🇧 English</span>
                       </button>
                     </div>
                   </div>
@@ -358,34 +389,49 @@ export default function Navbar() {
                     </p>
                     <div className="flex gap-2">
                       <button
+                        suppressHydrationWarning
                         onClick={() => {
                           const deleteCookie = (name: string) => {
                             const hostname = window.location.hostname;
-                            const domain = hostname.substring(
-                              hostname.lastIndexOf(
-                                ".",
-                                hostname.lastIndexOf(".") - 1
-                              ) + 1
-                            );
 
-                            // Delete on current domain
+                            // 1. Delete on current path (Standard)
                             document.cookie =
                               name +
                               "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                            // Delete on root domain (e.g., .gography.net)
-                            document.cookie =
-                              name +
-                              "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." +
-                              domain;
-                            document.cookie =
-                              name +
-                              "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" +
-                              domain;
+
+                            // 2. Extra cleanup for Localhost
+                            if (hostname === "localhost") {
+                              document.cookie =
+                                name +
+                                "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=localhost";
+                            }
+                            // 3. Root domain cleanup for Production
+                            else {
+                              const domain = hostname.substring(
+                                hostname.lastIndexOf(
+                                  ".",
+                                  hostname.lastIndexOf(".") - 1
+                                ) + 1
+                              );
+                              document.cookie =
+                                name +
+                                "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." +
+                                domain;
+                              document.cookie =
+                                name +
+                                "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" +
+                                domain;
+                            }
                           };
                           deleteCookie("googtrans");
                           setLanguage("TH");
                           setIsMobileMenuOpen(false);
-                          window.location.reload();
+                          setTimeout(() => {
+                            window.location.href =
+                              window.location.pathname +
+                              "?refresh=" +
+                              new Date().getTime();
+                          }, 100);
                         }}
                         className={`cursor-pointer flex-1 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
                           language === "TH"
@@ -393,9 +439,10 @@ export default function Navbar() {
                             : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                         }`}
                       >
-                        🇹🇭 ไทย
+                        <span suppressHydrationWarning>🇹🇭 ไทย</span>
                       </button>
                       <button
+                        suppressHydrationWarning
                         onClick={() => {
                           const setCookie = (
                             name: string,
@@ -406,35 +453,42 @@ export default function Navbar() {
                               Date.now() + days * 864e5
                             ).toUTCString();
                             const hostname = window.location.hostname;
-                            const domain = hostname.substring(
-                              hostname.lastIndexOf(
-                                ".",
-                                hostname.lastIndexOf(".") - 1
-                              ) + 1
-                            );
 
-                            // Set on both current and root domain
+                            // Set on current domain
                             document.cookie =
                               name +
                               "=" +
-                              encodeURIComponent(value) +
+                              value +
                               "; expires=" +
                               expires +
                               "; path=/";
 
-                            document.cookie =
-                              name +
-                              "=" +
-                              encodeURIComponent(value) +
-                              "; expires=" +
-                              expires +
-                              "; path=/; domain=." +
-                              domain;
+                            if (hostname !== "localhost") {
+                              const domain = hostname.substring(
+                                hostname.lastIndexOf(
+                                  ".",
+                                  hostname.lastIndexOf(".") - 1
+                                ) + 1
+                              );
+                              document.cookie =
+                                name +
+                                "=" +
+                                value +
+                                "; expires=" +
+                                expires +
+                                "; path=/; domain=." +
+                                domain;
+                            }
                           };
                           setCookie("googtrans", "/th/en", 1);
                           setLanguage("EN");
                           setIsMobileMenuOpen(false);
-                          window.location.reload();
+                          setTimeout(() => {
+                            window.location.href =
+                              window.location.pathname +
+                              "?refresh=" +
+                              new Date().getTime();
+                          }, 100);
                         }}
                         className={`cursor-pointer flex-1 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
                           language === "EN"
@@ -442,7 +496,7 @@ export default function Navbar() {
                             : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                         }`}
                       >
-                        🇬🇧 English
+                        <span suppressHydrationWarning>🇬🇧 English</span>
                       </button>
                     </div>
                   </div>

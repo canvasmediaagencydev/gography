@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface FilterOption {
   value: string;
@@ -17,20 +17,23 @@ interface FilterOptions {
 export default function Hero() {
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [selectedCountry, setSelectedCountry] = useState('');
-  const [selectedMonth, setSelectedMonth] = useState('');
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>({ countries: [], months: [] });
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
+    countries: [],
+    months: [],
+  });
 
   // Load filter options from API
   useEffect(() => {
     const loadFilterOptions = async () => {
       try {
-        const res = await fetch('/api/trips/filters');
+        const res = await fetch("/api/trips/filters");
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
         const data = await res.json();
-        if (data && typeof data === 'object') {
+        if (data && typeof data === "object") {
           setFilterOptions({
             countries: Array.isArray(data.countries) ? data.countries : [],
             months: Array.isArray(data.months) ? data.months : [],
@@ -53,33 +56,37 @@ export default function Hero() {
 
   const slides = [
     {
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80',
-      alt: 'Mountain landscape'
+      image:
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80",
+      alt: "Mountain landscape",
     },
     {
-      image: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1920&q=80',
-      alt: 'Road through forest'
+      image:
+        "https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1920&q=80",
+      alt: "Road through forest",
     },
     {
-      image: 'https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=1920&q=80',
-      alt: 'Mountain reflection'
+      image:
+        "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=1920&q=80",
+      alt: "Mountain reflection",
     },
     {
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80',
-      alt: 'Northern lights'
-    }
+      image:
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80",
+      alt: "Northern lights",
+    },
   ];
 
   // Handle search and navigation with filters
   const handleSearch = () => {
     const params = new URLSearchParams();
     if (selectedCountry) {
-      params.append('country', selectedCountry);
+      params.append("country", selectedCountry);
     }
     if (selectedMonth) {
-      params.append('month', selectedMonth);
+      params.append("month", selectedMonth);
     }
-    router.push(`/trips${params.toString() ? `?${params.toString()}` : ''}`);
+    router.push(`/trips${params.toString() ? `?${params.toString()}` : ""}`);
   };
 
   // Handle book trip - navigate to trips or open LINE
@@ -89,8 +96,10 @@ export default function Hero() {
 
   // Handle contact via LINE
   const handleContactLine = () => {
-    const message = encodeURIComponent('สวัสดีครับ สนใจสอบถามข้อมูลเกี่ยวกับทริป');
-    window.open(`https://line.me/ti/p/@Gography?text=${message}`, '_blank');
+    const message = encodeURIComponent(
+      "สวัสดีครับ สนใจสอบถามข้อมูลเกี่ยวกับทริป"
+    );
+    window.open(`https://line.me/ti/p/@Gography?text=${message}`, "_blank");
   };
 
   return (
@@ -101,7 +110,7 @@ export default function Hero() {
           <div
             key={index}
             className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
+              index === currentSlide ? "opacity-100" : "opacity-0"
             }`}
           >
             <img
@@ -123,7 +132,7 @@ export default function Hero() {
         </p>
         <h1
           className="text-white text-2xl md:text-4xl lg:text-6xl font-bold mb-6"
-          style={{ fontFamily: 'Rosella, sans-serif' }}
+          style={{ fontFamily: "Rosella, sans-serif" }}
         >
           GOGRAPHY
         </h1>
@@ -181,15 +190,25 @@ export default function Hero() {
               onClick={handleSearch}
               className="cursor-pointer bg-transparent border-2 border-white dark:border-gray-300 text-white dark:text-gray-100 px-6 py-3 rounded-lg hover:bg-white/10 dark:hover:bg-gray-800/30 transition-colors"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
               </svg>
             </button>
           </div>
 
           {/* Bottom Text */}
           <p className="text-white text-center text-sm md:text-base mb-4">
-            เที่ยวอย่างสบายใจ ในด้วงงานแคมเปญ
+            ให้ทุกความทรงจำในการเดินทางของคุณ เล่าผ่านภาพถ่ายที่สวยงาม
           </p>
 
           {/* Action Buttons */}
@@ -215,8 +234,10 @@ export default function Hero() {
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-                className={`cursor-pointer w-2 h-2 rounded-full transition-all ${
-                index === currentSlide ? 'bg-white dark:bg-white w-8' : 'bg-white/50 dark:bg-white/60'
+              className={`cursor-pointer w-2 h-2 rounded-full transition-all ${
+                index === currentSlide
+                  ? "bg-white dark:bg-white w-8"
+                  : "bg-white/50 dark:bg-white/60"
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
@@ -226,12 +247,24 @@ export default function Hero() {
 
       {/* Navigation Arrows */}
       <button
-        onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
+        onClick={() =>
+          setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+        }
         className="cursor-pointer hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 dark:bg-gray-800/30 hover:bg-white/30 dark:hover:bg-gray-800/40 backdrop-blur-sm text-white p-3 rounded-full transition-colors"
         aria-label="Previous slide"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
       </button>
       <button
@@ -239,8 +272,18 @@ export default function Hero() {
         className="cursor-pointer hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 dark:bg-gray-800/30 hover:bg-white/30 dark:hover:bg-gray-800/40 backdrop-blur-sm text-white p-3 rounded-full transition-colors"
         aria-label="Next slide"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
+          />
         </svg>
       </button>
     </section>

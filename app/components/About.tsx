@@ -1,32 +1,37 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function About() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
     {
-      image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80',
-      alt: 'Mountain landscape with travelers'
+      image:
+        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80",
+      alt: "Mountain landscape with travelers",
     },
     {
-      image: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800&q=80',
-      alt: 'Scenic view'
+      image:
+        "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800&q=80",
+      alt: "Scenic view",
     },
     {
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
-      alt: 'Mountain peak'
+      image:
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+      alt: "Mountain peak",
     },
     {
-      image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80',
-      alt: 'Nature landscape'
+      image:
+        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80",
+      alt: "Nature landscape",
     },
     {
-      image: 'https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=800&q=80',
-      alt: 'Scenic destination'
-    }
+      image:
+        "https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=800&q=80",
+      alt: "Scenic destination",
+    },
   ];
 
   // Auto-advance carousel
@@ -48,7 +53,7 @@ export default function About() {
                 <div
                   key={index}
                   className={`absolute inset-0 transition-opacity duration-1000 ${
-                    index === currentSlide ? 'opacity-100' : 'opacity-0'
+                    index === currentSlide ? "opacity-100" : "opacity-0"
                   }`}
                 >
                   <img
@@ -67,7 +72,9 @@ export default function About() {
                   key={index}
                   onClick={() => setCurrentSlide(index)}
                   className={`w-2 h-2 rounded-full transition-all ${
-                    index === currentSlide ? 'bg-white dark:bg-white w-8' : 'bg-white/60 dark:bg-white/70'
+                    index === currentSlide
+                      ? "bg-white dark:bg-white w-8"
+                      : "bg-white/60 dark:bg-white/70"
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
@@ -83,17 +90,20 @@ export default function About() {
 
             <h3
               className="text-orange-600 dark:text-orange-500 text-4xl md:text-5xl font-bold"
-              style={{ fontFamily: 'Rosella, sans-serif' }}
+              style={{ fontFamily: "Rosella, sans-serif" }}
             >
               GOGRAPHY
             </h3>
 
             <div className="space-y-4 text-gray-700 dark:text-gray-300 text-base md:text-lg leading-relaxed">
               <p>
-                เริ่มต้นจากกลุ่มเพื่อนที่รัก<span className="text-orange-600 dark:text-orange-400 font-semibold">การเดินทางและถ่ายภาพ</span>
+                เริ่มต้นจากกลุ่มเพื่อนที่รัก
+                <span className="text-orange-600 dark:text-orange-400 font-semibold">
+                  การเดินทางและถ่ายภาพ
+                </span>
               </p>
               <p>
-                เราจะสอบประสบการณ์กว่า 10 ปี จากการออกเดินทางทั่วโลก จนหลาย เป็น
+                เราสั่งสมประสบการณ์กว่า 10 ปี จากการออกเดินทางทั่วโลก จนกลายเป็น
               </p>
               <p>
                 แรงบันดาลใจในการก่อตั้งบริษัททัวร์ที่มุ่งแบ่งปันความประทับใจ
