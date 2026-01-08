@@ -157,6 +157,7 @@ export default function Navbar() {
                 className={`transition-all duration-300 ${
                   isScrolled ? "brightness-0 dark:brightness-100" : ""
                 }`}
+                unoptimized
               />
               <span
                 className={`text-xl font-bold transition-colors duration-300 ${

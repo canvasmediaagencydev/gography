@@ -1,43 +1,54 @@
-import Link from 'next/link';
+import Link from "next/link";
+import Image from "next/image";
 
 export default function BlogArticles() {
   const articles = [
     {
-      image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&q=80',
-      title: 'The Castle of Impossible Dreams: Ludwig\'s Eternal Legacy',
-      date: '14 ก.ค. 2568',
-      country: 'germany',
-      countryLabel: 'Germany',
-      excerpt: 'เนอชวานชไตน์: ปราสาทเทพนิยายแห่งบาวาเรีย',
-      slug: 'castle-of-impossible-dreams'
+      image:
+        "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&q=80",
+      title: "The Castle of Impossible Dreams: Ludwig's Eternal Legacy",
+      date: "14 ก.ค. 2568",
+      country: "germany",
+      countryLabel: "Germany",
+      excerpt: "เนอชวานชไตน์: ปราสาทเทพนิยายแห่งบาวาเรีย",
+      slug: "castle-of-impossible-dreams",
     },
     {
-      image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80',
-      title: 'Siberian Crystal: When Baikal Turns to Glass',
-      date: '14 ก.ค. 2568',
-      country: 'russia',
-      countryLabel: 'Russia',
-      excerpt: 'ค้นพบมหัศจรรย์ของทะเลสาบไบคาลในฤดูหนาว เมื่อน้ำใสกลายเป็นกระจกยักษ์ที่กอดยาวกว่า 600...',
-      slug: 'siberian-crystal-baikal'
+      image:
+        "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80",
+      title: "Siberian Crystal: When Baikal Turns to Glass",
+      date: "14 ก.ค. 2568",
+      country: "russia",
+      countryLabel: "Russia",
+      excerpt:
+        "ค้นพบมหัศจรรย์ของทะเลสาบไบคาลในฤดูหนาว เมื่อน้ำใสกลายเป็นกระจกยักษ์ที่กอดยาวกว่า 600...",
+      slug: "siberian-crystal-baikal",
     },
     {
-      image: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80',
-      title: 'Lofoten: Tales from the Edge of the World',
-      date: '14 ก.ค. 2568',
-      country: 'norway',
-      countryLabel: 'Norway',
-      excerpt: 'เรื่องเล่าจากหมู่เกาะมหัศจรรย์ณ ขอบโลกอาร์กติก ที่ธรรมชาติได้แกะสลักด้วยมือสูงชั้น พยัตราลิกลับ...',
-      slug: 'lofoten-tales-edge-of-world'
-    }
+      image:
+        "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80",
+      title: "Lofoten: Tales from the Edge of the World",
+      date: "14 ก.ค. 2568",
+      country: "norway",
+      countryLabel: "Norway",
+      excerpt:
+        "เรื่องเล่าจากหมู่เกาะมหัศจรรย์ณ ขอบโลกอาร์กติก ที่ธรรมชาติได้แกะสลักด้วยมือสูงชั้น พยัตราลิกลับ...",
+      slug: "lofoten-tales-edge-of-world",
+    },
   ];
 
   const getCountryColor = (country: string) => {
     const colors: { [key: string]: string } = {
-      germany: 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400',
-      russia: 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
-      norway: 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+      germany:
+        "bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400",
+      russia:
+        "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
+      norway: "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300",
     };
-    return colors[country] || 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300';
+    return (
+      colors[country] ||
+      "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+    );
   };
 
   return (
@@ -64,10 +75,13 @@ export default function BlogArticles() {
             >
               {/* Article Image */}
               <div className="relative h-64 overflow-hidden">
-                <img
+                <Image
                   src={article.image}
                   alt={article.title}
-                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                  fill
+                  className="object-cover hover:scale-110 transition-transform duration-500"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  unoptimized
                 />
               </div>
 
@@ -80,8 +94,14 @@ export default function BlogArticles() {
 
                 {/* Date and Country */}
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">{article.date}</span>
-                  <span className={`text-xs font-semibold px-3 py-1 rounded-full ${getCountryColor(article.country)}`}>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    {article.date}
+                  </span>
+                  <span
+                    className={`text-xs font-semibold px-3 py-1 rounded-full ${getCountryColor(
+                      article.country
+                    )}`}
+                  >
                     {article.countryLabel}
                   </span>
                 </div>

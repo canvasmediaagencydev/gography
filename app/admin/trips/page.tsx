@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, useCallback } from "react";
+
 import Link from "next/link";
 import { THAI_LABELS } from "@/lib/thai-labels";
 import TripTable from "@/app/components/admin/TripTable";
@@ -18,11 +18,7 @@ export default function TripsPage() {
     is_active: "",
   });
 
-  useEffect(() => {
-    loadData();
-  }, [filters]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
       // Load countries
@@ -47,7 +43,11 @@ export default function TripsPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [filters]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const handleDelete = async (id: string) => {
     try {
@@ -78,7 +78,8 @@ export default function TripsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             {THAI_LABELS.manageTrips}
@@ -89,7 +90,7 @@ export default function TripsPage() {
         </div>
         <Link
           href="/admin/trips/create"
-          className="px-6 py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+          className="w-full md:w-auto justify-center px-4 py-2 md:px-6 md:py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2 text-sm md:text-base"
         >
           <span>➕</span>
           <span>{THAI_LABELS.createNew}</span>

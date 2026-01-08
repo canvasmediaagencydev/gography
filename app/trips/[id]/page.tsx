@@ -7,7 +7,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://gography.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://gography.net";
 
   try {
     const res = await fetch(`${siteUrl}/api/trips/${id}/public`, {

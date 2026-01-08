@@ -1,82 +1,107 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 
 interface FAQ {
-  id: string
-  question: string
-  answer: string
-  order_index: number
+  id: string;
+  question: string;
+  answer: string;
+  order_index: number;
 }
 
 interface EditFaqModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onUpdate: (id: string, data: { question: string; answer: string; order_index: number }) => Promise<void>
-  faq: FAQ | null
+  isOpen: boolean;
+  onClose: () => void;
+  onUpdate: (
+    id: string,
+    data: { question: string; answer: string; order_index: number }
+  ) => Promise<void>;
+  faq: FAQ | null;
 }
 
-export default function EditFaqModal({ isOpen, onClose, onUpdate, faq }: EditFaqModalProps) {
-  const [question, setQuestion] = useState('')
-  const [answer, setAnswer] = useState('')
-  const [orderIndex, setOrderIndex] = useState(0)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState('')
+export default function EditFaqModal({
+  isOpen,
+  onClose,
+  onUpdate,
+  faq,
+}: EditFaqModalProps) {
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [orderIndex, setOrderIndex] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   // Pre-fill form when faq changes
   useEffect(() => {
     if (faq) {
-      setQuestion(faq.question)
-      setAnswer(faq.answer)
-      setOrderIndex(faq.order_index)
-      setError('')
+      setQuestion(faq.question);
+      setAnswer(faq.answer);
+      setOrderIndex(faq.order_index);
+      setError("");
     }
-  }, [faq])
+  }, [faq]);
 
-  if (!isOpen || !faq) return null
+  if (!isOpen || !faq) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError("");
 
     if (question.length < 10) {
-      setError('คำถามต้องมีอย่างน้อย 10 ตัวอักษร')
-      return
+      setError("คำถามต้องมีอย่างน้อย 10 ตัวอักษร");
+      return;
     }
 
     if (answer.length < 10) {
-      setError('คำตอบต้องมีอย่างน้อย 10 ตัวอักษร')
-      return
+      setError("คำตอบต้องมีอย่างน้อย 10 ตัวอักษร");
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     try {
-      await onUpdate(faq.id, { question, answer, order_index: orderIndex })
-      onClose()
-    } catch (err: any) {
-      setError(err.message || 'เกิดข้อผิดพลาด')
+      await onUpdate(faq.id, { question, answer, order_index: orderIndex });
+      onClose();
+      onClose();
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "เกิดข้อผิดพลาด");
+      } else {
+        setError("เกิดข้อผิดพลาด");
+      }
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const handleClose = () => {
-    setError('')
-    onClose()
-  }
+    setError("");
+    onClose();
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6 dark:border dark:border-gray-700">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">แก้ไข FAQ</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            แก้ไข FAQ
+          </h2>
           <button
             onClick={handleClose}
             className="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
             disabled={isSubmitting}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -102,7 +127,9 @@ export default function EditFaqModal({ isOpen, onClose, onUpdate, faq }: EditFaq
               disabled={isSubmitting}
               maxLength={500}
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{question.length}/500 ตัวอักษร</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {question.length}/500 ตัวอักษร
+            </p>
           </div>
 
           <div>
@@ -118,7 +145,9 @@ export default function EditFaqModal({ isOpen, onClose, onUpdate, faq }: EditFaq
               placeholder="คำตอบของคำถามนี้..."
               disabled={isSubmitting}
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{answer.length} ตัวอักษร</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {answer.length} ตัวอักษร
+            </p>
           </div>
 
           <div>
@@ -140,7 +169,7 @@ export default function EditFaqModal({ isOpen, onClose, onUpdate, faq }: EditFaq
               disabled={isSubmitting}
               className="cursor-pointer px-6 py-2 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'กำลังบันทึก...' : 'บันทึกการแก้ไข'}
+              {isSubmitting ? "กำลังบันทึก..." : "บันทึกการแก้ไข"}
             </button>
             <button
               type="button"
@@ -154,5 +183,5 @@ export default function EditFaqModal({ isOpen, onClose, onUpdate, faq }: EditFaq
         </form>
       </div>
     </div>
-  )
+  );
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, use, memo } from "react";
+import { useEffect, useState, use, memo, useCallback } from "react";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/app/components/Navbar";
@@ -128,9 +129,31 @@ export default function TripDetailsPage({
   const [currentFaqImages, setCurrentFaqImages] = useState<FaqImage[]>([]);
   const [currentFaqImageIndex, setCurrentFaqImageIndex] = useState(0);
 
+  const loadTripData = useCallback(async () => {
+    try {
+      const previewParam = previewMode ? "?preview=1" : "";
+      const res = await fetch(`/api/trips/${id}/public${previewParam}`);
+      if (!res.ok) {
+        if (res.status === 404) {
+          setError("ไม่พบทริปนี้");
+        } else {
+          setError("เกิดข้อผิดพลาดในการโหลดข้อมูล");
+        }
+        return;
+      }
+      const data = await res.json();
+      setTripData(data);
+    } catch (err) {
+      console.error("Error loading trip:", err);
+      setError("เกิดข้อผิดพลาดในการโหลดข้อมูล");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [id, previewMode]);
+
   useEffect(() => {
     loadTripData();
-  }, [id, previewMode]);
+  }, [loadTripData]);
 
   useEffect(() => {
     if (tripData && tripData.schedules.length > 0) {
@@ -155,28 +178,6 @@ export default function TripDetailsPage({
     const imageUrl = tripData.trip.cover_image_url || fallbackImage;
     setHeroImageUrl(imageUrl);
   }, [tripData]);
-
-  const loadTripData = async () => {
-    try {
-      const previewParam = previewMode ? "?preview=1" : "";
-      const res = await fetch(`/api/trips/${id}/public${previewParam}`);
-      if (!res.ok) {
-        if (res.status === 404) {
-          setError("ไม่พบทริปนี้");
-        } else {
-          setError("เกิดข้อผิดพลาดในการโหลดข้อมูล");
-        }
-        return;
-      }
-      const data = await res.json();
-      setTripData(data);
-    } catch (err) {
-      console.error("Error loading trip:", err);
-      setError("เกิดข้อผิดพลาดในการโหลดข้อมูล");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const selectedSchedule = tripData?.schedules.find(
     (s) => s.id === selectedScheduleId
@@ -220,17 +221,17 @@ export default function TripDetailsPage({
     setIsGalleryOpen(false);
   };
 
-  const nextImage = () => {
+  const nextImage = useCallback(() => {
     if (!tripData) return;
     setCurrentImageIndex((prev) => (prev + 1) % tripData.gallery.length);
-  };
+  }, [tripData]);
 
-  const prevImage = () => {
+  const prevImage = useCallback(() => {
     if (!tripData) return;
     setCurrentImageIndex(
       (prev) => (prev - 1 + tripData.gallery.length) % tripData.gallery.length
     );
-  };
+  }, [tripData]);
 
   const openItineraryImage = (
     images: typeof currentItineraryImages,
@@ -245,19 +246,19 @@ export default function TripDetailsPage({
     setIsItineraryImageOpen(false);
   };
 
-  const nextItineraryImage = () => {
+  const nextItineraryImage = useCallback(() => {
     setCurrentItineraryImageIndex(
       (prev) => (prev + 1) % currentItineraryImages.length
     );
-  };
+  }, [currentItineraryImages]);
 
-  const prevItineraryImage = () => {
+  const prevItineraryImage = useCallback(() => {
     setCurrentItineraryImageIndex(
       (prev) =>
         (prev - 1 + currentItineraryImages.length) %
         currentItineraryImages.length
     );
-  };
+  }, [currentItineraryImages]);
 
   const openFaqImage = (images: FaqImage[], index: number) => {
     setCurrentFaqImages(images);
@@ -269,15 +270,15 @@ export default function TripDetailsPage({
     setIsFaqImageOpen(false);
   };
 
-  const nextFaqImage = () => {
+  const nextFaqImage = useCallback(() => {
     setCurrentFaqImageIndex((prev) => (prev + 1) % currentFaqImages.length);
-  };
+  }, [currentFaqImages]);
 
-  const prevFaqImage = () => {
+  const prevFaqImage = useCallback(() => {
     setCurrentFaqImageIndex(
       (prev) => (prev - 1 + currentFaqImages.length) % currentFaqImages.length
     );
-  };
+  }, [currentFaqImages]);
 
   // Handle keyboard navigation in gallery
   useEffect(() => {
@@ -291,7 +292,7 @@ export default function TripDetailsPage({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isGalleryOpen, tripData]);
+  }, [isGalleryOpen, nextImage, prevImage]);
 
   // Handle keyboard navigation in itinerary image modal
   useEffect(() => {
@@ -305,7 +306,7 @@ export default function TripDetailsPage({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isItineraryImageOpen, currentItineraryImages]);
+  }, [isItineraryImageOpen, nextItineraryImage, prevItineraryImage]);
 
   // Handle keyboard navigation in FAQ image modal
   useEffect(() => {
@@ -319,7 +320,7 @@ export default function TripDetailsPage({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isFaqImageOpen, currentFaqImages]);
+  }, [isFaqImageOpen, nextFaqImage, prevFaqImage]);
 
   if (isLoading) {
     return (
@@ -415,12 +416,15 @@ export default function TripDetailsPage({
       {/* Hero Section */}
       <div className="relative h-[50vh] lg:h-[60vh] overflow-hidden">
         {heroImageUrl ? (
-          <img
+          <Image
             src={heroImageUrl}
             alt={trip.title}
-            className="absolute inset-0 w-full h-full object-cover"
+            fill
+            className="object-cover"
             style={{ zIndex: 1 }}
-            onError={(e) => {
+            priority
+            unoptimized
+            onError={() => {
               if (heroImageUrl !== fallbackHeroImage) {
                 setHeroImageUrl(fallbackHeroImage);
                 return;
@@ -429,7 +433,6 @@ export default function TripDetailsPage({
                 setHeroImageUrl(DEFAULT_HERO_IMAGE);
                 return;
               }
-              e.currentTarget.style.display = "none";
             }}
           />
         ) : (
@@ -528,10 +531,13 @@ export default function TripDetailsPage({
                       className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group"
                       onClick={() => openGallery(idx)}
                     >
-                      <img
+                      <Image
                         src={img.storage_url}
                         alt={img.alt_text || img.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        fill
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        unoptimized
                       />
                     </div>
                   ))}
@@ -540,10 +546,13 @@ export default function TripDetailsPage({
                       className="relative aspect-square rounded-lg overflow-hidden cursor-pointer bg-gray-900 dark:bg-gray-800"
                       onClick={() => openGallery(5)}
                     >
-                      <img
+                      <Image
                         src={gallery[5].storage_url}
                         alt={gallery[5].alt_text || gallery[5].title}
-                        className="w-full h-full object-cover opacity-40"
+                        fill
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                        className="object-cover opacity-40"
+                        unoptimized
                       />
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span className="text-white text-2xl font-bold">
@@ -662,14 +671,17 @@ export default function TripDetailsPage({
                                     openItineraryImage(day.images || [], imgIdx)
                                   }
                                 >
-                                  <img
+                                  <Image
                                     src={img.storage_url}
                                     alt={
                                       img.alt_text ||
                                       img.caption ||
                                       `Day ${day.day_number}`
                                     }
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                    fill
+                                    sizes="(max-width: 768px) 50vw, 33vw"
+                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                    unoptimized
                                   />
                                   {img.caption && (
                                     <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black to-transparent text-white text-sm p-3 font-medium">
@@ -884,34 +896,74 @@ export default function TripDetailsPage({
         <div className="fixed inset-0 z-9999 bg-black/90 flex items-center justify-center">
           <button
             onClick={closeGallery}
-            className="cursor-pointer absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
+            className="cursor-pointer absolute top-4 right-4 text-white z-20 bg-black/50 hover:bg-black/70 rounded-full p-2 transition-colors"
           >
-            ×
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
           </button>
 
           <button
             onClick={prevImage}
-            className="cursor-pointer absolute left-4 text-white text-4xl hover:text-gray-300 z-10"
+            className="cursor-pointer absolute left-4 text-white z-20 bg-black/50 hover:bg-black/70 rounded-full p-2 transition-colors"
           >
-            ‹
+            <svg
+              className="w-8 h-8"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
           </button>
 
           <button
             onClick={nextImage}
-            className="cursor-pointer absolute right-4 text-white text-4xl hover:text-gray-300 z-10"
+            className="cursor-pointer absolute right-4 text-white z-20 bg-black/50 hover:bg-black/70 rounded-full p-2 transition-colors"
           >
-            ›
+            <svg
+              className="w-8 h-8"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
           </button>
 
-          <div className="max-w-6xl max-h-[90vh] mx-auto px-16">
-            <img
-              src={gallery[currentImageIndex].storage_url}
-              alt={
-                gallery[currentImageIndex].alt_text ||
-                gallery[currentImageIndex].title
-              }
-              className="max-w-full max-h-[90vh] object-contain"
-            />
+          <div className="max-w-6xl max-h-[90vh] mx-auto px-4 md:px-16 w-full">
+            <div className="relative w-full h-[80vh]">
+              <Image
+                src={gallery[currentImageIndex].storage_url}
+                alt={
+                  gallery[currentImageIndex].alt_text ||
+                  gallery[currentImageIndex].title
+                }
+                fill
+                className="object-contain"
+                unoptimized
+              />
+            </div>
             <div className="text-center text-white mt-4">
               <p className="text-lg font-semibold">
                 {gallery[currentImageIndex].title}
@@ -935,41 +987,81 @@ export default function TripDetailsPage({
         <div className="fixed inset-0 z-9999 bg-black/90 flex items-center justify-center">
           <button
             onClick={closeItineraryImage}
-            className="cursor-pointer absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
+            className="cursor-pointer absolute top-4 right-4 text-white z-20 bg-black/50 hover:bg-black/70 rounded-full p-2 transition-colors"
           >
-            ×
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
           </button>
 
           {currentItineraryImages.length > 1 && (
             <>
               <button
                 onClick={prevItineraryImage}
-                className="cursor-pointer absolute left-4 text-white text-4xl hover:text-gray-300 z-10"
+                className="cursor-pointer absolute left-4 text-white z-20 bg-black/50 hover:bg-black/70 rounded-full p-2 transition-colors"
               >
-                ‹
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
               </button>
 
               <button
                 onClick={nextItineraryImage}
-                className="cursor-pointer absolute right-4 text-white text-4xl hover:text-gray-300 z-10"
+                className="cursor-pointer absolute right-4 text-white z-20 bg-black/50 hover:bg-black/70 rounded-full p-2 transition-colors"
               >
-                ›
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
               </button>
             </>
           )}
 
-          <div className="max-w-6xl max-h-[90vh] mx-auto px-16">
-            <img
-              src={
-                currentItineraryImages[currentItineraryImageIndex].storage_url
-              }
-              alt={
-                currentItineraryImages[currentItineraryImageIndex].alt_text ||
-                currentItineraryImages[currentItineraryImageIndex].caption ||
-                "Itinerary image"
-              }
-              className="max-w-full max-h-[90vh] object-contain"
-            />
+          <div className="max-w-6xl max-h-[90vh] mx-auto px-4 md:px-16 w-full">
+            <div className="relative w-full h-[80vh]">
+              <Image
+                src={
+                  currentItineraryImages[currentItineraryImageIndex].storage_url
+                }
+                alt={
+                  currentItineraryImages[currentItineraryImageIndex].alt_text ||
+                  currentItineraryImages[currentItineraryImageIndex].caption ||
+                  "Itinerary image"
+                }
+                fill
+                className="object-contain"
+                unoptimized
+              />
+            </div>
             <div className="text-center text-white mt-4">
               {currentItineraryImages[currentItineraryImageIndex].caption && (
                 <p className="text-lg font-semibold">
@@ -992,39 +1084,79 @@ export default function TripDetailsPage({
         <div className="fixed inset-0 z-9999 bg-black/90 flex items-center justify-center">
           <button
             onClick={closeFaqImage}
-            className="cursor-pointer absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10"
+            className="cursor-pointer absolute top-4 right-4 text-white z-20 bg-black/50 hover:bg-black/70 rounded-full p-2 transition-colors"
           >
-            ×
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
           </button>
 
           {currentFaqImages.length > 1 && (
             <>
               <button
                 onClick={prevFaqImage}
-                className="cursor-pointer absolute left-4 text-white text-4xl hover:text-gray-300 z-10"
+                className="cursor-pointer absolute left-4 text-white z-20 bg-black/50 hover:bg-black/70 rounded-full p-2 transition-colors"
               >
-                ‹
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
               </button>
 
               <button
                 onClick={nextFaqImage}
-                className="cursor-pointer absolute right-4 text-white text-4xl hover:text-gray-300 z-10"
+                className="cursor-pointer absolute right-4 text-white z-20 bg-black/50 hover:bg-black/70 rounded-full p-2 transition-colors"
               >
-                ›
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
               </button>
             </>
           )}
 
-          <div className="max-w-6xl max-h-[90vh] mx-auto px-16">
-            <img
-              src={currentFaqImages[currentFaqImageIndex].storage_url}
-              alt={
-                currentFaqImages[currentFaqImageIndex].alt_text ||
-                currentFaqImages[currentFaqImageIndex].caption ||
-                "FAQ image"
-              }
-              className="max-w-full max-h-[90vh] object-contain"
-            />
+          <div className="max-w-6xl max-h-[90vh] mx-auto px-4 md:px-16 w-full">
+            <div className="relative w-full h-[80vh]">
+              <Image
+                src={currentFaqImages[currentFaqImageIndex].storage_url}
+                alt={
+                  currentFaqImages[currentFaqImageIndex].alt_text ||
+                  currentFaqImages[currentFaqImageIndex].caption ||
+                  "FAQ image"
+                }
+                fill
+                className="object-contain"
+                unoptimized
+              />
+            </div>
             <div className="text-center text-white mt-4">
               {currentFaqImages[currentFaqImageIndex].caption && (
                 <p className="text-lg font-semibold">
@@ -1128,10 +1260,13 @@ function FAQAccordionItem({
                     className="relative aspect-video rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-600 hover:border-purple-400 dark:hover:border-purple-500 transition-colors cursor-pointer group"
                     onClick={() => onOpenImage(faq.images || [], imgIdx)}
                   >
-                    <img
+                    <Image
                       src={img.storage_url}
                       alt={img.alt_text || img.caption || "FAQ image"}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      unoptimized
                     />
                     {img.caption && (
                       <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black to-transparent text-white text-sm p-3 font-medium">

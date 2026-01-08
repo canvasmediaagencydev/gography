@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function TripsReviews() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -90,10 +91,13 @@ export default function TripsReviews() {
                 >
                   {/* Review Image */}
                   <div className="relative h-64 overflow-hidden">
-                    <img
+                    <Image
                       src={review.image}
                       alt={review.name}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      unoptimized
                     />
                   </div>
 

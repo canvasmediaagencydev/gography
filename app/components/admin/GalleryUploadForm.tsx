@@ -1,182 +1,205 @@
-'use client'
+"use client";
 
-import { useState, useEffect, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
-import { THAI_LABELS } from '@/lib/thai-labels'
-import { uploadWithProgress } from '@/lib/upload-helpers'
-import ProgressBar from '@/app/components/admin/ProgressBar'
-import type { Country, Trip } from '@/types/database.types'
+import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { THAI_LABELS } from "@/lib/thai-labels";
+import { uploadWithProgress } from "@/lib/upload-helpers";
+import ProgressBar from "@/app/components/admin/ProgressBar";
+import type { Country, Trip } from "@/types/database.types";
 
 interface UploadedFile {
-  file: File
-  preview: string
-  title: string
-  description: string
-  alt_text: string
-  country_id: string
-  trip_id: string
-  is_highlight: boolean
+  file: File;
+  preview: string;
+  title: string;
+  description: string;
+  alt_text: string;
+  country_id: string;
+  trip_id: string;
+  is_highlight: boolean;
 }
 
 interface GalleryUploadFormProps {
-  tripId?: string
+  tripId?: string;
 }
 
 export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
-  const router = useRouter()
-  const [countries, setCountries] = useState<Country[]>([])
-  const [trips, setTrips] = useState<Trip[]>([])
-  const [files, setFiles] = useState<UploadedFile[]>([])
-  const [isUploading, setIsUploading] = useState(false)
-  const [error, setError] = useState('')
-  const [isDragging, setIsDragging] = useState(false)
-  const [uploadProgress, setUploadProgress] = useState(0)
-  const [currentFileIndex, setCurrentFileIndex] = useState(0)
-  const [uploadMessage, setUploadMessage] = useState('')
+  const router = useRouter();
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [trips, setTrips] = useState<Trip[]>([]);
+  const [files, setFiles] = useState<UploadedFile[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  // currentFileIndex removed as it was unused
+  const [uploadMessage, setUploadMessage] = useState("");
 
   useEffect(() => {
-    loadCountries()
-    loadTrips()
-  }, [])
+    loadCountries();
+    loadTrips();
+  }, []);
 
   const loadCountries = async () => {
     try {
-      const res = await fetch('/api/countries')
-      const data = await res.json()
-      setCountries(data.countries || [])
+      const res = await fetch("/api/countries");
+      const data = await res.json();
+      setCountries(data.countries || []);
     } catch (error) {
-      console.error('Error loading countries:', error)
+      console.error("Error loading countries:", error);
     }
-  }
+  };
 
   const loadTrips = async () => {
     try {
-      const res = await fetch('/api/trips?pageSize=1000')
-      const data = await res.json()
-      setTrips(data.trips || [])
+      const res = await fetch("/api/trips?pageSize=1000");
+      const data = await res.json();
+      setTrips(data.trips || []);
     } catch (error) {
-      console.error('Error loading trips:', error)
+      console.error("Error loading trips:", error);
     }
-  }
+  };
+
+  const processFiles = useCallback(
+    (newFiles: File[]) => {
+      const validFiles = newFiles.filter((file) => {
+        const allowedTypes = [
+          "image/jpeg",
+          "image/jpg",
+          "image/png",
+          "image/webp",
+        ];
+        if (!allowedTypes.includes(file.type)) {
+          setError(`ไฟล์ ${file.name} ไม่ใช่รูปภาพที่รองรับ`);
+          return false;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+          setError(`ไฟล์ ${file.name} มีขนาดเกิน 5MB`);
+          return false;
+        }
+        return true;
+      });
+
+      const uploadedFiles: UploadedFile[] = validFiles.map((file) => ({
+        file,
+        preview: URL.createObjectURL(file),
+        title: file.name.split(".")[0],
+        description: "",
+        alt_text: "",
+        country_id: "",
+        trip_id: tripId || "",
+        is_highlight: false,
+      }));
+
+      setFiles((prev) => [...prev, ...uploadedFiles]);
+    },
+    [tripId]
+  );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(true)
-  }, [])
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
 
   const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(false)
-  }, [])
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(false)
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
 
-    const droppedFiles = Array.from(e.dataTransfer.files)
-    processFiles(droppedFiles)
-  }, [])
+      const droppedFiles = Array.from(e.dataTransfer.files);
+      processFiles(droppedFiles);
+    },
+    [processFiles]
+  );
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const selectedFiles = Array.from(e.target.files)
-      processFiles(selectedFiles)
+      const selectedFiles = Array.from(e.target.files);
+      processFiles(selectedFiles);
     }
-  }
-
-  const processFiles = (newFiles: File[]) => {
-    const validFiles = newFiles.filter((file) => {
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
-      if (!allowedTypes.includes(file.type)) {
-        setError(`ไฟล์ ${file.name} ไม่ใช่รูปภาพที่รองรับ`)
-        return false
-      }
-      if (file.size > 5 * 1024 * 1024) {
-        setError(`ไฟล์ ${file.name} มีขนาดเกิน 5MB`)
-        return false
-      }
-      return true
-    })
-
-    const uploadedFiles: UploadedFile[] = validFiles.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-      title: file.name.split('.')[0],
-      description: '',
-      alt_text: '',
-      country_id: '',
-      trip_id: tripId || '',
-      is_highlight: false,
-    }))
-
-    setFiles((prev) => [...prev, ...uploadedFiles])
-  }
+  };
 
   const removeFile = (index: number) => {
     setFiles((prev) => {
-      const newFiles = [...prev]
-      URL.revokeObjectURL(newFiles[index].preview)
-      newFiles.splice(index, 1)
-      return newFiles
-    })
-  }
+      const newFiles = [...prev];
+      URL.revokeObjectURL(newFiles[index].preview);
+      newFiles.splice(index, 1);
+      return newFiles;
+    });
+  };
 
-  const updateFile = (index: number, field: keyof UploadedFile, value: any) => {
+  const updateFile = <K extends keyof UploadedFile>(
+    index: number,
+    field: K,
+    value: UploadedFile[K]
+  ) => {
     setFiles((prev) => {
-      const newFiles = [...prev]
-      newFiles[index] = { ...newFiles[index], [field]: value }
-      return newFiles
-    })
-  }
+      const newFiles = [...prev];
+      newFiles[index] = { ...newFiles[index], [field]: value };
+      return newFiles;
+    });
+  };
 
   const handleUpload = async () => {
     if (files.length === 0) {
-      setError('กรุณาเลือกไฟล์อย่างน้อย 1 ไฟล์')
-      return
+      setError("กรุณาเลือกไฟล์อย่างน้อย 1 ไฟล์");
+      return;
     }
 
-    setIsUploading(true)
-    setError('')
-    setUploadProgress(0)
-    setCurrentFileIndex(0)
+    setIsUploading(true);
+    setError("");
+    setUploadProgress(0);
+    // setCurrentFileIndex(0);
 
     try {
-      const totalFiles = files.length
+      const totalFiles = files.length;
 
       // Upload each file
       for (let i = 0; i < totalFiles; i++) {
-        const uploadFile = files[i]
-        setCurrentFileIndex(i + 1)
-        setUploadMessage(`กำลังอัปโหลด ${uploadFile.title} (${i + 1}/${totalFiles})`)
+        const uploadFile = files[i];
+        // setCurrentFileIndex(i + 1) // Removed unused state update
+        setUploadMessage(
+          `กำลังอัปโหลด ${uploadFile.title} (${i + 1}/${totalFiles})`
+        );
 
         // Step 1: Upload file to storage with progress tracking
-        const formData = new FormData()
-        formData.append('file', uploadFile.file)
+        const formData = new FormData();
+        formData.append("file", uploadFile.file);
 
         // Get country code for organized storage
-        const country = countries.find((c) => c.id === uploadFile.country_id)
+        const country = countries.find((c) => c.id === uploadFile.country_id);
         if (country) {
-          formData.append('country_code', country.code)
+          formData.append("country_code", country.code);
         }
 
-        const uploadData = await uploadWithProgress(
-          '/api/gallery/upload',
-          formData,
-          (progress) => {
-            // Calculate overall progress
-            const completedFiles = i
-            const currentFileProgress = progress / 100
-            const overallProgress = ((completedFiles + currentFileProgress) / totalFiles) * 100
-            setUploadProgress(overallProgress)
-          }
-        )
+        const uploadData = await uploadWithProgress<{
+          storage_path: string;
+          storage_url: string;
+          file_name: string;
+          file_size: number;
+          mime_type: string;
+        }>("/api/gallery/upload", formData, (progress) => {
+          // Calculate overall progress
+          const completedFiles = i;
+          const currentFileProgress = progress / 100;
+          const overallProgress =
+            ((completedFiles + currentFileProgress) / totalFiles) * 100;
+          setUploadProgress(overallProgress);
+        });
 
         // Step 2: Create database record
-        setUploadMessage(`กำลังบันทึกข้อมูล ${uploadFile.title} (${i + 1}/${totalFiles})`)
+        setUploadMessage(
+          `กำลังบันทึกข้อมูล ${uploadFile.title} (${i + 1}/${totalFiles})`
+        );
 
-        const createRes = await fetch('/api/gallery', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        const createRes = await fetch("/api/gallery", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             storage_path: uploadData.storage_path,
             storage_url: uploadData.storage_url,
@@ -191,32 +214,36 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
             is_highlight: uploadFile.is_highlight,
             is_active: true,
           }),
-        })
+        });
 
         if (!createRes.ok) {
-          const errorData = await createRes.json()
-          throw new Error(errorData.error || 'Failed to create record')
+          const errorData = await createRes.json();
+          throw new Error(errorData.error || "Failed to create record");
         }
       }
 
       // Success
-      setUploadProgress(100)
-      setUploadMessage('อัปโหลดสำเร็จ!')
+      setUploadProgress(100);
+      setUploadMessage("อัปโหลดสำเร็จ!");
 
       // Wait a bit to show completion
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      router.push('/admin/gallery')
-      router.refresh()
-    } catch (err: any) {
-      console.error('Upload error:', err)
-      setError(err.message || 'เกิดข้อผิดพลาดในการอัปโหลด')
-      setUploadProgress(0)
-      setUploadMessage('')
+      router.push("/admin/gallery");
+      router.refresh();
+    } catch (err: unknown) {
+      console.error("Upload error:", err);
+      if (err instanceof Error) {
+        setError(err.message || "เกิดข้อผิดพลาดในการอัปโหลด");
+      } else {
+        setError("เกิดข้อผิดพลาดในการอัปโหลด");
+      }
+      setUploadProgress(0);
+      setUploadMessage("");
     } finally {
-      setIsUploading(false)
+      setIsUploading(false);
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -244,8 +271,8 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
         onDrop={handleDrop}
         className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
           isDragging
-            ? 'border-orange-500 dark:border-orange-400 bg-orange-50 dark:bg-orange-900/20'
-            : 'border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-500'
+            ? "border-orange-500 dark:border-orange-400 bg-orange-50 dark:bg-orange-900/20"
+            : "border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-500"
         }`}
       >
         <div className="space-y-4">
@@ -290,10 +317,13 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
               <div className="flex gap-4">
                 {/* Preview */}
                 <div className="shrink-0">
-                  <img
+                  <Image
                     src={uploadFile.preview}
                     alt={uploadFile.title}
-                    className="w-32 h-32 object-cover rounded-lg"
+                    width={128}
+                    height={128}
+                    className="object-cover rounded-lg"
+                    unoptimized
                   />
                 </div>
 
@@ -308,7 +338,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                       type="text"
                       value={uploadFile.title}
                       onChange={(e) =>
-                        updateFile(index, 'title', e.target.value)
+                        updateFile(index, "title", e.target.value)
                       }
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       placeholder="ชื่อรูปภาพ"
@@ -323,7 +353,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                     <select
                       value={uploadFile.country_id}
                       onChange={(e) =>
-                        updateFile(index, 'country_id', e.target.value)
+                        updateFile(index, "country_id", e.target.value)
                       }
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400"
                     >
@@ -344,7 +374,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                     <select
                       value={uploadFile.trip_id}
                       onChange={(e) =>
-                        updateFile(index, 'trip_id', e.target.value)
+                        updateFile(index, "trip_id", e.target.value)
                       }
                       disabled={!!tripId}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed"
@@ -371,7 +401,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                     <textarea
                       value={uploadFile.description}
                       onChange={(e) =>
-                        updateFile(index, 'description', e.target.value)
+                        updateFile(index, "description", e.target.value)
                       }
                       rows={2}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500 resize-none"
@@ -388,7 +418,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                       type="text"
                       value={uploadFile.alt_text}
                       onChange={(e) =>
-                        updateFile(index, 'alt_text', e.target.value)
+                        updateFile(index, "alt_text", e.target.value)
                       }
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       placeholder="ข้อความสำหรับผู้พิการทางสายตา"
@@ -402,7 +432,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
                       id={`highlight-${index}`}
                       checked={uploadFile.is_highlight}
                       onChange={(e) =>
-                        updateFile(index, 'is_highlight', e.target.checked)
+                        updateFile(index, "is_highlight", e.target.checked)
                       }
                       className="w-4 h-4 text-orange-600 dark:text-orange-500 border-gray-300 dark:border-gray-600 rounded focus:ring-orange-500 dark:focus:ring-orange-400 bg-white dark:bg-gray-700"
                     />
@@ -445,11 +475,11 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
 
       {/* Submit Buttons */}
       {files.length > 0 && (
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row items-center gap-3">
           <button
             onClick={handleUpload}
             disabled={isUploading}
-            className="cursor-pointer px-6 py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="cursor-pointer w-full md:w-auto px-6 py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isUploading
               ? `${THAI_LABELS.uploading}...`
@@ -458,12 +488,12 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
           <button
             onClick={() => router.back()}
             disabled={isUploading}
-            className="cursor-pointer px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="cursor-pointer w-full md:w-auto px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {THAI_LABELS.cancel}
           </button>
         </div>
       )}
     </div>
-  )
+  );
 }

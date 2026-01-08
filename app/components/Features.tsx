@@ -64,6 +64,7 @@ export default function Features() {
                   width={64}
                   height={64}
                   className="w-16 h-16"
+                  unoptimized
                 />
               </div>
 

@@ -1,58 +1,58 @@
-'use client'
+"use client";
 
-import { useState, FormEvent, Suspense } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { THAI_LABELS } from '@/lib/thai-labels'
+import { useState, FormEvent, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { THAI_LABELS } from "@/lib/thai-labels";
 
 function LoginForm() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   // Check for error in URL params
-  const urlError = searchParams.get('error')
+  const urlError = searchParams.get("error");
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setIsLoading(true)
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || 'เกิดข้อผิดพลาด')
-        return
+        setError(data.error || "เกิดข้อผิดพลาด");
+        return;
       }
 
       // Successful login, redirect to dashboard
-      router.push('/admin/dashboard')
-      router.refresh()
+      router.push("/admin/dashboard");
+      router.refresh();
     } catch (err) {
-      console.error('Login error:', err)
-      setError('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง')
+      console.error("Login error:", err);
+      setError("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
             Gography Admin
           </h1>
           <p className="text-gray-600 dark:text-gray-400">ระบบจัดการทริป</p>
@@ -65,11 +65,11 @@ function LoginForm() {
           </h2>
 
           {/* Error Messages */}
-          {(error || urlError === 'unauthorized') && (
+          {(error || urlError === "unauthorized") && (
             <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
               <p className="text-red-600 dark:text-red-400 text-sm text-center">
                 {error ||
-                  (urlError === 'unauthorized' && 'คุณไม่มีสิทธิ์เข้าถึงระบบ')}
+                  (urlError === "unauthorized" && "คุณไม่มีสิทธิ์เข้าถึงระบบ")}
               </p>
             </div>
           )}
@@ -132,13 +132,19 @@ function LoginForm() {
         </p>
       </div>
     </div>
-  )
+  );
 }
 
 export default function AdminLoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div>Loading...</div></div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <div>Loading...</div>
+        </div>
+      }
+    >
       <LoginForm />
     </Suspense>
-  )
+  );
 }

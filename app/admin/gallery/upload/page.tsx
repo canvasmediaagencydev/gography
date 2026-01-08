@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
-import { useRouter } from 'next/navigation'
-import { THAI_LABELS } from '@/lib/thai-labels'
-import GalleryUploadForm from '@/app/components/admin/GalleryUploadForm'
+import { useRouter } from "next/navigation";
+import { THAI_LABELS } from "@/lib/thai-labels";
+import GalleryUploadForm from "@/app/components/admin/GalleryUploadForm";
 
 export default function GalleryUploadPage() {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <div className="space-y-6">
@@ -15,11 +15,13 @@ export default function GalleryUploadPage() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             {THAI_LABELS.uploadImages}
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">อัปโหลดรูปภาพใหม่เข้าแกลเลอรี</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            อัปโหลดรูปภาพใหม่เข้าแกลเลอรี
+          </p>
         </div>
         <button
           onClick={() => router.back()}
-          className="cursor-pointer px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors"
+          className="cursor-pointer px-4 py-2 md:px-6 md:py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors text-sm md:text-base"
         >
           {THAI_LABELS.back}
         </button>
@@ -30,5 +32,5 @@ export default function GalleryUploadPage() {
         <GalleryUploadForm />
       </div>
     </div>
-  )
+  );
 }

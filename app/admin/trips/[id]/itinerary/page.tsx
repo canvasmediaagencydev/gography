@@ -1,12 +1,14 @@
 "use client";
 
-import { use, useState, useEffect } from "react";
+import { use, useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { uploadWithProgress } from "@/lib/upload-helpers";
 import type {
   TripItineraryDayWithRelations,
   TripItineraryActivity,
   TripItineraryDayImage,
+  Trip,
 } from "@/types/database.types";
 import AddDayModal from "@/app/components/admin/itinerary/AddDayModal";
 import AddActivityModal from "@/app/components/admin/itinerary/AddActivityModal";
@@ -20,7 +22,7 @@ export default function TripItineraryPage({
   params: Promise<{ id: string }>;
 }) {
   const { id: tripId } = use(params);
-  const [trip, setTrip] = useState<any>(null);
+  const [trip, setTrip] = useState<Trip | null>(null);
   const [days, setDays] = useState<TripItineraryDayWithRelations[]>([]);
   const [expandedDays, setExpandedDays] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
@@ -60,12 +62,7 @@ export default function TripItineraryPage({
     return text.replace(/\s+/g, " ").trim();
   };
 
-  useEffect(() => {
-    loadTrip();
-    loadItinerary();
-  }, [tripId]);
-
-  const loadTrip = async () => {
+  const loadTrip = useCallback(async () => {
     try {
       const res = await fetch(`/api/trips/${tripId}`);
       const data = await res.json();
@@ -73,9 +70,9 @@ export default function TripItineraryPage({
     } catch (error) {
       console.error("Error loading trip:", error);
     }
-  };
+  }, [tripId]);
 
-  const loadItinerary = async () => {
+  const loadItinerary = useCallback(async () => {
     try {
       const res = await fetch(`/api/trips/${tripId}/itinerary`);
       const data = await res.json();
@@ -85,7 +82,12 @@ export default function TripItineraryPage({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [tripId]);
+
+  useEffect(() => {
+    loadTrip();
+    loadItinerary();
+  }, [loadTrip, loadItinerary]);
 
   const handleAddDay = async (data: {
     day_number: number;
@@ -296,24 +298,25 @@ export default function TripItineraryPage({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             กำหนดการเดินทางรายวัน
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1">{trip?.title}</p>
         </div>
-        <div className="flex gap-3">
+        <div className="w-full md:w-auto grid grid-cols-2 md:flex gap-3">
           <button
             onClick={() => setShowAddModal(true)}
-            className="cursor-pointer px-4 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+            className="cursor-pointer w-full md:w-auto px-4 py-2 md:px-6 md:py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 text-sm md:text-base"
           >
             <span>+</span>
             <span>เพิ่มวันเดินทาง</span>
           </button>
           <Link
             href={`/admin/trips/${tripId}`}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-semibold"
+            className="w-full md:w-auto px-4 py-2 md:px-6 md:py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-semibold flex items-center justify-center text-center text-sm md:text-base"
           >
             กลับ
           </Link>
@@ -626,12 +629,14 @@ export default function TripItineraryPage({
                           {day.images.map((img: TripItineraryDayImage) => (
                             <div key={img.id} className="relative group">
                               <div className="aspect-video rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-700 group-hover:border-green-400 dark:group-hover:border-green-500 transition-colors">
-                                <img
+                                <Image
                                   src={img.storage_url}
                                   alt={
                                     img.alt_text || img.caption || "Day image"
                                   }
-                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                  fill
+                                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                  unoptimized
                                 />
                               </div>
                               {img.caption && (

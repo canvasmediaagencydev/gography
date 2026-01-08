@@ -2,6 +2,7 @@
 
 import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { THAI_LABELS } from "@/lib/thai-labels";
 import { uploadWithProgress } from "@/lib/upload-helpers";
 import ProgressBar from "@/app/components/admin/ProgressBar";
@@ -93,7 +94,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
       const uploadFormData = new FormData();
       uploadFormData.append("file", coverImageFile);
 
-      const data = await uploadWithProgress(
+      const data = await uploadWithProgress<{ cover_image_url: string }>(
         "/api/trips/upload-cover",
         uploadFormData,
         (progress) => {
@@ -102,8 +103,13 @@ export default function TripForm({ trip, mode }: TripFormProps) {
       );
 
       return data.cover_image_url;
-    } catch (err: any) {
-      setError(err.message || "เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ");
+    } catch (err: unknown) {
+      console.error(err);
+      if (err instanceof Error) {
+        setError(err.message || "เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ");
+      } else {
+        setError("เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ");
+      }
       setUploadProgress(0);
       throw err;
     } finally {
@@ -319,11 +325,13 @@ export default function TripForm({ trip, mode }: TripFormProps) {
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               ตัวอย่างรูปภาพ:
             </p>
-            <div className="relative w-full max-w-md">
-              <img
+            <div className="relative w-full max-w-md h-48">
+              <Image
                 src={coverImagePreview}
                 alt="Preview"
-                className="w-full h-48 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                fill
+                className="object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                unoptimized
               />
               <button
                 type="button"
@@ -391,11 +399,11 @@ export default function TripForm({ trip, mode }: TripFormProps) {
       </div>
 
       {/* Buttons */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col md:flex-row items-center gap-3">
         <button
           type="submit"
           disabled={isLoading || isUploading}
-          className="cursor-pointer px-6 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="cursor-pointer w-full md:w-auto px-6 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isUploading
             ? "กำลังอัปโหลดรูปภาพ..."
@@ -406,7 +414,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
         <button
           type="button"
           onClick={() => router.back()}
-          className="cursor-pointer px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors"
+          className="cursor-pointer w-full md:w-auto px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors"
         >
           {THAI_LABELS.cancel}
         </button>

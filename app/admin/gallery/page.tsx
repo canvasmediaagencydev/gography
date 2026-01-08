@@ -123,7 +123,8 @@ export default function GalleryPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             {THAI_LABELS.manageGallery}
@@ -134,7 +135,7 @@ export default function GalleryPage() {
         </div>
         <Link
           href="/admin/gallery/upload"
-          className="px-6 py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+          className="w-full md:w-auto justify-center px-4 py-2 md:px-6 md:py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2 text-sm md:text-base"
         >
           <span>📸</span>
           <span>{THAI_LABELS.uploadImages}</span>

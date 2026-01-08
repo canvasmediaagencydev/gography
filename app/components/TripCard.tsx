@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type {
@@ -45,10 +46,13 @@ export default function TripCard({
     <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
       {/* Trip Image */}
       <div className="relative h-64 overflow-hidden">
-        <img
+        <Image
           src={trip.image}
           alt={trip.title}
-          className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+          fill
+          className="object-cover hover:scale-110 transition-transform duration-500"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          unoptimized
         />
       </div>
 

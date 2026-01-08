@@ -1,65 +1,66 @@
-'use client'
+"use client";
 
-import { useState, useEffect, FormEvent } from 'react'
-import { useRouter } from 'next/navigation'
-import { THAI_LABELS } from '@/lib/thai-labels'
+import { useState, useEffect, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { THAI_LABELS } from "@/lib/thai-labels";
 import type {
   GalleryImageWithRelations,
   Country,
   Trip,
-} from '@/types/database.types'
+} from "@/types/database.types";
 
 interface GalleryEditFormProps {
-  image: GalleryImageWithRelations
+  image: GalleryImageWithRelations;
 }
 
 export default function GalleryEditForm({ image }: GalleryEditFormProps) {
-  const router = useRouter()
-  const [countries, setCountries] = useState<Country[]>([])
-  const [trips, setTrips] = useState<Trip[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
+  const router = useRouter();
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [trips, setTrips] = useState<Trip[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
     title: image.title,
-    description: image.description || '',
-    alt_text: image.alt_text || '',
-    country_id: image.country_id || '',
-    trip_id: image.trip_id || '',
+    description: image.description || "",
+    alt_text: image.alt_text || "",
+    country_id: image.country_id || "",
+    trip_id: image.trip_id || "",
     is_highlight: image.is_highlight,
     order_index: image.order_index,
     is_active: image.is_active,
-  })
+  });
 
   useEffect(() => {
-    loadData()
-  }, [])
+    loadData();
+  }, []);
 
   const loadData = async () => {
     try {
       // Load countries
-      const countriesRes = await fetch('/api/countries')
-      const countriesData = await countriesRes.json()
-      setCountries(countriesData.countries || [])
+      const countriesRes = await fetch("/api/countries");
+      const countriesData = await countriesRes.json();
+      setCountries(countriesData.countries || []);
 
       // Load trips (for optional linking)
-      const tripsRes = await fetch('/api/trips?pageSize=1000')
-      const tripsData = await tripsRes.json()
-      setTrips(tripsData.trips || [])
+      const tripsRes = await fetch("/api/trips?pageSize=1000");
+      const tripsData = await tripsRes.json();
+      setTrips(tripsData.trips || []);
     } catch (error) {
-      console.error('Error loading data:', error)
+      console.error("Error loading data:", error);
     }
-  }
+  };
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setIsLoading(true)
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
     try {
       const res = await fetch(`/api/gallery/${image.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
           country_id: formData.country_id || null,
@@ -67,24 +68,24 @@ export default function GalleryEditForm({ image }: GalleryEditFormProps) {
           description: formData.description || null,
           alt_text: formData.alt_text || null,
         }),
-      })
+      });
 
-      const data = await res.json()
+      const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || 'เกิดข้อผิดพลาด')
-        return
+        setError(data.error || "เกิดข้อผิดพลาด");
+        return;
       }
 
-      router.push('/admin/gallery')
-      router.refresh()
+      router.push("/admin/gallery");
+      router.refresh();
     } catch (err) {
-      console.error('Error updating image:', err)
-      setError('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง')
+      console.error("Error updating image:", err);
+      setError("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -100,10 +101,12 @@ export default function GalleryEditForm({ image }: GalleryEditFormProps) {
           {THAI_LABELS.preview}
         </label>
         <div className="relative w-64 h-64 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
-          <img
+          <Image
             src={image.storage_url}
             alt={image.alt_text || image.title}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            unoptimized
           />
         </div>
       </div>
@@ -117,9 +120,7 @@ export default function GalleryEditForm({ image }: GalleryEditFormProps) {
           type="text"
           required
           value={formData.title}
-          onChange={(e) =>
-            setFormData({ ...formData, title: e.target.value })
-          }
+          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
           placeholder="ชื่อรูปภาพ"
         />
@@ -276,5 +277,5 @@ export default function GalleryEditForm({ image }: GalleryEditFormProps) {
         </button>
       </div>
     </form>
-  )
+  );
 }
