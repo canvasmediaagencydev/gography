@@ -16,9 +16,19 @@ type FaqImage = {
 
 const FormattedText = memo(
   ({ text, className = "" }: { text: string; className?: string }) => {
+    // Check if the text is already HTML (from Tiptap) by looking for common HTML tags
+    const isHtml = /<(p|br|ul|ol|li|h[1-6]|blockquote|pre|code|strong|em|u|s|a|img|div|span)/i.test(text);
+    
     return (
       <div
-        className={`tiptap flow-root wrap-break-word prose dark:prose-invert max-w-none ${className}`}
+        className={`tiptap flow-root wrap-break-word prose dark:prose-invert max-w-none 
+          prose-p:leading-relaxed prose-p:my-2 md:prose-p:my-3
+          prose-ul:my-2 md:prose-ul:my-3 
+          prose-li:my-0.5 md:prose-li:my-1
+          prose-headings:mb-3 md:prose-headings:mb-4 
+          prose-headings:mt-4 md:prose-headings:mt-6
+          ${!isHtml ? "whitespace-pre-wrap" : ""}
+          ${className}`}
         dangerouslySetInnerHTML={{ __html: text }}
       />
     );
@@ -477,31 +487,31 @@ export default function TripDetailsPage({
           <div className="lg:col-span-8 space-y-6">
             {/* Trip Overview */}
             {trip.description && (
-              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">
+              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-4 md:p-8">
+                <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-black dark:text-white">
                   รายละเอียดทริป
                 </h2>
                 <FormattedText
-                  text={trip.description}
-                  className="text-gray-700 dark:text-gray-300 leading-relaxed"
+                  text={trip.description || ""}
+                  className="text-gray-800 dark:text-gray-200 text-sm md:text-base"
                 />
               </div>
             )}
 
             {/* Itinerary Section */}
             {trip.file_link && (
-              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-3 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 text-gray-900 dark:text-white">
                   กำหนดการเดินทาง
                 </h2>
                 <a
                   href={trip.file_link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white px-6 py-3 rounded-full transition-colors"
+                  className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white px-5 md:px-6 py-2.5 md:py-3 rounded-full transition-colors text-xs md:text-base"
                 >
                   <svg
-                    className="w-5 h-5"
+                    className="w-4 h-4 md:w-5 md:h-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -520,11 +530,11 @@ export default function TripDetailsPage({
 
             {/* Gallery Section */}
             {gallery.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">
+              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-3 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 text-black dark:text-white">
                   แกลเลอรี่ภาพ
                 </h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
                   {gallery.slice(0, 5).map((img, idx) => (
                     <div
                       key={img.id}
@@ -567,46 +577,46 @@ export default function TripDetailsPage({
 
             {/* Daily Itinerary Section */}
             {tripData?.itinerary && tripData.itinerary.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-3 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-6 text-gray-900 dark:text-white">
                   กำหนดการเดินทางรายวัน
                 </h2>
-                <div className="space-y-6">
+                <div className="space-y-3 md:space-y-6">
                   {tripData.itinerary.map((day) => (
                     <div
                       key={day.id}
                       className="border-2 border-gray-200 dark:border-gray-600 rounded-xl overflow-hidden"
                     >
                       {/* Day Header */}
-                      <div className="p-5 bg-linear-to-r from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30 border-b-2 border-orange-200 dark:border-orange-700">
-                        <div className="flex items-center gap-4">
-                          <span className="shrink-0 w-14 h-14 bg-linear-to-br from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md">
+                      <div className="p-3 md:p-5 bg-linear-to-r from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30 border-b-2 border-orange-200 dark:border-orange-700">
+                        <div className="flex items-center gap-3 md:gap-4">
+                          <span className="shrink-0 w-10 h-10 md:w-14 md:h-14 bg-linear-to-br from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 text-white rounded-full flex items-center justify-center font-bold text-base md:text-xl shadow-md">
                             {day.day_number}
                           </span>
-                          <h3 className="flex-1 text-gray-900 dark:text-white font-bold text-lg">
+                          <h3 className="flex-1 text-gray-900 dark:text-white font-bold text-sm md:text-lg">
                             {day.day_title}
                           </h3>
                         </div>
                       </div>
 
                       {/* Day Content */}
-                      <div className="p-6 space-y-5 bg-gray-50 dark:bg-gray-900">
+                      <div className="p-3 md:p-6 space-y-3 md:space-y-5 bg-gray-50 dark:bg-gray-900">
                         {/* Day Description */}
                         {day.day_description && (
-                          <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-4 rounded-lg border border-gray-200">
+                          <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-2 md:p-4 rounded-lg border border-gray-200">
                             <FormattedText
-                              text={day.day_description}
-                              className="text-gray-800 dark:text-gray-300 leading-relaxed text-base"
+                              text={day.day_description || ""}
+                              className="text-gray-800 dark:text-gray-300 leading-relaxed text-xs md:text-base"
                             />
                           </div>
                         )}
 
                         {/* Activities */}
                         {day.activities && day.activities.length > 0 && (
-                          <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-5 rounded-lg border border-gray-200">
-                            <h3 className="font-bold text-gray-900 dark:text-white mb-3 text-base flex items-center gap-2">
+                          <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-3 md:p-5 rounded-lg border border-gray-200">
+                            <h3 className="font-bold text-gray-900 dark:text-white mb-2 md:mb-3 text-xs md:text-base flex items-center gap-2">
                               <svg
-                                className="w-5 h-5 text-blue-600 dark:text-blue-400"
+                                className="w-3.5 h-3.5 md:w-5 md:h-5 text-blue-600 dark:text-blue-400"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                               >
@@ -619,24 +629,24 @@ export default function TripDetailsPage({
                               </svg>
                               กิจกรรม
                             </h3>
-                            <div className="space-y-3">
+                            <div className="space-y-2 md:space-y-3">
                               {day.activities.map((activity) => (
                                 <div
                                   key={activity.id}
-                                  className="flex gap-3 items-start pl-1"
+                                  className="flex gap-2 md:gap-3 items-start pl-1"
                                 >
-                                  <span className="shrink-0 text-blue-600 dark:text-blue-400 font-bold text-lg mt-0.5">
+                                  <span className="shrink-0 text-blue-600 dark:text-blue-400 font-bold text-base md:text-lg mt-0.5">
                                     •
                                   </span>
-                                  <div className="flex gap-3 items-start flex-1">
+                                  <div className="flex gap-2 md:gap-3 items-start flex-1">
                                     {activity.activity_time && (
-                                      <span className="shrink-0 px-3 py-1 bg-orange-600 dark:bg-orange-500 text-white font-bold text-sm rounded-md shadow-sm">
+                                      <span className="shrink-0 px-2 md:px-3 py-0.5 md:py-1 bg-orange-600 dark:bg-orange-500 text-white font-bold text-[10px] md:text-sm rounded-md shadow-sm">
                                         {activity.activity_time}
                                       </span>
                                     )}
                                     <FormattedText
                                       text={activity.activity_description}
-                                      className="text-gray-900 dark:text-gray-300 flex-1 leading-relaxed font-medium text-base wrap-break-word whitespace-pre-wrap"
+                                      className="text-gray-900 dark:text-gray-300 flex-1 leading-relaxed font-medium text-xs md:text-base wrap-break-word whitespace-pre-wrap"
                                     />
                                   </div>
                                 </div>
@@ -647,10 +657,10 @@ export default function TripDetailsPage({
 
                         {/* Day Images */}
                         {day.images && day.images.length > 0 && (
-                          <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-5 rounded-lg border border-gray-200">
-                            <h3 className="font-bold text-gray-900 dark:text-white mb-3 text-base flex items-center gap-2">
+                          <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-3 md:p-5 rounded-lg border border-gray-200">
+                            <h3 className="font-bold text-gray-900 dark:text-white mb-2 md:mb-3 text-xs md:text-base flex items-center gap-2">
                               <svg
-                                className="w-5 h-5 text-green-600 dark:text-green-400"
+                                className="w-3.5 h-3.5 md:w-5 md:h-5 text-green-600 dark:text-green-400"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                               >
@@ -662,7 +672,7 @@ export default function TripDetailsPage({
                               </svg>
                               รูปภาพ
                             </h3>
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
                               {day.images.map((img, imgIdx) => (
                                 <div
                                   key={img.id}
@@ -684,14 +694,14 @@ export default function TripDetailsPage({
                                     unoptimized
                                   />
                                   {img.caption && (
-                                    <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black to-transparent text-white text-sm p-3 font-medium">
+                                    <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black to-transparent text-white text-[10px] md:text-sm p-1.5 md:p-3 font-medium">
                                       {img.caption}
                                     </div>
                                   )}
                                   {/* Click indicator */}
                                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
                                     <svg
-                                      className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg"
+                                      className="w-5 h-5 md:w-8 md:h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg"
                                       fill="none"
                                       stroke="currentColor"
                                       viewBox="0 0 24 24"
@@ -718,11 +728,11 @@ export default function TripDetailsPage({
 
             {/* FAQ Section */}
             {tripData?.faqs && tripData.faqs.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+              <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 rounded-2xl shadow-lg p-3 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-6 text-gray-900 dark:text-white">
                   คำถามที่พบบ่อย (FAQ)
                 </h2>
-                <div className="space-y-4">
+                <div className="space-y-2 md:space-y-4">
                   {tripData.faqs.map((faq, index) => (
                     <FAQAccordionItem
                       key={faq.id}
@@ -970,7 +980,7 @@ export default function TripDetailsPage({
               </p>
               {gallery[currentImageIndex].description && (
                 <FormattedText
-                  text={gallery[currentImageIndex].description}
+                  text={gallery[currentImageIndex].description || ""}
                   className="text-sm text-gray-300 mt-1"
                 />
               )}
@@ -1200,16 +1210,16 @@ function FAQAccordionItem({
       {/* Question Header */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="cursor-pointer w-full p-5 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left"
+        className="cursor-pointer w-full p-3 md:p-5 flex items-center gap-2 md:gap-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left"
       >
-        <div className="shrink-0 w-10 h-10 bg-linear-to-br from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 text-white rounded-full flex items-center justify-center font-bold text-base shadow-md">
+        <div className="shrink-0 w-7 h-7 md:w-10 md:h-10 bg-linear-to-br from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 text-white rounded-full flex items-center justify-center font-bold text-xs md:text-base shadow-md">
           {index + 1}
         </div>
-        <h3 className="flex-1 font-bold text-lg text-gray-900 dark:text-white">
+        <h3 className="flex-1 font-bold text-sm md:text-lg text-gray-900 dark:text-white">
           {faq.question}
         </h3>
         <svg
-          className={`w-6 h-6 text-gray-400 dark:text-gray-500 transition-transform shrink-0 ${
+          className={`w-4 h-4 md:w-6 md:h-6 text-gray-400 dark:text-gray-500 transition-transform shrink-0 ${
             isExpanded ? "rotate-180" : ""
           }`}
           fill="none"
@@ -1227,21 +1237,21 @@ function FAQAccordionItem({
 
       {/* Answer Content */}
       {isExpanded && (
-        <div className="border-t-2 border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-5 space-y-4">
+        <div className="border-t-2 border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-3 md:p-5 space-y-3 md:space-y-4">
           {/* Answer Text */}
-          <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-4 rounded-lg border border-gray-200">
+          <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-2 md:p-4 rounded-lg border border-gray-200">
             <FormattedText
               text={faq.answer}
-              className="text-gray-700 dark:text-gray-300 leading-relaxed text-base space-y-1 wrap-break-word whitespace-pre-wrap"
+              className="text-gray-700 dark:text-gray-300 leading-relaxed text-xs md:text-base space-y-1 wrap-break-word whitespace-pre-wrap"
             />
           </div>
 
           {/* Answer Images */}
           {faq.images && faq.images.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-4 rounded-lg border border-gray-200">
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-3 text-base flex items-center gap-2">
+            <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-2 md:p-4 rounded-lg border border-gray-200">
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-2 md:mb-3 text-xs md:text-base flex items-center gap-2">
                 <svg
-                  className="w-5 h-5 text-purple-600 dark:text-purple-400"
+                  className="w-3.5 h-3.5 md:w-5 md:h-5 text-purple-600 dark:text-purple-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -1253,7 +1263,7 @@ function FAQAccordionItem({
                 </svg>
                 รูปภาพประกอบ
               </h4>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
                 {faq.images.map((img, imgIdx) => (
                   <div
                     key={img.id}
