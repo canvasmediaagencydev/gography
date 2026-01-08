@@ -1,7 +1,8 @@
 import { MetadataRoute } from "next";
+import { createClient } from "@supabase/supabase-js";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://gography.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://gography.net";
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
@@ -49,26 +50,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Fetch all active trips for dynamic URLs
+  // Fetch all active trips for dynamic URLs using direct Supabase query
   let tripPages: MetadataRoute.Sitemap = [];
 
   try {
-    const response = await fetch(`${baseUrl}/api/trips/public?pageSize=1000`, {
-      next: { revalidate: 3600 }, // Revalidate every hour
-    });
+    // Create Supabase client directly to avoid API fetch issues during build
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    if (response.ok) {
-      const data = await response.json();
-      const trips = data.trips || [];
+    if (supabaseUrl && supabaseAnonKey) {
+      const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-      tripPages = trips.map(
-        (trip: { id: string; updated_at?: string; created_at: string }) => ({
-          url: `${baseUrl}/trips/${trip.id}`,
+      const { data: trips, error } = await supabase
+        .from("trips")
+        .select("id, slug, updated_at, created_at")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false });
+
+      if (!error && trips) {
+        tripPages = trips.map((trip) => ({
+          url: `${baseUrl}/trips/${trip.slug || trip.id}`,
           lastModified: new Date(trip.updated_at || trip.created_at),
           changeFrequency: "weekly" as const,
           priority: 0.8,
-        })
-      );
+        }));
+      }
     }
   } catch (error) {
     console.error("Error generating sitemap for trips:", error);

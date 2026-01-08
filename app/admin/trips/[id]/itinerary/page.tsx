@@ -298,24 +298,25 @@ export default function TripItineraryPage({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             กำหนดการเดินทางรายวัน
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1">{trip?.title}</p>
         </div>
-        <div className="flex gap-3">
+        <div className="w-full md:w-auto grid grid-cols-2 md:flex gap-3">
           <button
             onClick={() => setShowAddModal(true)}
-            className="cursor-pointer px-4 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+            className="cursor-pointer w-full md:w-auto px-4 py-2 md:px-6 md:py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 text-sm md:text-base"
           >
             <span>+</span>
             <span>เพิ่มวันเดินทาง</span>
           </button>
           <Link
             href={`/admin/trips/${tripId}`}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-semibold"
+            className="w-full md:w-auto px-4 py-2 md:px-6 md:py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-semibold flex items-center justify-center text-center text-sm md:text-base"
           >
             กลับ
           </Link>

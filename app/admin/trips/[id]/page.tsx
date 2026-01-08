@@ -123,9 +123,10 @@ export default function ViewTripPage({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
             {trip.title}
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1">
@@ -135,46 +136,46 @@ export default function ViewTripPage({
               : THAI_LABELS.groupTour}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <Link
             href={`/admin/trips/${trip.id}/gallery`}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+            className="flex-1 md:flex-none px-3 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
           >
             <span>📸</span>
-            <span>จัดการรูปภาพ</span>
+            <span className="whitespace-nowrap">จัดการรูปภาพ</span>
           </Link>
           <Link
             href={`/admin/trips/${trip.id}/itinerary`}
-            className="px-4 py-2 bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+            className="flex-1 md:flex-none px-3 py-2 bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
           >
             <span>📋</span>
-            <span>กำหนดการเดินทาง</span>
+            <span className="whitespace-nowrap">กำหนดการเดินทาง</span>
           </Link>
           <Link
             href={`/admin/trips/${trip.id}/faqs`}
-            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+            className="flex-1 md:flex-none px-3 py-2 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
           >
             <span>❓</span>
-            <span>จัดการ FAQ</span>
+            <span className="whitespace-nowrap">จัดการ FAQ</span>
           </Link>
           <Link
             href={`/trips/${trip.slug || trip.id}?preview=1`}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+            className="flex-1 md:flex-none px-3 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
           >
             <span>👁️</span>
-            <span>ดูหน้าเว็บ</span>
+            <span className="whitespace-nowrap">ดูหน้าเว็บ</span>
           </Link>
           <Link
             href={`/admin/trips/edit/${trip.id}`}
-            className="px-4 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors"
+            className="flex-1 md:flex-none px-3 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors text-center text-sm"
           >
             {THAI_LABELS.edit}
           </Link>
           <button
             onClick={() => router.back()}
-            className="cursor-pointer px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors"
+            className="cursor-pointer flex-1 md:flex-none px-3 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors text-sm"
           >
             {THAI_LABELS.cancel}
           </button>

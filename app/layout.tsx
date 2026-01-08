@@ -3,28 +3,39 @@ import "./globals.css";
 import GoogleTranslateProvider from "./components/GoogleTranslateProvider";
 import FloatingContactButton from "./components/FloatingContactButton";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://gography.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://gography.net";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: "Gography - ทัวร์ถ่ายภาพและท่องเที่ยว",
-    template: "%s | Gography"
+    template: "%s | Gography",
   },
-  description: "ทัวร์ท่องเที่ยวจากผู้หลงใหลในการเดินทางและการถ่ายภาพ พร้อมสร้างประสบการณ์พิเศษทั่วโลกให้กับคุณ Photography tours and travel experiences from passionate travelers and photographers.",
-  keywords: ["ทัวร์ถ่ายภาพ", "ทัวร์ท่องเที่ยว", "photography tour", "travel tour", "ทัวร์ต่างประเทศ", "กลุ่มเล็ก", "small group tour", "private tour", "ทัวร์ส่วนตัว"],
+  description:
+    "ทัวร์ท่องเที่ยวจากผู้หลงใหลในการเดินทางและการถ่ายภาพ พร้อมสร้างประสบการณ์พิเศษทั่วโลกให้กับคุณ Photography tours and travel experiences from passionate travelers and photographers.",
+  keywords: [
+    "ทัวร์ถ่ายภาพ",
+    "ทัวร์ท่องเที่ยว",
+    "photography tour",
+    "travel tour",
+    "ทัวร์ต่างประเทศ",
+    "กลุ่มเล็ก",
+    "small group tour",
+    "private tour",
+    "ทัวร์ส่วนตัว",
+  ],
   authors: [{ name: "Gography" }],
   creator: "Gography",
   publisher: "Gography",
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/icon.png', type: 'image/png', sizes: '192x192' },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "192x192" },
     ],
-    shortcut: '/favicon.ico',
-    apple: '/apple-icon.png',
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
   },
-  manifest: '/manifest.json',
+  manifest: "/manifest.json",
   formatDetection: {
     email: false,
     address: false,
@@ -37,7 +48,8 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName: "Gography",
     title: "Gography - ทัวร์ถ่ายภาพและท่องเที่ยว",
-    description: "ทัวร์ท่องเที่ยวจากผู้หลงใหลในการเดินทางและการถ่ายภาพ พร้อมสร้างประสบการณ์พิเศษทั่วโลกให้กับคุณ",
+    description:
+      "ทัวร์ท่องเที่ยวจากผู้หลงใหลในการเดินทางและการถ่ายภาพ พร้อมสร้างประสบการณ์พิเศษทั่วโลกให้กับคุณ",
     images: [
       {
         url: `${siteUrl}/img/og-image.jpg`,
@@ -50,7 +62,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Gography - ทัวร์ถ่ายภาพและท่องเที่ยว",
-    description: "ทัวร์ท่องเที่ยวจากผู้หลงใหลในการเดินทางและการถ่ายภาพ พร้อมสร้างประสบการณ์พิเศษทั่วโลกให้กับคุณ",
+    description:
+      "ทัวร์ท่องเที่ยวจากผู้หลงใหลในการเดินทางและการถ่ายภาพ พร้อมสร้างประสบการณ์พิเศษทั่วโลกให้กับคุณ",
     images: [`${siteUrl}/img/og-image.jpg`],
   },
   robots: {
@@ -59,16 +72,16 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   verification: {
     // TODO: Add your Google Search Console verification code here
     // Steps to get verification code:
     // 1. Go to https://search.google.com/search-console
-    // 2. Add your property (https://gography.com)
+    // 2. Add your property (https://gography.net)
     // 3. Choose "HTML tag" verification method
     // 4. Copy the content value from the meta tag
     // 5. Paste it below:
@@ -77,9 +90,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: siteUrl,
     languages: {
-      'th-TH': siteUrl,
-      'en-US': `${siteUrl}/en`,
-      'x-default': siteUrl,
+      "th-TH": siteUrl,
+      "en-US": `${siteUrl}/en`,
+      "x-default": siteUrl,
     },
   },
 };

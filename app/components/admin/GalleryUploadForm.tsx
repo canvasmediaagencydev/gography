@@ -475,11 +475,11 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
 
       {/* Submit Buttons */}
       {files.length > 0 && (
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row items-center gap-3">
           <button
             onClick={handleUpload}
             disabled={isUploading}
-            className="cursor-pointer px-6 py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="cursor-pointer w-full md:w-auto px-6 py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isUploading
               ? `${THAI_LABELS.uploading}...`
@@ -488,7 +488,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
           <button
             onClick={() => router.back()}
             disabled={isUploading}
-            className="cursor-pointer px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="cursor-pointer w-full md:w-auto px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {THAI_LABELS.cancel}
           </button>
