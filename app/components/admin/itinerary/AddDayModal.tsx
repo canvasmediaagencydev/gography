@@ -1,67 +1,102 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useState } from "react";
+import { Editor } from "../editor";
 
 interface AddDayModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onAdd: (data: { day_number: number; day_title: string; day_description: string }) => Promise<void>
-  existingDayNumbers: number[]
+  isOpen: boolean;
+  onClose: () => void;
+  onAdd: (data: {
+    day_number: number;
+    day_title: string;
+    day_description: string;
+  }) => Promise<void>;
+  existingDayNumbers: number[];
 }
 
-export default function AddDayModal({ isOpen, onClose, onAdd, existingDayNumbers }: AddDayModalProps) {
-  const [dayNumber, setDayNumber] = useState(0)
-  const [dayTitle, setDayTitle] = useState('')
-  const [dayDescription, setDayDescription] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState('')
+export default function AddDayModal({
+  isOpen,
+  onClose,
+  onAdd,
+  existingDayNumbers,
+}: AddDayModalProps) {
+  const [dayNumber, setDayNumber] = useState(0);
+  const [dayTitle, setDayTitle] = useState("");
+  const [dayDescription, setDayDescription] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError("");
 
     if (existingDayNumbers.includes(dayNumber)) {
-      setError(`วันที่ ${dayNumber} มีอยู่แล้ว`)
-      return
+      setError(`วันที่ ${dayNumber} มีอยู่แล้ว`);
+      return;
     }
 
-    setIsSubmitting(true)
-    try {
-      await onAdd({ day_number: dayNumber, day_title: dayTitle, day_description: dayDescription })
-      // Reset form
-      setDayNumber(0)
-      setDayTitle('')
-      setDayDescription('')
-      onClose()
-    } catch (err: any) {
-      setError(err.message || 'เกิดข้อผิดพลาด')
-    } finally {
-      setIsSubmitting(false)
+    if (dayTitle.length < 3) {
+      setError("ชื่อวันต้องมีอย่างน้อย 3 ตัวอักษร");
+      return;
     }
-  }
+
+    setIsSubmitting(true);
+    try {
+      await onAdd({
+        day_number: dayNumber,
+        day_title: dayTitle,
+        day_description: dayDescription,
+      });
+      // Reset form
+      setDayNumber(0);
+      setDayTitle("");
+      setDayDescription("");
+      onClose();
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("เกิดข้อผิดพลาด");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleClose = () => {
-    setDayNumber(0)
-    setDayTitle('')
-    setDayDescription('')
-    setError('')
-    onClose()
-  }
+    setDayNumber(0);
+    setDayTitle("");
+    setDayDescription("");
+    setError("");
+    onClose();
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full p-6 dark:border dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full p-6 dark:border dark:border-gray-700 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">เพิ่มวันเดินทาง</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            เพิ่มวันเดินทาง
+          </h2>
           <button
             onClick={handleClose}
             className="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
             disabled={isSubmitting}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -86,7 +121,9 @@ export default function AddDayModal({ isOpen, onClose, onAdd, existingDayNumbers
               required
               disabled={isSubmitting}
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">ระบุเป็นตัวเลข เช่น 0, 1, 2, 3</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              ระบุเป็นตัวเลข เช่น 0, 1, 2, 3
+            </p>
           </div>
 
           <div>
@@ -104,19 +141,30 @@ export default function AddDayModal({ isOpen, onClose, onAdd, existingDayNumbers
               maxLength={255}
               disabled={isSubmitting}
             />
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {dayTitle.length}/255 ตัวอักษร
+            </p>
           </div>
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
               รายละเอียด
             </label>
-            <textarea
-              value={dayDescription}
-              onChange={(e) => setDayDescription(e.target.value)}
-              placeholder="รายละเอียดเพิ่มเติมของวันนี้"
-              rows={4}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500 resize-none"
-              disabled={isSubmitting}
+            <Editor
+              content={dayDescription}
+              onChange={setDayDescription}
+              onImageUpload={async (file: File) => {
+                const formData = new FormData();
+                formData.append("file", file);
+                const res = await fetch(`/api/uploads`, {
+                  method: "POST",
+                  body: formData,
+                });
+                if (!res.ok) throw new Error("Upload failed");
+                const data = await res.json();
+                return data.url;
+              }}
+              placeholder="รายละเอียดของวันเดินทาง..."
             />
           </div>
 
@@ -134,11 +182,11 @@ export default function AddDayModal({ isOpen, onClose, onAdd, existingDayNumbers
               className="cursor-pointer px-4 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'กำลังเพิ่ม...' : 'เพิ่มวัน'}
+              {isSubmitting ? "กำลังเพิ่ม..." : "เพิ่มวัน"}
             </button>
           </div>
         </form>
       </div>
     </div>
-  )
+  );
 }

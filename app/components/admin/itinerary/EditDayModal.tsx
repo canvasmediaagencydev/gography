@@ -1,88 +1,121 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
+import { Editor } from "../editor";
 
 interface Day {
-  id: string
-  day_number: number
-  day_title: string
-  day_description: string | null
+  id: string;
+  day_number: number;
+  day_title: string;
+  day_description: string | null;
 }
 
 interface EditDayModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onUpdate: (dayId: string, data: { day_number: number; day_title: string; day_description: string | null }) => Promise<void>
-  day: Day | null
-  existingDayNumbers: number[]
+  isOpen: boolean;
+  onClose: () => void;
+  onUpdate: (
+    dayId: string,
+    data: {
+      day_number: number;
+      day_title: string;
+      day_description: string | null;
+    }
+  ) => Promise<void>;
+  day: Day | null;
+  existingDayNumbers: number[];
 }
 
-export default function EditDayModal({ isOpen, onClose, onUpdate, day, existingDayNumbers }: EditDayModalProps) {
-  const [dayNumber, setDayNumber] = useState(1)
-  const [dayTitle, setDayTitle] = useState('')
-  const [dayDescription, setDayDescription] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState('')
+export default function EditDayModal({
+  isOpen,
+  onClose,
+  onUpdate,
+  day,
+  existingDayNumbers,
+}: EditDayModalProps) {
+  const [dayNumber, setDayNumber] = useState(1);
+  const [dayTitle, setDayTitle] = useState("");
+  const [dayDescription, setDayDescription] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   // Pre-fill form when day changes
   useEffect(() => {
     if (day) {
-      setDayNumber(day.day_number)
-      setDayTitle(day.day_title)
-      setDayDescription(day.day_description || '')
-      setError('')
+      setDayNumber(day.day_number);
+      setDayTitle(day.day_title);
+      setDayDescription(day.day_description || "");
+      setError("");
     }
-  }, [day])
+  }, [day]);
 
-  if (!isOpen || !day) return null
+  if (!isOpen || !day) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError("");
 
     if (dayTitle.length < 3) {
-      setError('ชื่อวันต้องมีอย่างน้อย 3 ตัวอักษร')
-      return
+      setError("ชื่อวันต้องมีอย่างน้อย 3 ตัวอักษร");
+      return;
     }
 
     // Check if day number is already used by another day
-    if (dayNumber !== day.day_number && existingDayNumbers.includes(dayNumber)) {
-      setError(`วันที่ ${dayNumber} มีอยู่แล้ว กรุณาเลือกหมายเลขอื่น`)
-      return
+    if (
+      dayNumber !== day.day_number &&
+      existingDayNumbers.includes(dayNumber)
+    ) {
+      setError(`วันที่ ${dayNumber} มีอยู่แล้ว กรุณาเลือกหมายเลขอื่น`);
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     try {
       await onUpdate(day.id, {
         day_number: dayNumber,
         day_title: dayTitle,
         day_description: dayDescription || null,
-      })
-      onClose()
-    } catch (err: any) {
-      setError(err.message || 'เกิดข้อผิดพลาด')
+      });
+      onClose();
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("เกิดข้อผิดพลาด");
+      }
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const handleClose = () => {
-    setError('')
-    onClose()
-  }
+    setError("");
+    onClose();
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6 dark:border dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full p-6 dark:border dark:border-gray-700 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">แก้ไขวันเดินทาง</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            แก้ไขวันเดินทาง
+          </h2>
           <button
             onClick={handleClose}
             className="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
             disabled={isSubmitting}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -123,20 +156,31 @@ export default function EditDayModal({ isOpen, onClose, onUpdate, day, existingD
               disabled={isSubmitting}
               maxLength={255}
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{dayTitle.length}/255 ตัวอักษร</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {dayTitle.length}/255 ตัวอักษร
+            </p>
           </div>
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
               รายละเอียด
             </label>
-            <textarea
-              value={dayDescription}
-              onChange={(e) => setDayDescription(e.target.value)}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500 resize-none"
+            <Editor
+              content={dayDescription}
+              onChange={setDayDescription}
+              onImageUpload={async (file: File) => {
+                if (!day) throw new Error("No day selected");
+                const formData = new FormData();
+                formData.append("file", file);
+                const res = await fetch(`/api/uploads`, {
+                  method: "POST",
+                  body: formData,
+                });
+                if (!res.ok) throw new Error("Upload failed");
+                const data = await res.json();
+                return data.url;
+              }}
               placeholder="รายละเอียดของวันเดินทาง..."
-              disabled={isSubmitting}
             />
           </div>
 
@@ -146,7 +190,7 @@ export default function EditDayModal({ isOpen, onClose, onUpdate, day, existingD
               disabled={isSubmitting}
               className="cursor-pointer px-6 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'กำลังบันทึก...' : 'บันทึกการแก้ไข'}
+              {isSubmitting ? "กำลังบันทึก..." : "บันทึกการแก้ไข"}
             </button>
             <button
               type="button"
@@ -160,5 +204,5 @@ export default function EditDayModal({ isOpen, onClose, onUpdate, day, existingD
         </form>
       </div>
     </div>
-  )
+  );
 }
