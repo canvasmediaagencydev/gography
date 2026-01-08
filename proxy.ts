@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const response = NextResponse.next();
 
   const supabase = createServerClient(
@@ -13,7 +13,6 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           cookiesToSet: Array<{ name: string; value: string; options?: any }>
         ) {
           cookiesToSet.forEach(({ name, value, options }) =>
