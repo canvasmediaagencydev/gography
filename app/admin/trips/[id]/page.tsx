@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useEffect, useState, use, useCallback } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { THAI_LABELS } from "@/lib/thai-labels";
@@ -29,12 +30,7 @@ export default function ViewTripPage({
     null
   );
 
-  useEffect(() => {
-    loadTrip();
-    loadSchedules();
-  }, [id]);
-
-  const loadTrip = async () => {
+  const loadTrip = useCallback(async () => {
     try {
       const res = await fetch(`/api/trips/${id}`);
       const data = await res.json();
@@ -44,9 +40,9 @@ export default function ViewTripPage({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id]);
 
-  const loadSchedules = async () => {
+  const loadSchedules = useCallback(async () => {
     try {
       const res = await fetch(`/api/schedules/trip/${id}`);
       const data = await res.json();
@@ -54,7 +50,12 @@ export default function ViewTripPage({
     } catch (error) {
       console.error("Error loading schedules:", error);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    loadTrip();
+    loadSchedules();
+  }, [loadTrip, loadSchedules]);
 
   const handleOpenEditScheduleModal = (schedule: TripSchedule) => {
     setSelectedSchedule(schedule);
@@ -223,10 +224,13 @@ export default function ViewTripPage({
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                 {THAI_LABELS.coverImage}
               </p>
-              <img
+              <Image
                 src={trip.cover_image_url}
                 alt={trip.title}
+                width={448}
+                height={192}
                 className="w-full max-w-md h-48 object-cover rounded-lg"
+                unoptimized
               />
             </div>
           )}

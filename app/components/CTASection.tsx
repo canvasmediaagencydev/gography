@@ -12,6 +12,7 @@ export default function CTASection() {
           fill
           className="object-cover"
           priority
+          unoptimized
         />
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/50 dark:bg-black/60" />

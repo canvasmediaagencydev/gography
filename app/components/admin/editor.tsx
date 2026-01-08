@@ -304,6 +304,7 @@ export function Editor({
   placeholder,
 }: EditorProps) {
   const extensions = useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const list: any[] = [
       StarterKit.configure({
         heading: {

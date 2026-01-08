@@ -1,12 +1,14 @@
 "use client";
 
-import { use, useState, useEffect } from "react";
+import { use, useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { uploadWithProgress } from "@/lib/upload-helpers";
 import type {
   TripItineraryDayWithRelations,
   TripItineraryActivity,
   TripItineraryDayImage,
+  Trip,
 } from "@/types/database.types";
 import AddDayModal from "@/app/components/admin/itinerary/AddDayModal";
 import AddActivityModal from "@/app/components/admin/itinerary/AddActivityModal";
@@ -20,7 +22,7 @@ export default function TripItineraryPage({
   params: Promise<{ id: string }>;
 }) {
   const { id: tripId } = use(params);
-  const [trip, setTrip] = useState<any>(null);
+  const [trip, setTrip] = useState<Trip | null>(null);
   const [days, setDays] = useState<TripItineraryDayWithRelations[]>([]);
   const [expandedDays, setExpandedDays] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
@@ -60,12 +62,7 @@ export default function TripItineraryPage({
     return text.replace(/\s+/g, " ").trim();
   };
 
-  useEffect(() => {
-    loadTrip();
-    loadItinerary();
-  }, [tripId]);
-
-  const loadTrip = async () => {
+  const loadTrip = useCallback(async () => {
     try {
       const res = await fetch(`/api/trips/${tripId}`);
       const data = await res.json();
@@ -73,9 +70,9 @@ export default function TripItineraryPage({
     } catch (error) {
       console.error("Error loading trip:", error);
     }
-  };
+  }, [tripId]);
 
-  const loadItinerary = async () => {
+  const loadItinerary = useCallback(async () => {
     try {
       const res = await fetch(`/api/trips/${tripId}/itinerary`);
       const data = await res.json();
@@ -85,7 +82,12 @@ export default function TripItineraryPage({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [tripId]);
+
+  useEffect(() => {
+    loadTrip();
+    loadItinerary();
+  }, [loadTrip, loadItinerary]);
 
   const handleAddDay = async (data: {
     day_number: number;
@@ -626,12 +628,14 @@ export default function TripItineraryPage({
                           {day.images.map((img: TripItineraryDayImage) => (
                             <div key={img.id} className="relative group">
                               <div className="aspect-video rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-700 group-hover:border-green-400 dark:group-hover:border-green-500 transition-colors">
-                                <img
+                                <Image
                                   src={img.storage_url}
                                   alt={
                                     img.alt_text || img.caption || "Day image"
                                   }
-                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                  fill
+                                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                  unoptimized
                                 />
                               </div>
                               {img.caption && (

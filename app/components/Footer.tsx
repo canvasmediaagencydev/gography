@@ -16,6 +16,7 @@ export default function Footer() {
                 width={50}
                 height={50}
                 style={{ width: "auto", height: "auto" }}
+                unoptimized
               />
               <span className="text-xs text-gray-400 dark:text-gray-500">
                 Gography

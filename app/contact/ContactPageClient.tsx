@@ -335,11 +335,17 @@ export default function ContactPage() {
         <section className="py-20 px-6 bg-linear-to-br from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-900 text-white">
           <div className="container mx-auto max-w-4xl text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              &quot;อยากให้<span className="text-orange-500">ความฝัน</span>
+              &quot;อยากให้
+              <span className="text-orange-500 dark:text-orange-400">
+                ความฝัน
+              </span>
             </h2>
             <h3 className="text-3xl md:text-4xl font-bold mb-8">
               ในการเดินทางของคุณ
-              <span className="text-orange-500">เป็นจริง</span>&quot;
+              <span className="text-orange-500 dark:text-orange-400">
+                เป็นจริง
+              </span>
+              &quot;
             </h3>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed">
               ปล่อยให้ทีมผู้เชี่ยวชาญของเราดูแลทุกรายละเอียด

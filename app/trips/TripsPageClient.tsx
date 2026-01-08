@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -53,10 +54,52 @@ export default function TripsPageClient() {
     loadFilterOptions();
   }, []);
 
+  const loadTrips = useCallback(
+    async (page: number) => {
+      setIsLoading(true);
+      try {
+        const params = new URLSearchParams();
+        params.append("page", page.toString());
+        params.append("pageSize", pageSize.toString());
+
+        if (selectedDestination !== "ทั่วหมด") {
+          params.append("country", selectedDestination);
+        }
+        if (selectedTripType !== "ประเภททริปทั้งหมด") {
+          params.append("trip_type", selectedTripType);
+        }
+        if (selectedMonth !== "ทุกเดือน") {
+          params.append("month", selectedMonth);
+        }
+
+        const res = await fetch(`/api/trips/public?${params.toString()}`);
+        const data = await res.json();
+        const loadedTrips = data.trips || [];
+        setAllTrips(loadedTrips);
+        setTotalPages(data.pagination?.totalPages || 1);
+        setCurrentPage(page);
+
+        // Set default selected schedule (first one) for each trip
+        const initialSelected: Record<string, string> = {};
+        loadedTrips.forEach((trip: PublicTripDisplay) => {
+          if (trip.schedules && trip.schedules.length > 0) {
+            initialSelected[trip.id] = trip.schedules[0].id;
+          }
+        });
+        setSelectedSchedules(initialSelected);
+      } catch (error) {
+        console.error("Error loading trips:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [selectedDestination, selectedTripType, selectedMonth, pageSize]
+  );
+
   useEffect(() => {
     setCurrentPage(1); // Reset to page 1 when filters change
     loadTrips(1);
-  }, [selectedTripType, selectedDestination, selectedMonth]);
+  }, [loadTrips]);
 
   const loadFilterOptions = async () => {
     try {
@@ -65,45 +108,6 @@ export default function TripsPageClient() {
       setFilterOptions(data);
     } catch (error) {
       console.error("Error loading filter options:", error);
-    }
-  };
-
-  const loadTrips = async (page: number = currentPage) => {
-    setIsLoading(true);
-    try {
-      const params = new URLSearchParams();
-      params.append("page", page.toString());
-      params.append("pageSize", pageSize.toString());
-
-      if (selectedDestination !== "ทั่วหมด") {
-        params.append("country", selectedDestination);
-      }
-      if (selectedTripType !== "ประเภททริปทั้งหมด") {
-        params.append("trip_type", selectedTripType);
-      }
-      if (selectedMonth !== "ทุกเดือน") {
-        params.append("month", selectedMonth);
-      }
-
-      const res = await fetch(`/api/trips/public?${params.toString()}`);
-      const data = await res.json();
-      const loadedTrips = data.trips || [];
-      setAllTrips(loadedTrips);
-      setTotalPages(data.pagination?.totalPages || 1);
-      setCurrentPage(page);
-
-      // Set default selected schedule (first one) for each trip
-      const initialSelected: Record<string, string> = {};
-      loadedTrips.forEach((trip: PublicTripDisplay) => {
-        if (trip.schedules && trip.schedules.length > 0) {
-          initialSelected[trip.id] = trip.schedules[0].id;
-        }
-      });
-      setSelectedSchedules(initialSelected);
-    } catch (error) {
-      console.error("Error loading trips:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -122,10 +126,12 @@ export default function TripsPageClient() {
       <section className="relative h-[50vh] md:h-[60vh] min-h-[350px] md:min-h-[500px] w-full overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <img
+          <Image
             src="/img/all-trips.webp"
             alt="All Trips"
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            unoptimized
           />
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-black/50 dark:bg-black/60" />

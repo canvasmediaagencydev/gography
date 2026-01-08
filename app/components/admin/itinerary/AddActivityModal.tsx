@@ -1,70 +1,98 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useState } from "react";
 
 interface AddActivityModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onAdd: (data: { activity_time: string | null; activity_description: string }) => Promise<void>
-  dayTitle: string
+  isOpen: boolean;
+  onClose: () => void;
+  onAdd: (data: {
+    activity_time: string | null;
+    activity_description: string;
+  }) => Promise<void>;
+  dayTitle: string;
 }
 
-export default function AddActivityModal({ isOpen, onClose, onAdd, dayTitle }: AddActivityModalProps) {
-  const [activityTime, setActivityTime] = useState('')
-  const [activityDescription, setActivityDescription] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState('')
+export default function AddActivityModal({
+  isOpen,
+  onClose,
+  onAdd,
+  dayTitle,
+}: AddActivityModalProps) {
+  const [activityTime, setActivityTime] = useState("");
+  const [activityDescription, setActivityDescription] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError("");
 
     if (!activityDescription.trim()) {
-      setError('กรุณากรอกรายละเอียดกิจกรรม')
-      return
+      setError("กรุณากรอกรายละเอียดกิจกรรม");
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     try {
       await onAdd({
         activity_time: activityTime.trim() || null,
         activity_description: activityDescription.trim(),
-      })
+      });
       // Reset form
-      setActivityTime('')
-      setActivityDescription('')
-      onClose()
-    } catch (err: any) {
-      setError(err.message || 'เกิดข้อผิดพลาด')
+      setActivityTime("");
+      setActivityDescription("");
+      onClose();
+      setActivityDescription("");
+      onClose();
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "เกิดข้อผิดพลาด");
+      } else {
+        setError("เกิดข้อผิดพลาด");
+      }
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const handleClose = () => {
-    setActivityTime('')
-    setActivityDescription('')
-    setError('')
-    onClose()
-  }
+    setActivityTime("");
+    setActivityDescription("");
+    setError("");
+    onClose();
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full p-6 dark:border dark:border-gray-700">
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">เพิ่มกิจกรรม</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{dayTitle}</p>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              เพิ่มกิจกรรม
+            </h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              {dayTitle}
+            </p>
           </div>
           <button
             onClick={handleClose}
             className="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
             disabled={isSubmitting}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -79,7 +107,9 @@ export default function AddActivityModal({ isOpen, onClose, onAdd, dayTitle }: A
           <div>
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
               เวลา
-              <span className="text-gray-400 dark:text-gray-500 font-normal ml-2">(ไม่ระบุก็ได้)</span>
+              <span className="text-gray-400 dark:text-gray-500 font-normal ml-2">
+                (ไม่ระบุก็ได้)
+              </span>
             </label>
             <input
               type="time"
@@ -126,11 +156,11 @@ export default function AddActivityModal({ isOpen, onClose, onAdd, dayTitle }: A
               className="cursor-pointer px-5 py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-md hover:shadow-lg"
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'กำลังเพิ่ม...' : 'เพิ่มกิจกรรม'}
+              {isSubmitting ? "กำลังเพิ่ม..." : "เพิ่มกิจกรรม"}
             </button>
           </div>
         </form>
       </div>
     </div>
-  )
+  );
 }

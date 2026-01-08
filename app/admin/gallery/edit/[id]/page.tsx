@@ -1,40 +1,41 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { useRouter, useParams } from 'next/navigation'
-import { THAI_LABELS } from '@/lib/thai-labels'
-import GalleryEditForm from '@/app/components/admin/GalleryEditForm'
-import type { GalleryImageWithRelations } from '@/types/database.types'
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { THAI_LABELS } from "@/lib/thai-labels";
+import GalleryEditForm from "@/app/components/admin/GalleryEditForm";
+import type { GalleryImageWithRelations } from "@/types/database.types";
 
 export default function GalleryEditPage() {
-  const router = useRouter()
-  const params = useParams()
-  const id = params.id as string
-  const [image, setImage] = useState<GalleryImageWithRelations | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter();
+  const params = useParams();
+  const id = params.id as string;
+  const [image, setImage] = useState<GalleryImageWithRelations | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    loadImage()
-  }, [id])
-
-  const loadImage = async () => {
-    try {
-      const res = await fetch(`/api/gallery/${id}`)
-      const data = await res.json()
-      setImage(data.image)
-    } catch (error) {
-      console.error('Error loading image:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
+    const loadImage = async () => {
+      try {
+        const res = await fetch(`/api/gallery/${id}`);
+        const data = await res.json();
+        setImage(data.image);
+      } catch (error) {
+        console.error("Error loading image:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadImage();
+  }, [id]);
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500 dark:text-gray-400">{THAI_LABELS.loading}</p>
+        <p className="text-gray-500 dark:text-gray-400">
+          {THAI_LABELS.loading}
+        </p>
       </div>
-    )
+    );
   }
 
   if (!image) {
@@ -42,7 +43,7 @@ export default function GalleryEditPage() {
       <div className="text-center py-12">
         <p className="text-gray-500 dark:text-gray-400">ไม่พบรูปภาพ</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -53,7 +54,9 @@ export default function GalleryEditPage() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             {THAI_LABELS.editImage}
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">แก้ไขข้อมูลรูปภาพ</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            แก้ไขข้อมูลรูปภาพ
+          </p>
         </div>
         <button
           onClick={() => router.back()}
@@ -68,5 +71,5 @@ export default function GalleryEditPage() {
         <GalleryEditForm image={image} />
       </div>
     </div>
-  )
+  );
 }

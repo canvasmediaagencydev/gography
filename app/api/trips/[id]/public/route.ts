@@ -131,9 +131,24 @@ export async function GET(request: NextRequest, context: RouteContext) {
     }
 
     // Sort activities and images within each day
-    const sortedItinerary = (itineraryDays || []).map((day: any) => ({
+    interface Activity {
+      order_index: number;
+      activity_time?: string;
+    }
+
+    interface DayImage {
+      order_index: number;
+    }
+
+    interface ItineraryDay {
+      activities: Activity[];
+      images: DayImage[];
+      [key: string]: unknown;
+    }
+
+    const sortedItinerary = (itineraryDays || []).map((day: ItineraryDay) => ({
       ...day,
-      activities: (day.activities || []).sort((a: any, b: any) => {
+      activities: (day.activities || []).sort((a: Activity, b: Activity) => {
         if (a.order_index !== b.order_index) {
           return a.order_index - b.order_index;
         }
@@ -143,7 +158,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
         return 0;
       }),
       images: (day.images || []).sort(
-        (a: any, b: any) => a.order_index - b.order_index
+        (a: DayImage, b: DayImage) => a.order_index - b.order_index
       ),
     }));
 
@@ -164,11 +179,20 @@ export async function GET(request: NextRequest, context: RouteContext) {
       console.error("Error fetching FAQs:", faqsError);
     }
 
+    interface FaqImage {
+      order_index: number;
+    }
+
+    interface Faq {
+      images: FaqImage[];
+      [key: string]: unknown;
+    }
+
     // Sort images within each FAQ
-    const sortedFaqs = (faqsData || []).map((faq: any) => ({
+    const sortedFaqs = (faqsData || []).map((faq: Faq) => ({
       ...faq,
       images: (faq.images || []).sort(
-        (a: any, b: any) => a.order_index - b.order_index
+        (a: FaqImage, b: FaqImage) => a.order_index - b.order_index
       ),
     }));
 

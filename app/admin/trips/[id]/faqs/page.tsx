@@ -1,7 +1,8 @@
 "use client";
 
-import { use, useState, useEffect } from "react";
+import { use, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import type {
   TripFAQWithImages,
   TripFAQImage,
@@ -29,12 +30,7 @@ export default function TripFaqsPage({
     order_index: number;
   } | null>(null);
 
-  useEffect(() => {
-    loadTrip();
-    loadFaqs();
-  }, [tripId]);
-
-  const loadTrip = async () => {
+  const loadTrip = useCallback(async () => {
     try {
       const res = await fetch(`/api/trips/${tripId}`);
       const data = await res.json();
@@ -42,9 +38,9 @@ export default function TripFaqsPage({
     } catch (error) {
       console.error("Error loading trip:", error);
     }
-  };
+  }, [tripId]);
 
-  const loadFaqs = async () => {
+  const loadFaqs = useCallback(async () => {
     try {
       const res = await fetch(`/api/trips/${tripId}/faqs`);
       const data = await res.json();
@@ -54,7 +50,12 @@ export default function TripFaqsPage({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [tripId]);
+
+  useEffect(() => {
+    loadTrip();
+    loadFaqs();
+  }, [loadTrip, loadFaqs]);
 
   const handleAddFaq = async (
     data: {
@@ -403,13 +404,16 @@ export default function TripFaqsPage({
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                           {faq.images.map((img: TripFAQImage) => (
                             <div key={img.id} className="relative group">
-                              <div className="aspect-video rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-700 group-hover:border-purple-400 dark:group-hover:border-purple-500 transition-colors">
-                                <img
+                              <div className="aspect-video rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-700 group-hover:border-purple-400 dark:group-hover:border-purple-500 transition-colors relative">
+                                <Image
                                   src={img.storage_url}
                                   alt={
                                     img.alt_text || img.caption || "FAQ image"
                                   }
-                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                  fill
+                                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                  sizes="(max-width: 768px) 50vw, 25vw"
+                                  unoptimized
                                 />
                               </div>
                               {img.caption && (

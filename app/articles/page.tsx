@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import HighlightTrips from "../components/HighlightTrips";
@@ -204,10 +205,13 @@ export default function ArticlesPage() {
                   {/* Article Image */}
                   <Link href={`/articles/${article.id}`}>
                     <div className="relative h-64 overflow-hidden">
-                      <img
+                      <Image
                         src={article.image}
                         alt={article.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        unoptimized
                       />
                       <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full">
                         <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">

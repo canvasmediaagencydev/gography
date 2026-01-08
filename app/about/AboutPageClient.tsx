@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -134,7 +135,7 @@ export default function AboutPage() {
                   {carouselImages.map((image, index) => (
                     <div
                       key={index}
-                      className={`transition-all duration-500 rounded-2xl overflow-hidden ${
+                      className={`transition-all duration-500 rounded-2xl overflow-hidden relative ${
                         index === currentSlide
                           ? "w-96 h-96 opacity-100"
                           : "w-80 h-80 opacity-60"
@@ -146,10 +147,13 @@ export default function AboutPage() {
                             : "none",
                       }}
                     >
-                      <img
+                      <Image
                         src={image.url}
                         alt={image.alt}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        unoptimized
                       />
                     </div>
                   ))}
@@ -234,11 +238,14 @@ export default function AboutPage() {
 
               {/* Right Side - Team Photo */}
               <div className="relative">
-                <div className="rounded-2xl overflow-hidden shadow-2xl">
-                  <img
+                <div className="rounded-2xl overflow-hidden shadow-2xl relative min-h-[500px]">
+                  <Image
                     src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&q=80"
                     alt="Our Team"
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    unoptimized
                   />
                 </div>
               </div>
@@ -269,16 +276,20 @@ export default function AboutPage() {
             ) : (
               <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-12">
                 {galleryImages.map((image) => (
-                  <div
+                  <Link
                     key={image.id}
-                    className="aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer"
+                    href="/gallery"
+                    className="aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer relative block"
                   >
-                    <img
+                    <Image
                       src={image.storage_url}
                       alt={image.alt_text || image.title}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 33vw, 16vw"
+                      unoptimized
                     />
-                  </div>
+                  </Link>
                 ))}
               </div>
             )}

@@ -1,81 +1,109 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 
 interface Activity {
-  id: string
-  activity_time: string | null
-  activity_description: string
+  id: string;
+  activity_time: string | null;
+  activity_description: string;
 }
 
 interface EditActivityModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onUpdate: (activityId: string, data: { activity_time: string | null; activity_description: string }) => Promise<void>
-  activity: Activity | null
-  dayTitle: string
+  isOpen: boolean;
+  onClose: () => void;
+  onUpdate: (
+    activityId: string,
+    data: { activity_time: string | null; activity_description: string }
+  ) => Promise<void>;
+  activity: Activity | null;
+  dayTitle: string;
 }
 
-export default function EditActivityModal({ isOpen, onClose, onUpdate, activity, dayTitle }: EditActivityModalProps) {
-  const [activityTime, setActivityTime] = useState('')
-  const [activityDescription, setActivityDescription] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState('')
+export default function EditActivityModal({
+  isOpen,
+  onClose,
+  onUpdate,
+  activity,
+  dayTitle,
+}: EditActivityModalProps) {
+  const [activityTime, setActivityTime] = useState("");
+  const [activityDescription, setActivityDescription] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   // Pre-fill form when activity changes
   useEffect(() => {
     if (activity) {
-      setActivityTime(activity.activity_time || '')
-      setActivityDescription(activity.activity_description)
-      setError('')
+      setActivityTime(activity.activity_time || "");
+      setActivityDescription(activity.activity_description);
+      setError("");
     }
-  }, [activity])
+  }, [activity]);
 
-  if (!isOpen || !activity) return null
+  if (!isOpen || !activity) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError("");
 
     if (activityDescription.length < 3) {
-      setError('รายละเอียดกิจกรรมต้องมีอย่างน้อย 3 ตัวอักษร')
-      return
+      setError("รายละเอียดกิจกรรมต้องมีอย่างน้อย 3 ตัวอักษร");
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     try {
       await onUpdate(activity.id, {
         activity_time: activityTime || null,
         activity_description: activityDescription,
-      })
-      onClose()
-    } catch (err: any) {
-      setError(err.message || 'เกิดข้อผิดพลาด')
+      });
+      onClose();
+      onClose();
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "เกิดข้อผิดพลาด");
+      } else {
+        setError("เกิดข้อผิดพลาด");
+      }
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const handleClose = () => {
-    setError('')
-    onClose()
-  }
+    setError("");
+    onClose();
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6 dark:border dark:border-gray-700">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">แก้ไขกิจกรรม</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{dayTitle}</p>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              แก้ไขกิจกรรม
+            </h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              {dayTitle}
+            </p>
           </div>
           <button
             onClick={handleClose}
             className="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
             disabled={isSubmitting}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -100,7 +128,9 @@ export default function EditActivityModal({ isOpen, onClose, onUpdate, activity,
               disabled={isSubmitting}
               maxLength={50}
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">ระบุเวลาหรือช่วงเวลาของกิจกรรม</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              ระบุเวลาหรือช่วงเวลาของกิจกรรม
+            </p>
           </div>
 
           <div>
@@ -116,7 +146,9 @@ export default function EditActivityModal({ isOpen, onClose, onUpdate, activity,
               placeholder="อธิบายกิจกรรมในช่วงเวลานี้..."
               disabled={isSubmitting}
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{activityDescription.length} ตัวอักษร</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {activityDescription.length} ตัวอักษร
+            </p>
           </div>
 
           <div className="flex items-center gap-3 pt-4">
@@ -125,7 +157,7 @@ export default function EditActivityModal({ isOpen, onClose, onUpdate, activity,
               disabled={isSubmitting}
               className="cursor-pointer px-6 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'กำลังบันทึก...' : 'บันทึกการแก้ไข'}
+              {isSubmitting ? "กำลังบันทึก..." : "บันทึกการแก้ไข"}
             </button>
             <button
               type="button"
@@ -139,5 +171,5 @@ export default function EditActivityModal({ isOpen, onClose, onUpdate, activity,
         </form>
       </div>
     </div>
-  )
+  );
 }

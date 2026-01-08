@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface FilterOption {
   value: string;
@@ -113,10 +114,13 @@ export default function Hero() {
               index === currentSlide ? "opacity-100" : "opacity-0"
             }`}
           >
-            <img
+            <Image
               src={slide.image}
               alt={slide.alt}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              priority={index === 0}
+              unoptimized
             />
           </div>
         ))}

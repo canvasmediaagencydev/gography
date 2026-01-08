@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { THAI_LABELS } from "@/lib/thai-labels";
 import type { GalleryImageWithRelations } from "@/types/database.types";
@@ -63,10 +64,13 @@ export default function GalleryTable({
               >
                 <td className="px-6 py-4">
                   <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
-                    <img
+                    <Image
                       src={image.storage_url}
                       alt={image.alt_text || image.title}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
+                      sizes="80px"
+                      unoptimized
                     />
                   </div>
                 </td>

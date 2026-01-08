@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, useCallback } from "react";
+
 import Link from "next/link";
 import { THAI_LABELS } from "@/lib/thai-labels";
 import TripTable from "@/app/components/admin/TripTable";
@@ -18,11 +18,7 @@ export default function TripsPage() {
     is_active: "",
   });
 
-  useEffect(() => {
-    loadData();
-  }, [filters]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
       // Load countries
@@ -47,7 +43,11 @@ export default function TripsPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [filters]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const handleDelete = async (id: string) => {
     try {

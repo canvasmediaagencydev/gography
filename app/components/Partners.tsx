@@ -1,17 +1,16 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 
 export default function Partners() {
-
   const partners = [
-    '/partner/partner1.png',
-    '/partner/partner2.png',
-    '/partner/partner3.png',
-    '/partner/partner4.png',
-    '/partner/partner5.png',
-    '/partner/partner6.png',
-    '/partner/partner7.png',
+    "/partner/partner1.png",
+    "/partner/partner2.png",
+    "/partner/partner3.png",
+    "/partner/partner4.png",
+    "/partner/partner5.png",
+    "/partner/partner6.png",
+    "/partner/partner7.png",
   ];
 
   // Duplicate partners array for infinite scroll effect
@@ -30,7 +29,7 @@ export default function Partners() {
           <div
             className="flex gap-8 animate-scroll"
             style={{
-              width: 'fit-content',
+              width: "fit-content",
             }}
           >
             {allPartners.map((partner, index) => (
@@ -44,6 +43,7 @@ export default function Partners() {
                     alt={`Partner ${(index % partners.length) + 1}`}
                     fill
                     className="object-contain"
+                    unoptimized
                   />
                 </div>
               </div>
