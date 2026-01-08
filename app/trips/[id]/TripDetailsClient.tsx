@@ -15,29 +15,10 @@ type FaqImage = {
 
 const FormattedText = memo(
   ({ text, className = "" }: { text: string; className?: string }) => {
-    // Simple HTML escaping to prevent XSS while maintaining text formatting
-    const escapeHtml = (str: string) => {
-      return str
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    };
-
-    const htmlContent = text
-      .split("\n")
-      .map(
-        (line) =>
-          `<div class="min-h-[1.5em]"><span>${escapeHtml(line)}</span></div>`
-      )
-      .join("");
-
     return (
       <div
-        className={className}
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{ __html: htmlContent }}
+        className={`tiptap flow-root wrap-break-word prose dark:prose-invert max-w-none ${className}`}
+        dangerouslySetInnerHTML={{ __html: text }}
       />
     );
   }
@@ -499,7 +480,7 @@ export default function TripDetailsPage({
                 </h2>
                 <FormattedText
                   text={trip.description}
-                  className="text-gray-700 dark:text-gray-300 leading-relaxed space-y-1 wrap-break-word whitespace-pre-wrap"
+                  className="text-gray-700 dark:text-gray-300 leading-relaxed"
                 />
               </div>
             )}
@@ -606,7 +587,7 @@ export default function TripDetailsPage({
                           <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-600 p-4 rounded-lg border border-gray-200">
                             <FormattedText
                               text={day.day_description}
-                              className="text-gray-800 dark:text-gray-300 leading-relaxed text-base space-y-1 wrap-break-word whitespace-pre-wrap"
+                              className="text-gray-800 dark:text-gray-300 leading-relaxed text-base"
                             />
                           </div>
                         )}
