@@ -13,7 +13,11 @@ export async function proxy(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(
-          cookiesToSet: Array<{ name: string; value: string; options?: any }>
+          cookiesToSet: Array<{
+            name: string;
+            value: string;
+            options?: Record<string, unknown>;
+          }>
         ) {
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options)
