@@ -12,6 +12,8 @@ const updateScheduleSchema = z.object({
   total_seats: z.number().int().positive().optional(),
   available_seats: z.number().int().min(0).optional(),
   is_active: z.boolean().optional(),
+  duration_days: z.number().int().positive('จำนวนวันต้องมากกว่า 0').nullable().optional(),
+  duration_nights: z.number().int().min(0, 'จำนวนคืนต้องไม่ติดลบ').nullable().optional(),
 })
 
 type RouteContext = {

@@ -12,6 +12,24 @@ type RouteContext = {
   params: Promise<{ id: string }>;
 };
 
+// Helper function to get duration (manual or auto-calculated)
+function getDuration(schedule: {
+  departure_date: string;
+  return_date: string;
+  duration_days?: number | null;
+  duration_nights?: number | null;
+}): { days: number; nights: number } {
+  // Use manual duration if both values are provided
+  if (schedule.duration_days && schedule.duration_nights !== null && schedule.duration_nights !== undefined) {
+    return {
+      days: schedule.duration_days,
+      nights: schedule.duration_nights,
+    };
+  }
+  // Otherwise calculate from dates
+  return calculateDuration(schedule.departure_date, schedule.return_date);
+}
+
 // GET /api/trips/[id]/public - Get single trip for public display
 export async function GET(request: NextRequest, context: RouteContext) {
   try {
@@ -70,10 +88,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
 
     // Format schedules for public display
     const formattedSchedules = schedules.map((schedule) => {
-      const duration = calculateDuration(
-        schedule.departure_date,
-        schedule.return_date
-      );
+      const duration = getDuration(schedule);
       const dateRange = formatThaiDateRange(
         schedule.departure_date,
         schedule.return_date

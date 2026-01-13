@@ -15,6 +15,22 @@ import {
 import type { TripWithRelations, TripSchedule } from "@/types/database.types";
 import EditScheduleModal from "@/app/components/admin/schedules/EditScheduleModal";
 
+// Helper function to get duration (manual or auto-calculated)
+function getDuration(schedule: TripSchedule & {
+  duration_days?: number | null;
+  duration_nights?: number | null;
+}): { days: number; nights: number } {
+  // Use manual duration if both values are provided
+  if (schedule.duration_days && schedule.duration_nights !== null && schedule.duration_nights !== undefined) {
+    return {
+      days: schedule.duration_days,
+      nights: schedule.duration_nights,
+    };
+  }
+  // Otherwise calculate from dates
+  return calculateDuration(schedule.departure_date, schedule.return_date);
+}
+
 export default function ViewTripPage({
   params,
 }: {
@@ -71,6 +87,8 @@ export default function ViewTripPage({
       total_seats: number;
       available_seats: number;
       is_active: boolean;
+      duration_days: number | null;
+      duration_nights: number | null;
     }
   ) => {
     const res = await fetch(`/api/schedules/${scheduleId}`, {
@@ -299,10 +317,7 @@ export default function ViewTripPage({
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 {schedules.map((schedule) => {
-                  const duration = calculateDuration(
-                    schedule.departure_date,
-                    schedule.return_date
-                  );
+                  const duration = getDuration(schedule);
                   const dateRange = formatThaiDateRange(
                     schedule.departure_date,
                     schedule.return_date

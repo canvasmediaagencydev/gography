@@ -18,6 +18,8 @@ interface ScheduleSummary {
   return_date: string;
   available_seats?: number | null;
   total_seats?: number | null;
+  duration_days?: number | null;
+  duration_nights?: number | null;
 }
 
 interface CountrySummary {
@@ -34,6 +36,19 @@ interface TripRecord {
   country?: CountrySummary | null;
   trip_schedules?: ScheduleSummary[];
   slug?: string | null;
+}
+
+// Helper function to get duration (manual or auto-calculated)
+function getDuration(schedule: ScheduleSummary): { days: number; nights: number } {
+  // Use manual duration if both values are provided
+  if (schedule.duration_days && schedule.duration_nights !== null && schedule.duration_nights !== undefined) {
+    return {
+      days: schedule.duration_days,
+      nights: schedule.duration_nights,
+    };
+  }
+  // Otherwise calculate from dates
+  return calculateDuration(schedule.departure_date, schedule.return_date);
 }
 
 // GET /api/trips/public - Public endpoint for displaying trips on the website
@@ -169,10 +184,7 @@ export async function GET(request: NextRequest) {
       // Get the next upcoming schedule for main display
       const nextSchedule = sortedSchedules[0];
 
-      const duration = calculateDuration(
-        nextSchedule.departure_date,
-        nextSchedule.return_date
-      );
+      const duration = getDuration(nextSchedule);
       const dates = formatThaiDateRange(
         nextSchedule.departure_date,
         nextSchedule.return_date
@@ -185,10 +197,7 @@ export async function GET(request: NextRequest) {
 
       // Format all schedules for selection
       const schedulesDisplay = sortedSchedules.map((schedule) => {
-        const schedDuration = calculateDuration(
-          schedule.departure_date,
-          schedule.return_date
-        );
+        const schedDuration = getDuration(schedule);
         return {
           id: schedule.id,
           departure_date: schedule.departure_date,

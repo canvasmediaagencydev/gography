@@ -17,6 +17,8 @@ const createScheduleSchema = z.object({
   total_seats: z.number().int().positive('จำนวนที่นั่งต้องมากกว่า 0'),
   available_seats: z.number().int().min(0, 'ที่นั่งว่างต้องไม่ติดลบ'),
   is_active: z.boolean().default(true),
+  duration_days: z.number().int().positive('จำนวนวันต้องมากกว่า 0').nullable().optional(),
+  duration_nights: z.number().int().min(0, 'จำนวนคืนต้องไม่ติดลบ').nullable().optional(),
 })
 
 // GET /api/schedules - List all schedules

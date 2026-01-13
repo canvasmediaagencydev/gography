@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { THAI_LABELS } from "@/lib/thai-labels";
+import { calculateDuration } from "@/lib/migration-helpers";
 import type { TripSchedule } from "@/types/database.types";
 
 interface EditScheduleModalProps {
@@ -16,6 +17,8 @@ interface EditScheduleModalProps {
       total_seats: number;
       available_seats: number;
       is_active: boolean;
+      duration_days: number | null;
+      duration_nights: number | null;
     }
   ) => Promise<void>;
   schedule: TripSchedule | null;
@@ -33,6 +36,8 @@ export default function EditScheduleModal({
   const [totalSeats, setTotalSeats] = useState(10);
   const [availableSeats, setAvailableSeats] = useState<number | "">("");
   const [isActive, setIsActive] = useState(true);
+  const [durationDays, setDurationDays] = useState<number | "">("");
+  const [durationNights, setDurationNights] = useState<number | "">("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -50,11 +55,32 @@ export default function EditScheduleModal({
           : ""
       );
       setIsActive(Boolean(schedule.is_active));
+      // Pre-fill duration if exists
+      setDurationDays(
+        (schedule as TripSchedule & { duration_days?: number | null })
+          .duration_days ?? ""
+      );
+      setDurationNights(
+        (schedule as TripSchedule & { duration_nights?: number | null })
+          .duration_nights ?? ""
+      );
       setError("");
     }
   }, [schedule]);
 
   if (!isOpen || !schedule) return null;
+
+  // Calculate auto duration from dates
+  const autoDuration = (() => {
+    if (!departureDate || !returnDate) {
+      return null;
+    }
+    try {
+      return calculateDuration(departureDate, returnDate);
+    } catch {
+      return null;
+    }
+  })();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,6 +121,8 @@ export default function EditScheduleModal({
         total_seats: totalSeats,
         available_seats: finalAvailableSeats,
         is_active: isActive,
+        duration_days: durationDays === "" ? null : Number(durationDays),
+        duration_nights: durationNights === "" ? null : Number(durationNights),
       });
       onClose();
       onClose();
@@ -191,6 +219,66 @@ export default function EditScheduleModal({
                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400"
                 disabled={isSubmitting}
               />
+            </div>
+          </div>
+
+          {/* Duration Row */}
+          <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              ระยะเวลาการเดินทาง (ไม่จำเป็นต้องระบุ)
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                  จำนวนวัน
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  value={durationDays}
+                  onChange={(e) =>
+                    setDurationDays(
+                      e.target.value === "" ? "" : parseInt(e.target.value)
+                    )
+                  }
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                  placeholder={
+                    autoDuration
+                      ? `คำนวณอัตโนมัติ: ${autoDuration.days} วัน`
+                      : "กรอกจำนวนวัน"
+                  }
+                  disabled={isSubmitting}
+                />
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  ถ้าไม่กรอก จะคำนวณจากวันที่เดินทาง
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                  จำนวนคืน
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  value={durationNights}
+                  onChange={(e) =>
+                    setDurationNights(
+                      e.target.value === "" ? "" : parseInt(e.target.value)
+                    )
+                  }
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                  placeholder={
+                    autoDuration
+                      ? `คำนวณอัตโนมัติ: ${autoDuration.nights} คืน`
+                      : "กรอกจำนวนคืน"
+                  }
+                  disabled={isSubmitting}
+                />
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  ถ้าไม่กรอก จะคำนวณจากวันที่เดินทาง
+                </p>
+              </div>
             </div>
           </div>
 

@@ -3,6 +3,7 @@
 import { useState, useEffect, FormEvent, use, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { THAI_LABELS } from "@/lib/thai-labels";
+import { calculateDuration } from "@/lib/migration-helpers";
 import type { Trip } from "@/types/database.types";
 
 export default function CreateSchedulePage({
@@ -23,6 +24,8 @@ export default function CreateSchedulePage({
     total_seats: 10,
     available_seats: "" as number | "",
     is_active: true,
+    duration_days: "" as number | "",
+    duration_nights: "" as number | "",
   });
 
   const loadTrip = useCallback(async () => {
@@ -38,6 +41,18 @@ export default function CreateSchedulePage({
   useEffect(() => {
     loadTrip();
   }, [loadTrip]);
+
+  // Calculate auto duration from dates
+  const autoDuration = (() => {
+    if (!formData.departure_date || !formData.return_date) {
+      return null;
+    }
+    try {
+      return calculateDuration(formData.departure_date, formData.return_date);
+    } catch {
+      return null;
+    }
+  })();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -57,6 +72,10 @@ export default function CreateSchedulePage({
         body: JSON.stringify({
           ...formData,
           available_seats: finalAvailableSeats,
+          duration_days:
+            formData.duration_days === "" ? null : formData.duration_days,
+          duration_nights:
+            formData.duration_nights === "" ? null : formData.duration_nights,
           trip_id: tripId,
         }),
       });
@@ -148,6 +167,68 @@ export default function CreateSchedulePage({
               }
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400"
             />
+          </div>
+        </div>
+
+        {/* Duration Row */}
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+            ระยะเวลาการเดินทาง (ไม่จำเป็นต้องระบุ)
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                จำนวนวัน
+              </label>
+              <input
+                type="number"
+                min="1"
+                value={formData.duration_days}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    duration_days:
+                      e.target.value === "" ? "" : parseInt(e.target.value),
+                  })
+                }
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                placeholder={
+                  autoDuration
+                    ? `คำนวณอัตโนมัติ: ${autoDuration.days} วัน`
+                    : "กรอกจำนวนวัน"
+                }
+              />
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                ถ้าไม่กรอก จะคำนวณจากวันที่เดินทาง
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                จำนวนคืน
+              </label>
+              <input
+                type="number"
+                min="0"
+                value={formData.duration_nights}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    duration_nights:
+                      e.target.value === "" ? "" : parseInt(e.target.value),
+                  })
+                }
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                placeholder={
+                  autoDuration
+                    ? `คำนวณอัตโนมัติ: ${autoDuration.nights} คืน`
+                    : "กรอกจำนวนคืน"
+                }
+              />
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                ถ้าไม่กรอก จะคำนวณจากวันที่เดินทาง
+              </p>
+            </div>
           </div>
         </div>
 
