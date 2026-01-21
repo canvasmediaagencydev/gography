@@ -57,24 +57,20 @@ export default function Hero() {
 
   const slides = [
     {
-      image:
-        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80",
-      alt: "Mountain landscape",
+      image: "/hero/DSC06021.jpg",
+      alt: "Gography travel photography",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1920&q=80",
-      alt: "Road through forest",
+      image: "/hero/Gography-S-Canada-87.jpg",
+      alt: "Canada landscape",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=1920&q=80",
-      alt: "Mountain reflection",
+      image: "/hero/Gography-S-Canada-86.jpg",
+      alt: "Canada scenery",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80",
-      alt: "Northern lights",
+      image: "/hero/LINE_ALBUM_Aurora_250312_4.jpg",
+      alt: "Aurora borealis",
     },
   ];
 
@@ -120,7 +116,6 @@ export default function Hero() {
               fill
               className="object-cover"
               priority={index === 0}
-              unoptimized
             />
           </div>
         ))}

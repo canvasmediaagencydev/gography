@@ -9,29 +9,24 @@ export default function About() {
 
   const slides = [
     {
-      image:
-        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80",
-      alt: "Mountain landscape with travelers",
+      image: "/about/Low-4081.jpg",
+      alt: "Gography team travel",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800&q=80",
-      alt: "Scenic view",
+      image: "/about/IMG-3512.jpg",
+      alt: "Travel photography",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
-      alt: "Mountain peak",
+      image: "/about/480901859_952908800298403_7670122924741797459_n.jpg",
+      alt: "Gography adventure",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80",
-      alt: "Nature landscape",
-    },
-    {
-      image:
-        "https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=800&q=80",
+      image: "/about/25680613-DSC00386.jpg",
       alt: "Scenic destination",
+    },
+    {
+      image: "/about/DSC06021.jpg",
+      alt: "Nature landscape",
     },
   ];
 
@@ -63,7 +58,6 @@ export default function About() {
                     fill
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 50vw"
-                    unoptimized
                   />
                 </div>
               ))}
