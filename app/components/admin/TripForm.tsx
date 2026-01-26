@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { THAI_LABELS } from "@/lib/thai-labels";
 import { uploadWithProgress } from "@/lib/upload-helpers";
+import { compressImage, formatFileSize } from "@/lib/image-compression";
 import ProgressBar from "@/app/components/admin/ProgressBar";
 import type { Trip, Country } from "@/types/database.types";
 
@@ -24,6 +25,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
   );
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [isCompressing, setIsCompressing] = useState(false);
 
   const [formData, setFormData] = useState({
     title: trip?.title || "",
@@ -51,7 +53,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       // Validate file type
@@ -66,20 +68,32 @@ export default function TripForm({ trip, mode }: TripFormProps) {
         return;
       }
 
-      // Validate file size (5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        setError("ขนาดไฟล์ต้องไม่เกิน 5MB");
-        return;
-      }
-
-      setCoverImageFile(file);
-      // Create preview
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setCoverImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
       setError("");
+      setIsCompressing(true);
+
+      try {
+        // Compress the image if needed
+        const originalSize = formatFileSize(file.size);
+        const compressedFile = await compressImage(file);
+
+        if (compressedFile.size < file.size) {
+          const newSize = formatFileSize(compressedFile.size);
+          console.log(`Compressed cover image: ${originalSize} → ${newSize}`);
+        }
+
+        setCoverImageFile(compressedFile);
+        // Create preview
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setCoverImagePreview(reader.result as string);
+        };
+        reader.readAsDataURL(compressedFile);
+      } catch (err) {
+        console.error("Compression error:", err);
+        setError("เกิดข้อผิดพลาดในการบีบอัดรูปภาพ");
+      } finally {
+        setIsCompressing(false);
+      }
     }
   };
 
@@ -163,6 +177,18 @@ export default function TripForm({ trip, mode }: TripFormProps) {
       {error && (
         <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
           <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+        </div>
+      )}
+
+      {/* Compression Progress */}
+      {isCompressing && (
+        <div className="p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+          <div className="flex items-center gap-3">
+            <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-500 border-t-transparent"></div>
+            <span className="text-blue-700 dark:text-blue-300 font-medium">
+              กำลังบีบอัดรูปภาพ...
+            </span>
+          </div>
         </div>
       )}
 
@@ -318,7 +344,7 @@ export default function TripForm({ trip, mode }: TripFormProps) {
           className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-orange-500 dark:focus:border-orange-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-orange-50 dark:file:bg-orange-900/30 file:text-orange-700 dark:file:text-orange-400 hover:file:bg-orange-100 dark:hover:file:bg-orange-900/50"
         />
         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-          รองรับไฟล์ JPG, PNG, WebP (สูงสุด 5MB)
+          รองรับไฟล์ JPG, PNG, WebP (บีบอัดอัตโนมัติ)
         </p>
         {coverImagePreview && (
           <div className="mt-4">
@@ -402,10 +428,12 @@ export default function TripForm({ trip, mode }: TripFormProps) {
       <div className="flex flex-col md:flex-row items-center gap-3">
         <button
           type="submit"
-          disabled={isLoading || isUploading}
+          disabled={isLoading || isUploading || isCompressing}
           className="cursor-pointer w-full md:w-auto px-6 py-2 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isUploading
+          {isCompressing
+            ? "กำลังบีบอัดรูปภาพ..."
+            : isUploading
             ? "กำลังอัปโหลดรูปภาพ..."
             : isLoading
             ? THAI_LABELS.loading

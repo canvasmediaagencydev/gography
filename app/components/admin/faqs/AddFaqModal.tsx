@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import ProgressBar from "@/app/components/admin/ProgressBar";
+import { compressImage, formatFileSize } from "@/lib/image-compression";
 
 interface AddFaqModalProps {
   isOpen: boolean;
@@ -34,10 +35,11 @@ export default function AddFaqModal({
   const [imageCaptions, setImageCaptions] = useState<string[]>([]);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadMessage, setUploadMessage] = useState("");
+  const [isCompressing, setIsCompressing] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
 
     // Validate files
@@ -48,25 +50,43 @@ export default function AddFaqModal({
       return;
     }
 
-    const oversizedFiles = files.filter((f) => f.size > 5 * 1024 * 1024);
-    if (oversizedFiles.length > 0) {
-      setError("ขนาดไฟล์ต้องไม่เกิน 5MB ต่อไฟล์");
-      return;
-    }
-
-    setImageFiles((prev) => [...prev, ...files]);
-    setImageCaptions((prev) => [...prev, ...files.map(() => "")]);
-
-    // Create previews
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreviews((prev) => [...prev, reader.result as string]);
-      };
-      reader.readAsDataURL(file);
-    });
+    if (files.length === 0) return;
 
     setError("");
+    setIsCompressing(true);
+
+    try {
+      // Compress each file
+      const compressedFiles: File[] = [];
+      for (const file of files) {
+        const originalSize = formatFileSize(file.size);
+        const compressedFile = await compressImage(file);
+
+        if (compressedFile.size < file.size) {
+          const newSize = formatFileSize(compressedFile.size);
+          console.log(`Compressed ${file.name}: ${originalSize} → ${newSize}`);
+        }
+
+        compressedFiles.push(compressedFile);
+      }
+
+      setImageFiles((prev) => [...prev, ...compressedFiles]);
+      setImageCaptions((prev) => [...prev, ...compressedFiles.map(() => "")]);
+
+      // Create previews
+      compressedFiles.forEach((file) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreviews((prev) => [...prev, reader.result as string]);
+        };
+        reader.readAsDataURL(file);
+      });
+    } catch (err) {
+      console.error("Compression error:", err);
+      setError("เกิดข้อผิดพลาดในการบีบอัดรูปภาพ");
+    } finally {
+      setIsCompressing(false);
+    }
   };
 
   const removeImage = (index: number) => {
@@ -190,6 +210,18 @@ export default function AddFaqModal({
           </div>
         )}
 
+        {/* Compression Progress */}
+        {isCompressing && (
+          <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <div className="flex items-center gap-3">
+              <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-500 border-t-transparent"></div>
+              <span className="text-blue-700 dark:text-blue-300 font-medium">
+                กำลังบีบอัดรูปภาพ...
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Upload Progress */}
         {isSubmitting && uploadProgress > 0 && (
           <div className="mb-4 p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
@@ -252,7 +284,7 @@ export default function AddFaqModal({
               disabled={isSubmitting}
             />
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              รองรับไฟล์ JPG, PNG, WebP (สูงสุด 5MB ต่อไฟล์)
+              รองรับไฟล์ JPG, PNG, WebP (บีบอัดอัตโนมัติ)
             </p>
           </div>
 
@@ -327,15 +359,15 @@ export default function AddFaqModal({
           <div className="flex items-center gap-3 pt-4">
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isCompressing}
               className="cursor-pointer px-6 py-2 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "กำลังเพิ่ม..." : "เพิ่ม FAQ"}
+              {isCompressing ? "กำลังบีบอัด..." : isSubmitting ? "กำลังเพิ่ม..." : "เพิ่ม FAQ"}
             </button>
             <button
               type="button"
               onClick={handleClose}
-              disabled={isSubmitting}
+              disabled={isSubmitting || isCompressing}
               className="cursor-pointer px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors disabled:cursor-not-allowed"
             >
               ยกเลิก

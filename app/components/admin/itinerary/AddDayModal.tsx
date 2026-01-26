@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Editor } from "../editor";
+import { compressImage } from "@/lib/image-compression";
 
 interface AddDayModalProps {
   isOpen: boolean;
@@ -154,8 +155,10 @@ export default function AddDayModal({
               content={dayDescription}
               onChange={setDayDescription}
               onImageUpload={async (file: File) => {
+                // Compress image before upload
+                const compressedFile = await compressImage(file);
                 const formData = new FormData();
-                formData.append("file", file);
+                formData.append("file", compressedFile);
                 const res = await fetch(`/api/uploads`, {
                   method: "POST",
                   body: formData,

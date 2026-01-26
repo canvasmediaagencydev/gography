@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { THAI_LABELS } from "@/lib/thai-labels";
 import { uploadWithProgress } from "@/lib/upload-helpers";
+import { compressImage, formatFileSize } from "@/lib/image-compression";
 import ProgressBar from "@/app/components/admin/ProgressBar";
 import type { Country, Trip } from "@/types/database.types";
 
@@ -34,6 +35,8 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
   const [uploadProgress, setUploadProgress] = useState(0);
   // currentFileIndex removed as it was unused
   const [uploadMessage, setUploadMessage] = useState("");
+  const [isCompressing, setIsCompressing] = useState(false);
+  const [compressionMessage, setCompressionMessage] = useState("");
 
   useEffect(() => {
     loadCountries();
@@ -61,37 +64,71 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
   };
 
   const processFiles = useCallback(
-    (newFiles: File[]) => {
+    async (newFiles: File[]) => {
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/webp",
+      ];
+
+      // Filter valid file types only
       const validFiles = newFiles.filter((file) => {
-        const allowedTypes = [
-          "image/jpeg",
-          "image/jpg",
-          "image/png",
-          "image/webp",
-        ];
         if (!allowedTypes.includes(file.type)) {
           setError(`ไฟล์ ${file.name} ไม่ใช่รูปภาพที่รองรับ`);
-          return false;
-        }
-        if (file.size > 5 * 1024 * 1024) {
-          setError(`ไฟล์ ${file.name} มีขนาดเกิน 5MB`);
           return false;
         }
         return true;
       });
 
-      const uploadedFiles: UploadedFile[] = validFiles.map((file) => ({
-        file,
-        preview: URL.createObjectURL(file),
-        title: file.name.split(".")[0],
-        description: "",
-        alt_text: "",
-        country_id: "",
-        trip_id: tripId || "",
-        is_highlight: false,
-      }));
+      if (validFiles.length === 0) return;
 
-      setFiles((prev) => [...prev, ...uploadedFiles]);
+      // Compress files if needed
+      setIsCompressing(true);
+      setError("");
+
+      try {
+        const compressedFiles: File[] = [];
+
+        for (let i = 0; i < validFiles.length; i++) {
+          const file = validFiles[i];
+          const originalSize = formatFileSize(file.size);
+
+          if (file.size > 4 * 1024 * 1024) {
+            setCompressionMessage(
+              `กำลังบีบอัด ${file.name} (${originalSize})... (${i + 1}/${validFiles.length})`
+            );
+          }
+
+          const compressedFile = await compressImage(file);
+          compressedFiles.push(compressedFile);
+
+          // Log compression result
+          if (compressedFile.size < file.size) {
+            const newSize = formatFileSize(compressedFile.size);
+            console.log(`Compressed ${file.name}: ${originalSize} → ${newSize}`);
+          }
+        }
+
+        const uploadedFiles: UploadedFile[] = compressedFiles.map((file) => ({
+          file,
+          preview: URL.createObjectURL(file),
+          title: file.name.split(".")[0],
+          description: "",
+          alt_text: "",
+          country_id: "",
+          trip_id: tripId || "",
+          is_highlight: false,
+        }));
+
+        setFiles((prev) => [...prev, ...uploadedFiles]);
+      } catch (err) {
+        console.error("Compression error:", err);
+        setError("เกิดข้อผิดพลาดในการบีบอัดรูปภาพ");
+      } finally {
+        setIsCompressing(false);
+        setCompressionMessage("");
+      }
     },
     [tripId]
   );
@@ -253,6 +290,18 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
         </div>
       )}
 
+      {/* Compression Progress */}
+      {isCompressing && (
+        <div className="p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+          <div className="flex items-center gap-3">
+            <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-500 border-t-transparent"></div>
+            <span className="text-blue-700 dark:text-blue-300 font-medium">
+              {compressionMessage || "กำลังบีบอัดรูปภาพ..."}
+            </span>
+          </div>
+        </div>
+      )}
+
       {/* Upload Progress */}
       {isUploading && (
         <div className="p-6 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
@@ -282,7 +331,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
               ลากไฟล์มาวางที่นี่
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              หรือคลิกเพื่อเลือกไฟล์ (JPG, PNG, WebP สูงสุด 5MB)
+              หรือคลิกเพื่อเลือกไฟล์ (JPG, PNG, WebP - บีบอัดอัตโนมัติ)
             </p>
           </div>
           <input
@@ -478,7 +527,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
         <div className="flex flex-col md:flex-row items-center gap-3">
           <button
             onClick={handleUpload}
-            disabled={isUploading}
+            disabled={isUploading || isCompressing}
             className="cursor-pointer w-full md:w-auto px-6 py-3 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isUploading
@@ -487,7 +536,7 @@ export default function GalleryUploadForm({ tripId }: GalleryUploadFormProps) {
           </button>
           <button
             onClick={() => router.back()}
-            disabled={isUploading}
+            disabled={isUploading || isCompressing}
             className="cursor-pointer w-full md:w-auto px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {THAI_LABELS.cancel}
